@@ -22,6 +22,17 @@ pip install -r requirements.txt # numpy pandas scikit-learn openpyxl joblib pypd
 ```
 The server loads only `model/*.json` + `model/*.joblib`; it does NOT need the panel/cache.
 
+## Static build (`docs/`, deploys to GitHub Pages — no backend)
+The whole app also runs **client-side**: `docs/oraculo.js` is a verified JS port of
+`engine.py` + `scheduler.py` (HistGBM models exported to JSON via
+`pipeline/export_web_models.py` + a JS tree-evaluator; PDF parsed in-browser with pdf.js
+from CDN). `docs/index.html` loads `data/*.json` and calls `Oraculo.parseTranscript/eligible/
+simulate` instead of the Python API. Rebuild data: re-run `export_web_models.py` and copy
+`model/{catalog,course_stats,plans,schedules}.json` into `docs/data/`. Verified equal to the
+Python engine (counts/grades/GPA/scheduler exact; risk within 2e-4) and the pdf.js parser
+matches Python on all 5 test transcripts (Node + headless-Chrome tested). Asset paths are
+relative so it works under a `/repo/` Pages subpath. Pages source = branch `main`, `/docs`.
+
 ## Layout
 ```
 oraculo/
