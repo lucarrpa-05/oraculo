@@ -1,0 +1,1998 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oráculo · Planeador Académico</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Surfaces */
+    --bg:        #FAFAF9;
+    --bg-soft:   #F4F4F3;
+    --card:      #FFFFFF;
+    --card-hover:#FCFCFC;
+    --border:    #E7E5E4;
+    --border-strong:#D6D3D1;
+
+    /* Text */
+    --text:      #18181B;
+    --text-2:    #3F3F46;
+    --text-3:    #71717A;
+    --text-4:    #A1A1AA;
+
+    /* Accent — sober Rosario burgundy */
+    --accent:    #7A1F25;
+    --accent-hover:#661A1F;
+    --accent-tint:#FBF3F4;
+
+    /* Semantic */
+    --green:     #047857;
+    --green-tint:#ECFDF5;
+    --amber:     #B45309;
+    --amber-tint:#FFFBEB;
+    --red:       #B91C1C;
+    --red-tint:  #FEF2F2;
+
+    /* Course palette — muted */
+    --c-ed: #9C4B4B;
+    --c-gr: #3D5A80;
+    --c-pe: #A68020;
+    --c-op: #4F7A5E;
+    --c-tc: #6D4F7A;
+    --c-ad: #4A6B70;
+    --c-neutral: #52525B;
+
+    /* Radius */
+    --r-sm: 4px;
+    --r:    6px;
+    --r-lg: 10px;
+
+    /* Shadow */
+    --shadow-1: 0 1px 2px rgba(15,15,20,0.04), 0 1px 1px rgba(15,15,20,0.03);
+    --shadow-2: 0 1px 2px rgba(15,15,20,0.04), 0 4px 12px rgba(15,15,20,0.05);
+    --shadow-3: 0 2px 4px rgba(15,15,20,0.04), 0 12px 28px rgba(15,15,20,0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 13px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: 'cv11','ss01';
+  }
+  .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; font-feature-settings: 'zero','ss02'; }
+  .tabular { font-variant-numeric: tabular-nums; }
+
+  button, input, select { font-family: inherit; }
+  button { cursor: pointer; border: none; background: none; color: inherit; font: inherit; }
+  ::selection { background: var(--accent); color: #fff; }
+
+  /* ========== TOP NAV ========== */
+  .topbar {
+    position: sticky; top: 0; z-index: 50;
+    display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 32px;
+    padding: 0 32px;
+    height: 60px;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: saturate(180%) blur(10px);
+    -webkit-backdrop-filter: saturate(180%) blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+  .brand { display: flex; align-items: center; gap: 10px; }
+  .brand-mark {
+    width: 26px; height: 26px; border-radius: 4px;
+    background: var(--text); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 14px; letter-spacing: -0.02em;
+  }
+  .brand-name { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; color: var(--text); }
+  .brand-sub { font-size: 11px; color: var(--text-3); margin-left: 8px; border-left: 1px solid var(--border); padding-left: 10px; }
+
+  .nav-tabs { display: flex; gap: 2px; justify-content: center; }
+  .tab {
+    padding: 18px 14px 19px;
+    font-size: 13px; font-weight: 500;
+    color: var(--text-3);
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s, border-color 0.15s;
+    margin-bottom: -1px;
+  }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--text); border-bottom-color: var(--text); }
+
+  .user-chip { display: flex; align-items: center; gap: 10px; }
+  .avatar {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--accent); color: #fff;
+    font-weight: 600; font-size: 11px; letter-spacing: 0.03em;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .uname { font-size: 12px; font-weight: 500; line-height: 1.2; color: var(--text); }
+  .umeta { font-size: 11px; color: var(--text-3); margin-top: 1px; }
+
+  /* ========== LAYOUT ========== */
+  .layout { display: grid; grid-template-columns: 256px 1fr; gap: 28px; padding: 24px 32px 48px; max-width: 1480px; margin: 0 auto; }
+  .sidebar { display: flex; flex-direction: column; gap: 14px; position: sticky; top: 84px; align-self: start; max-height: calc(100vh - 100px); overflow-y: auto; }
+  .content { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+
+  /* ========== CARDS ========== */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    padding: 18px 20px;
+  }
+  .card-title {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.04em;
+    color: var(--text-3); text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .card-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; gap: 14px; }
+  .card-head h3 { font-size: 14px; font-weight: 600; color: var(--text); }
+  .card-head .sub { font-size: 12px; color: var(--text-3); margin-top: 2px; font-weight: 400; }
+
+  /* ========== SIDEBAR ========== */
+  .profile-name { font-size: 14px; font-weight: 600; color: var(--text); line-height: 1.25; }
+  .profile-plan { font-size: 12px; color: var(--text-2); margin-top: 4px; }
+  .profile-meta { font-size: 11px; color: var(--text-3); margin-top: 6px; font-family: 'JetBrains Mono', monospace; }
+
+  .profile-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 16px; }
+  .stat {
+    padding: 10px 12px;
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+  }
+  .stat-label { font-size: 10px; color: var(--text-3); font-weight: 500; letter-spacing: 0.03em; text-transform: uppercase; }
+  .stat-val { font-size: 18px; font-weight: 600; color: var(--text); margin-top: 2px; font-variant-numeric: tabular-nums; }
+  .stat-sub { font-size: 10px; color: var(--text-3); margin-top: 1px; }
+
+  .progress { margin-top: 14px; }
+  .progress-header { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-3); margin-bottom: 5px; }
+  .progress-header strong { color: var(--text); font-variant-numeric: tabular-nums; }
+  .progress-bar { height: 4px; background: var(--bg-soft); border-radius: 2px; overflow: hidden; border: 1px solid var(--border); }
+  .progress-fill { height: 100%; background: var(--text); border-radius: 2px; transition: width 0.4s ease; }
+
+  /* ========== CONTENT HEADER ========== */
+  .page-head {
+    display: flex; align-items: flex-end; justify-content: space-between; gap: 24px;
+    padding: 6px 2px 2px;
+  }
+  .page-title { font-size: 24px; font-weight: 600; line-height: 1.15; color: var(--text); letter-spacing: -0.02em; }
+  .page-sub { font-size: 13px; color: var(--text-3); margin-top: 6px; }
+  .page-actions { display: flex; gap: 8px; }
+
+  /* ========== BUTTONS ========== */
+  .btn {
+    padding: 8px 14px; border-radius: var(--r); font-size: 12px; font-weight: 500;
+    border: 1px solid var(--border-strong); background: var(--card); color: var(--text);
+    transition: all 0.12s; display: inline-flex; align-items: center; gap: 6px;
+    box-shadow: var(--shadow-1);
+    letter-spacing: 0.005em;
+  }
+  .btn:hover { background: var(--bg-soft); }
+  .btn.primary {
+    background: var(--text); color: #fff; border-color: var(--text);
+  }
+  .btn.primary:hover { background: #000; }
+  .btn.accent {
+    background: var(--accent); color: #fff; border-color: var(--accent);
+  }
+  .btn.accent:hover { background: var(--accent-hover); }
+  .btn.ghost { background: transparent; border-color: transparent; color: var(--text-2); box-shadow: none; }
+  .btn.ghost:hover { background: var(--bg-soft); color: var(--text); }
+  .btn.sm { padding: 6px 10px; font-size: 11px; }
+
+  /* ========== TAG / BADGE ========== */
+  .tag {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 2px 7px; border-radius: 4px; font-size: 10px; font-weight: 500;
+    letter-spacing: 0.02em; background: var(--bg-soft); color: var(--text-2);
+    border: 1px solid var(--border);
+  }
+  .tag.sem  { font-family: 'JetBrains Mono', monospace; text-transform: uppercase; }
+  .tag.alta { background: var(--red-tint); color: var(--red); border-color: #FECACA; }
+  .tag.media{ background: var(--amber-tint); color: var(--amber); border-color: #FDE68A; }
+  .tag.baja { background: var(--green-tint); color: var(--green); border-color: #A7F3D0; }
+  .tag.success { background: var(--green-tint); color: var(--green); border-color: #A7F3D0; }
+
+  /* ========== SELECCIÓN TAB ========== */
+  .sel-hero {
+    padding: 22px 24px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    display: grid; grid-template-columns: 1fr auto; gap: 20px; align-items: center;
+  }
+  .sel-hero h1 { font-size: 22px; font-weight: 600; letter-spacing: -0.02em; color: var(--text); }
+  .sel-hero p { font-size: 13px; color: var(--text-3); margin-top: 6px; max-width: 640px; line-height: 1.55; }
+  .sel-steps { display: flex; align-items: center; gap: 6px; margin-top: 12px; font-size: 11px; color: var(--text-3); }
+  .sel-step-dot {
+    width: 18px; height: 18px; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: var(--bg-soft); border: 1px solid var(--border);
+    font-size: 10px; font-weight: 600; color: var(--text-3);
+  }
+  .sel-step-dot.active { background: var(--text); color: #fff; border-color: var(--text); }
+  .sel-step-line { width: 18px; height: 1px; background: var(--border); }
+
+  .sel-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+  .sel-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    padding: 14px 16px 12px;
+    position: relative;
+    cursor: pointer;
+    transition: border-color 0.12s, box-shadow 0.12s;
+  }
+  .sel-card:hover { border-color: var(--border-strong); box-shadow: var(--shadow-1); }
+  .sel-card.selected {
+    border-color: var(--text);
+    box-shadow: 0 0 0 3px rgba(0,0,0,0.04), var(--shadow-1);
+  }
+  .sel-card-top {
+    display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 8px;
+  }
+  .sel-card-body { flex: 1; min-width: 0; }
+  .sel-code { font-size: 10px; color: var(--text-3); font-family: 'JetBrains Mono', monospace; letter-spacing: 0.02em; }
+  .sel-name { font-size: 14px; font-weight: 600; color: var(--text); line-height: 1.3; margin-top: 2px; }
+  .sel-tags { display: flex; gap: 5px; margin-top: 9px; flex-wrap: wrap; }
+
+  .sel-check {
+    width: 20px; height: 20px; border-radius: 4px;
+    border: 1px solid var(--border-strong); background: var(--card);
+    display: flex; align-items: center; justify-content: center;
+    color: transparent; font-size: 13px; font-weight: 700;
+    flex-shrink: 0; transition: all 0.12s;
+  }
+  .sel-card.selected .sel-check { background: var(--text); border-color: var(--text); color: #fff; }
+
+  .sel-prereq {
+    font-size: 11px; color: var(--text-3); padding-top: 9px; margin-top: 10px;
+    border-top: 1px dashed var(--border);
+    display: flex; align-items: center; gap: 6px; line-height: 1.45;
+  }
+  .sel-prereq svg { flex-shrink: 0; color: var(--green); }
+
+  .sel-bar {
+    position: sticky; bottom: 20px; z-index: 20;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    padding: 12px 18px;
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 16px; flex-wrap: wrap;
+    box-shadow: var(--shadow-3);
+    margin-top: 18px;
+  }
+  .sel-summary { font-size: 13px; color: var(--text-2); display: flex; gap: 18px; align-items: center; flex-wrap: wrap; }
+  .sel-summary .big { font-size: 15px; font-weight: 600; color: var(--text); font-variant-numeric: tabular-nums; }
+  .sel-summary .risk-chip { padding: 3px 8px; border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 12px; }
+  .sel-summary .divider { color: var(--text-4); }
+
+  /* ========== COURSES STRIP (Horario) ========== */
+  .courses-strip { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+  @media (max-width: 1380px) { .courses-strip { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 900px)  { .courses-strip { grid-template-columns: repeat(2, 1fr); } }
+
+  .ccard {
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--r-lg);
+    padding: 12px 14px;
+  }
+  .ccard-top {
+    display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;
+    padding-bottom: 10px; margin-bottom: 10px; border-bottom: 1px solid var(--border);
+  }
+  .ccard-stripe {
+    display: inline-block; width: 3px; height: 16px; margin-right: 8px;
+    background: var(--course-color); border-radius: 2px; vertical-align: middle;
+  }
+  .ccard-name { font-size: 13px; font-weight: 600; line-height: 1.25; color: var(--text); }
+  .ccard-sub { font-size: 10px; color: var(--text-3); margin-top: 3px; font-family: 'JetBrains Mono', monospace; }
+
+  .prof-opt {
+    display: block; width: 100%; text-align: left;
+    padding: 8px 10px; border-radius: var(--r);
+    background: var(--bg-soft); border: 1px solid transparent;
+    font-size: 12px; color: var(--text-2);
+    transition: all 0.12s; cursor: pointer; margin-bottom: 5px;
+  }
+  .prof-opt:hover { background: var(--card); border-color: var(--border); }
+  .prof-opt.selected {
+    background: var(--card);
+    border-color: var(--text);
+    box-shadow: 0 0 0 2px rgba(0,0,0,0.03);
+  }
+  .prof-opt.conflict.selected {
+    border-color: var(--red);
+    background: var(--red-tint);
+  }
+  .prof-opt-top { display: flex; justify-content: space-between; gap: 8px; align-items: center; }
+  .prof-name { font-weight: 500; font-size: 11px; color: var(--text); line-height: 1.3; flex: 1; }
+  .risk-pill {
+    font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 10px;
+    padding: 2px 6px; border-radius: var(--r-sm); flex-shrink: 0;
+  }
+  .risk-low { background: var(--green-tint); color: var(--green); }
+  .risk-med { background: var(--amber-tint); color: var(--amber); }
+  .risk-high { background: var(--red-tint); color: var(--red); }
+
+  .conflict-note {
+    display: block; font-size: 10px; color: var(--red);
+    margin-top: 4px; font-weight: 500;
+  }
+
+  /* ========== CALENDAR ========== */
+  .grid-main { display: grid; grid-template-columns: 1fr 340px; gap: 16px; }
+  @media (max-width: 1200px) { .grid-main { grid-template-columns: 1fr; } }
+
+  .cal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .cal-title { font-size: 14px; font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 10px; }
+
+  .calendar {
+    display: grid;
+    grid-template-columns: 52px repeat(5, 1fr);
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden;
+    position: relative;
+  }
+  .cal-cell { min-height: 26px; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); position: relative; }
+  .cal-cell.time { font-size: 10px; color: var(--text-4); text-align: right; padding: 1px 8px 0 0; font-family: 'JetBrains Mono', monospace; min-height: 26px; background: var(--bg-soft); }
+  .cal-cell.day-header { background: var(--bg-soft); padding: 8px 0; text-align: center; font-size: 11px; font-weight: 600; color: var(--text); letter-spacing: 0.04em; text-transform: uppercase; min-height: 32px; }
+  .cal-cell.corner { background: var(--bg-soft); min-height: 32px; }
+
+  .cal-event {
+    position: absolute; left: 3px; right: 3px;
+    border-radius: var(--r-sm);
+    padding: 5px 7px;
+    font-size: 10px; line-height: 1.3;
+    background: var(--event-color);
+    color: #fff;
+    overflow: hidden;
+    z-index: 2;
+    cursor: pointer;
+    border: 1px solid rgba(0,0,0,0.05);
+    box-shadow: var(--shadow-1);
+    transition: box-shadow 0.12s;
+  }
+  .cal-event:hover { box-shadow: var(--shadow-2); }
+  .cal-event.conflict { outline: 1.5px solid var(--red); outline-offset: -1px; }
+  .cal-event-title { font-weight: 600; font-size: 10px; }
+  .cal-event-prof { font-size: 10px; opacity: 0.9; margin-top: 1px; }
+  .cal-event-time { font-size: 9px; opacity: 0.75; margin-top: 2px; font-family: 'JetBrains Mono', monospace; }
+
+  /* ========== RANKING ========== */
+  .rank-list { display: flex; flex-direction: column; gap: 8px; max-height: 640px; overflow-y: auto; }
+  .rank-list::-webkit-scrollbar { width: 5px; }
+  .rank-list::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
+
+  .rank-item {
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--r);
+    padding: 10px 12px; cursor: pointer; transition: all 0.12s;
+  }
+  .rank-item:hover { border-color: var(--border-strong); }
+  .rank-item.active { border-color: var(--text); box-shadow: 0 0 0 3px rgba(0,0,0,0.04); }
+
+  .rank-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+  .rank-left { display: flex; align-items: center; gap: 10px; }
+  .rank-num { font-size: 16px; font-weight: 600; color: var(--text); font-variant-numeric: tabular-nums; min-width: 22px; text-align: center; }
+  .rank-score { font-size: 13px; font-weight: 600; color: var(--text); font-variant-numeric: tabular-nums; }
+  .rank-score-sub { font-size: 10px; color: var(--text-3); }
+  .rank-profs { font-size: 10px; color: var(--text-3); margin-bottom: 7px; line-height: 1.35; }
+  .rank-bars { display: grid; grid-template-columns: repeat(6, 1fr); gap: 3px; }
+  .rank-bar { height: 18px; border-radius: 2px; background: var(--bg-soft); position: relative; overflow: hidden; border: 1px solid var(--border); }
+  .rank-bar-fill { position: absolute; bottom: 0; left: 0; right: 0; background: var(--bar-color); }
+  .rank-bar.muted .rank-bar-fill { background: var(--text-4); opacity: 0.3; }
+  .rank-legend { font-size: 10px; color: var(--text-4); margin-top: 6px; font-family: 'JetBrains Mono', monospace; }
+
+  .discarded-note {
+    margin-top: 12px; padding: 10px 12px; background: var(--red-tint);
+    border: 1px solid #FECACA; border-radius: var(--r); color: var(--text-2);
+    font-size: 11px; line-height: 1.5;
+  }
+  .discarded-note strong { color: var(--red); font-weight: 600; }
+
+  /* ========== WEIGHTS ========== */
+  .w-row { display: grid; grid-template-columns: 130px 1fr 44px; align-items: center; gap: 12px; padding: 6px 0; }
+  .w-label { font-size: 12px; color: var(--text-2); display: flex; align-items: center; gap: 6px; }
+  .w-label .chip { width: 8px; height: 8px; border-radius: 2px; background: var(--chip); }
+  .w-val { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text); text-align: right; font-variant-numeric: tabular-nums; }
+  .slider {
+    -webkit-appearance: none; appearance: none;
+    width: 100%; height: 3px; background: var(--border); border-radius: 2px; outline: none;
+  }
+  .slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 14px; height: 14px; border-radius: 50%; background: var(--text); cursor: pointer; border: 2px solid #fff; box-shadow: 0 0 0 1px var(--border-strong); }
+  .slider::-moz-range-thumb { width: 12px; height: 12px; border-radius: 50%; background: var(--text); cursor: pointer; border: 2px solid #fff; }
+  .w-disabled .slider::-webkit-slider-thumb { background: var(--text-4); }
+  .w-disabled .w-val, .w-disabled .w-label { color: var(--text-4); }
+
+  .w-note {
+    font-size: 11px; color: var(--text-3); line-height: 1.55; margin-top: 14px;
+    padding: 10px 12px; background: var(--bg-soft); border-left: 2px solid var(--text-3); border-radius: var(--r-sm);
+  }
+  .w-note strong { color: var(--text); }
+
+  /* ========== RISK ========== */
+  .risk-summary { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; }
+  .risk-meter { position: relative; width: 104px; height: 104px; flex-shrink: 0; }
+  .risk-meter svg { transform: rotate(-90deg); }
+  .risk-meter circle { fill: none; stroke-width: 8; }
+  .risk-meter-bg { stroke: var(--bg-soft); }
+  .risk-meter-fg { stroke: var(--risk-color); stroke-linecap: round; transition: stroke-dashoffset 0.5s ease, stroke 0.2s; }
+  .risk-meter-text {
+    position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  }
+  .risk-meter-pct { font-size: 22px; font-weight: 600; color: var(--risk-color); font-variant-numeric: tabular-nums; line-height: 1; }
+  .risk-meter-ci { font-size: 10px; color: var(--text-3); font-family: 'JetBrains Mono', monospace; margin-top: 3px; }
+  .risk-text { flex: 1; min-width: 220px; }
+  .risk-text h3 { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+  .risk-text p { font-size: 12px; color: var(--text-2); line-height: 1.55; }
+
+  .risk-row {
+    display: grid; grid-template-columns: 1fr 120px 80px 140px; gap: 12px;
+    align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border);
+  }
+  .risk-row:last-child { border-bottom: none; }
+  .risk-course { font-weight: 600; font-size: 13px; color: var(--text); display: flex; align-items: center; gap: 9px; }
+  .risk-course .chip { width: 3px; height: 18px; background: var(--chip); border-radius: 2px; }
+  .risk-prof { font-size: 10px; color: var(--text-3); font-weight: 400; margin-top: 2px; }
+  .risk-gauge { height: 6px; border-radius: 3px; background: var(--bg-soft); overflow: hidden; border: 1px solid var(--border); }
+  .risk-gauge-fill { height: 100%; transition: width 0.4s; }
+  .risk-val { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600; text-align: right; font-variant-numeric: tabular-nums; }
+  .risk-factor { font-size: 11px; color: var(--text-3); }
+
+  .suggestion {
+    display: flex; gap: 10px; padding: 12px; background: var(--bg-soft); border-radius: var(--r);
+    border-left: 2px solid var(--text); margin-bottom: 8px;
+  }
+  .suggestion-icon {
+    width: 22px; height: 22px; flex-shrink: 0; border-radius: 4px;
+    background: var(--card); border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 11px; color: var(--text);
+  }
+  .suggestion-body { font-size: 12px; color: var(--text-2); line-height: 1.55; }
+  .suggestion-body strong { color: var(--text); font-weight: 600; }
+
+  .suggestion.warn { border-left-color: var(--red); }
+  .suggestion.warn .suggestion-icon { color: var(--red); }
+
+  /* ========== PROFESORES ========== */
+  .prof-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+  .prof-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--r-lg);
+    padding: 16px; cursor: pointer; transition: all 0.12s;
+  }
+  .prof-card:hover { border-color: var(--border-strong); box-shadow: var(--shadow-1); }
+  .prof-head { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 10px; }
+  .prof-avatar {
+    width: 40px; height: 40px; flex-shrink: 0; border-radius: 50%;
+    background: var(--bg-soft); border: 1px dashed var(--border-strong);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-4); font-size: 9px; text-transform: uppercase; letter-spacing: 0.06em; text-align: center;
+  }
+  .prof-full { font-size: 13px; font-weight: 600; color: var(--text); line-height: 1.3; }
+  .prof-course { font-size: 11px; color: var(--text-3); margin-top: 3px; }
+  .stars { display: flex; gap: 1px; margin: 6px 0 3px; }
+  .star { color: var(--border-strong); font-size: 13px; }
+  .star.filled { color: var(--text); }
+  .stars-label { font-size: 11px; color: var(--text-3); }
+
+  .empty {
+    padding: 14px; background: var(--bg-soft); border-radius: var(--r);
+    border: 1px dashed var(--border-strong); text-align: center;
+    margin-top: 12px;
+  }
+  .empty-title { font-size: 12px; font-weight: 600; color: var(--text-2); }
+  .empty-sub { font-size: 11px; color: var(--text-3); margin-top: 4px; line-height: 1.5; }
+  .empty-cta {
+    display: inline-block; margin-top: 10px; padding: 6px 12px; font-size: 11px; font-weight: 500;
+    border: 1px solid var(--border-strong); background: var(--card); color: var(--text); border-radius: var(--r);
+  }
+  .empty-cta:hover { background: var(--bg-soft); }
+
+  /* ========== MODAL ========== */
+  .modal-root { position: fixed; inset: 0; z-index: 100; pointer-events: none; }
+  .modal-bg {
+    position: absolute; inset: 0; background: rgba(15,15,20,0.4); backdrop-filter: blur(4px);
+    opacity: 0; transition: opacity 0.2s;
+  }
+  .modal-root.open { pointer-events: auto; }
+  .modal-root.open .modal-bg { opacity: 1; }
+  .modal {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -48%) scale(0.98);
+    width: min(600px, 94vw); max-height: 90vh; overflow-y: auto;
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--r-lg);
+    box-shadow: var(--shadow-3);
+    opacity: 0; transition: all 0.2s;
+    padding: 24px;
+  }
+  .modal-root.open .modal { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  .modal-close { position: absolute; top: 12px; right: 12px; width: 28px; height: 28px; border-radius: 50%; color: var(--text-3); font-size: 16px; display: flex; align-items: center; justify-content: center; }
+  .modal-close:hover { background: var(--bg-soft); color: var(--text); }
+
+  .modal-head { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 20px; }
+  .modal-avatar {
+    width: 56px; height: 56px; flex-shrink: 0; border-radius: 50%;
+    background: var(--bg-soft); border: 1px dashed var(--border-strong);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    color: var(--text-4); font-size: 9px; text-align: center; letter-spacing: 0.06em;
+  }
+  .modal-prof-name { font-size: 18px; font-weight: 600; color: var(--text); line-height: 1.2; letter-spacing: -0.01em; }
+  .modal-prof-course { font-size: 12px; color: var(--text-2); margin-top: 3px; font-weight: 500; }
+  .modal-prof-meta { font-size: 11px; color: var(--text-3); margin-top: 4px; }
+
+  .modal-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 20px; }
+  .modal-stat {
+    background: var(--bg-soft); border-radius: var(--r); padding: 10px; text-align: center;
+    border: 1px solid var(--border);
+  }
+  .modal-stat-val { font-size: 16px; font-weight: 600; color: var(--text-3); line-height: 1; font-variant-numeric: tabular-nums; }
+  .modal-stat-label { font-size: 10px; color: var(--text-3); letter-spacing: 0.04em; text-transform: uppercase; margin-top: 4px; }
+
+  .section-heading {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.05em; color: var(--text-3);
+    text-transform: uppercase; margin: 16px 0 10px; display: flex; align-items: center; gap: 8px;
+  }
+  .section-heading .badge {
+    font-size: 9px; padding: 2px 6px; background: var(--bg-soft); border-radius: 4px;
+    color: var(--text-3); letter-spacing: 0.06em; border: 1px solid var(--border);
+  }
+
+  .modal-risk-panel { background: var(--bg-soft); border: 1px solid var(--border); border-radius: var(--r); padding: 14px; margin-top: 10px; }
+  .modal-risk-big { font-size: 28px; font-weight: 600; color: var(--risk-color); line-height: 1; font-variant-numeric: tabular-nums; }
+  .modal-risk-ci { font-size: 11px; color: var(--text-3); margin-left: 6px; font-family: 'JetBrains Mono', monospace; }
+
+  /* ========== PERFIL ========== */
+  .perfil-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 1000px) { .perfil-grid { grid-template-columns: 1fr; } }
+
+  .grade-row {
+    display: grid; grid-template-columns: 1fr 56px 56px 60px; gap: 10px; padding: 9px 0;
+    border-bottom: 1px solid var(--border); font-size: 12px; align-items: center;
+  }
+  .grade-row:last-child { border-bottom: none; }
+  .grade-name { font-weight: 500; color: var(--text); }
+  .grade-code { color: var(--text-3); font-size: 10px; font-family: 'JetBrains Mono', monospace; }
+  .grade-cr { color: var(--text-3); font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+  .grade-type {
+    font-size: 9px; padding: 2px 6px; border-radius: 3px; text-align: center;
+    letter-spacing: 0.03em; font-weight: 600; border: 1px solid var(--border);
+  }
+  .grade-type.obl { background: var(--card); color: var(--text-2); }
+  .grade-type.comp{ background: var(--card); color: var(--c-tc); border-color: #E9E0F1; }
+  .grade-type.elec{ background: var(--card); color: var(--c-gr); border-color: #D8E2ED; }
+  .grade-val { font-family: 'JetBrains Mono', monospace; font-weight: 600; text-align: right; font-variant-numeric: tabular-nums; }
+  .grade-val.ok { color: var(--text); }
+  .grade-val.pass { color: var(--green); font-size: 11px; }
+  .grade-val.inprog { color: var(--amber); font-size: 10px; text-transform: uppercase; letter-spacing: 0.03em; }
+
+  .ruta-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  @media (max-width: 1400px) { .ruta-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 700px)  { .ruta-grid { grid-template-columns: 1fr; } }
+  .sem-card {
+    background: var(--bg-soft); border: 1px solid var(--border); border-radius: var(--r);
+    padding: 10px 12px; min-height: 170px;
+  }
+  .sem-card.current { border-color: var(--amber); background: var(--amber-tint); }
+  .sem-card.target  { border-color: var(--text); background: var(--card); box-shadow: 0 0 0 3px rgba(0,0,0,0.03); }
+  .sem-card-head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding-bottom: 6px; margin-bottom: 6px; border-bottom: 1px dashed var(--border);
+  }
+  .sem-card-title {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.06em;
+    color: var(--text-2); text-transform: uppercase;
+  }
+  .sem-card.current .sem-card-title { color: var(--amber); }
+  .sem-card.target  .sem-card-title { color: var(--text); }
+  .sem-card-progress { font-size: 10px; color: var(--text-3); font-family: 'JetBrains Mono', monospace; }
+  .sem-course {
+    font-size: 11px; padding: 3px 0; display: flex; gap: 6px;
+    color: var(--text-2); line-height: 1.35;
+  }
+  .sem-course .tick { width: 12px; flex-shrink: 0; text-align: center; color: var(--text-4); }
+  .sem-course.done { color: var(--text-3); text-decoration: line-through; opacity: 0.75; }
+  .sem-course.done .tick { color: var(--green); }
+  .sem-course.inprog .tick { color: var(--amber); }
+  .sem-course.target { color: var(--text); font-weight: 500; }
+  .sem-course.target .tick { color: var(--text); }
+
+  /* ========== MISC ========== */
+  .hidden { display: none !important; }
+  .fadein { animation: fade 0.2s ease; }
+  @keyframes fade { from { opacity: 0; transform: translateY(2px); } to { opacity: 1; transform: translateY(0); } }
+
+  footer {
+    text-align: center; padding: 28px 16px 16px; color: var(--text-4); font-size: 11px;
+    letter-spacing: 0.01em;
+  }
+  footer strong { color: var(--text-2); font-weight: 500; }
+
+  /* Utility */
+  .flex { display: flex; } .gap-2 { gap: 8px; } .gap-3 { gap: 12px; }
+  .items-center { align-items: center; } .justify-between { justify-content: space-between; }
+  .mt-2 { margin-top: 8px; } .mt-4 { margin-top: 16px; }
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <div class="brand">
+    <div class="brand-mark">O</div>
+    <div>
+      <span class="brand-name">Oráculo</span>
+      <span class="brand-sub">Planeador Académico</span>
+    </div>
+  </div>
+
+  <div class="nav-tabs" id="nav-tabs">
+    <button class="tab active" data-tab="seleccion">Selección</button>
+    <button class="tab" data-tab="horario">Horario</button>
+    <button class="tab" data-tab="profesores">Profesores</button>
+    <button class="tab" data-tab="riesgo">Riesgo</button>
+    <button class="tab" data-tab="perfil">Mi Sábana</button>
+  </div>
+
+  <div class="user-chip">
+    <div>
+      <div class="uname" style="text-align: right;">Lucas Carrasquilla</div>
+      <div class="umeta" style="text-align: right;">MA03 · IV semestre</div>
+    </div>
+    <div class="avatar">LC</div>
+  </div>
+</nav>
+
+<div class="layout">
+
+  <aside class="sidebar">
+
+    <div class="card">
+      <div class="profile-name">Lucas Carrasquilla Parra</div>
+      <div class="profile-plan">MA03 — Matemáticas Aplicadas y Ciencias de la Computación</div>
+      <div class="profile-meta">DNI 1025060974 · Expediente 789</div>
+
+      <div class="profile-stats">
+        <div class="stat">
+          <div class="stat-label">PGA</div>
+          <div class="stat-val">4.72</div>
+          <div class="stat-sub">de 5.00</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Semestre</div>
+          <div class="stat-val">IV</div>
+          <div class="stat-sub">en curso</div>
+        </div>
+      </div>
+
+      <div class="progress">
+        <div class="progress-header">
+          <span>Créditos aprobados</span>
+          <strong>52 / 142</strong>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" style="width: 36.6%"></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Progreso del plan</div>
+      <div style="display: flex; flex-direction: column; gap: 9px;">
+        <div>
+          <div class="progress-header"><span>Obligatoria</span><strong>38 / 108</strong></div>
+          <div class="progress-bar"><div class="progress-fill" style="width: 35.2%"></div></div>
+        </div>
+        <div>
+          <div class="progress-header"><span>Electiva</span><strong>4 / 4</strong></div>
+          <div class="progress-bar"><div class="progress-fill" style="width: 100%"></div></div>
+        </div>
+        <div>
+          <div class="progress-header"><span>Complementaria</span><strong>10 / 12</strong></div>
+          <div class="progress-bar"><div class="progress-fill" style="width: 83.3%"></div></div>
+        </div>
+        <div>
+          <div class="progress-header"><span>Electiva HM</span><strong>0 / 6</strong></div>
+          <div class="progress-bar"><div class="progress-fill" style="width: 0%"></div></div>
+        </div>
+        <div>
+          <div class="progress-header"><span>Opción de grado</span><strong>0 / 12</strong></div>
+          <div class="progress-bar"><div class="progress-fill" style="width: 0%"></div></div>
+        </div>
+      </div>
+    </div>
+
+  </aside>
+
+  <main class="content">
+
+    <!-- =========== SELECCIÓN =========== -->
+    <section id="tab-seleccion" class="fadein">
+
+      <div class="sel-hero">
+        <div>
+          <h1>Elige tus asignaturas</h1>
+          <p>Estas son todas las asignaturas que puedes cursar este semestre según los prerrequisitos que ya aprobaste. Selecciona las que quieras inscribir y continúa al planeador de horario.</p>
+          <div class="sel-steps">
+            <span class="sel-step-dot active">1</span> Selección
+            <span class="sel-step-line"></span>
+            <span class="sel-step-dot">2</span> Horario
+            <span class="sel-step-line"></span>
+            <span class="sel-step-dot">3</span> Inscripción
+          </div>
+        </div>
+        <button class="btn primary" id="continue-btn" style="font-size: 13px; padding: 10px 18px;">Continuar al planeador →</button>
+      </div>
+
+      <div style="margin-top: 20px;">
+        <div class="sel-grid" id="sel-grid"></div>
+      </div>
+
+      <div class="sel-bar">
+        <div class="sel-summary" id="sel-summary">Cargando…</div>
+        <button class="btn primary" id="continue-btn-2">Continuar al planeador →</button>
+      </div>
+
+    </section>
+
+    <!-- =========== HORARIO =========== -->
+    <section id="tab-horario" class="hidden">
+
+      <div class="page-head" style="margin-bottom: 16px;">
+        <div>
+          <div class="page-title">Horario del semestre</div>
+          <div class="page-sub" id="horario-sub">Cargando…</div>
+        </div>
+        <div class="page-actions">
+          <button class="btn" data-goto-tab="seleccion">← Cambiar selección</button>
+          <button class="btn">Exportar</button>
+          <button class="btn accent">Inscribir</button>
+        </div>
+      </div>
+
+      <div class="courses-strip" id="courses-strip"></div>
+
+      <div class="grid-main" style="margin-top: 14px;">
+
+        <div>
+          <div class="card">
+            <div class="cal-head">
+              <div class="cal-title">Horario semanal <span class="tag" id="cal-conflict-badge" style="display:none; background: var(--red-tint); color: var(--red); border-color: #FECACA;">⚠ Conflicto detectado</span></div>
+              <div style="font-size: 11px; color: var(--text-3);" id="cal-summary"></div>
+            </div>
+            <div class="calendar" id="calendar"></div>
+          </div>
+
+          <div class="card" style="margin-top: 14px;">
+            <div class="card-head">
+              <div>
+                <h3>Riesgo del horario seleccionado</h3>
+                <div class="sub">Probabilidad de reprobar al menos una asignatura, dado tu perfil.</div>
+              </div>
+              <button class="btn" data-goto-tab="riesgo">Ver desglose →</button>
+            </div>
+            <div class="risk-summary">
+              <div class="risk-meter">
+                <svg width="104" height="104">
+                  <circle class="risk-meter-bg" cx="52" cy="52" r="44"/>
+                  <circle class="risk-meter-fg" id="risk-meter-fg" cx="52" cy="52" r="44" stroke-dasharray="276.46" stroke-dashoffset="210"/>
+                </svg>
+                <div class="risk-meter-text">
+                  <div class="risk-meter-pct" id="risk-meter-pct">25%</div>
+                  <div class="risk-meter-ci" id="risk-meter-ci">± 5%</div>
+                </div>
+              </div>
+              <div class="risk-text">
+                <h3 id="risk-h3">Riesgo moderado</h3>
+                <p id="risk-desc">Con tu perfil (PGA 4.72) y el histórico de cohortes, las asignaturas que más contribuyen al riesgo son <strong id="risk-drivers">Ecuaciones Diferenciales y Probabilidad 2</strong>.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="card">
+            <div class="card-head">
+              <div>
+                <h3>Mejores combinaciones</h3>
+                <div class="sub">Ordenadas por tu puntaje compuesto.</div>
+              </div>
+            </div>
+            <div class="rank-list" id="ranking-list"></div>
+            <div id="discarded-note-wrap"></div>
+          </div>
+
+          <div class="card" style="margin-top: 14px;">
+            <div class="card-head">
+              <div>
+                <h3>Tus preferencias</h3>
+                <div class="sub">Ajusta los pesos y reordenamos en vivo.</div>
+              </div>
+            </div>
+            <div id="weights-panel"></div>
+            <div class="w-note">
+              <strong>Nota.</strong> El módulo de reseñas aún no está sincronizado, por lo que el peso de <em>Calidad docente</em> se redistribuye automáticamente a <em>Riesgo</em>. Cuando las reseñas estén activas, los horarios válidos también se diferenciarán por calidad de profesor.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =========== PROFESORES =========== -->
+    <section id="tab-profesores" class="hidden">
+      <div class="page-head" style="margin-bottom: 16px;">
+        <div>
+          <div class="page-title">Profesores</div>
+          <div class="page-sub" id="prof-sub">Cargando…</div>
+        </div>
+        <div class="page-actions">
+          <button class="btn">Filtros</button>
+          <button class="btn">Alfabético ↓</button>
+        </div>
+      </div>
+
+      <div class="card" style="padding: 14px 18px; margin-bottom: 14px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+          <div style="font-size: 12px; color: var(--text-2);">
+            <strong style="color: var(--text);">Módulo de reseñas · Cohorte 1.</strong> Recopilación inicial en curso. Entre más estudiantes reseñen, más preciso es el motor de riesgo.
+          </div>
+          <button class="btn accent" style="font-size: 11px;">Invitar a mi cohorte</button>
+        </div>
+      </div>
+
+      <div class="prof-grid" id="prof-grid"></div>
+    </section>
+
+    <!-- =========== RIESGO =========== -->
+    <section id="tab-riesgo" class="hidden">
+      <div class="page-head" style="margin-bottom: 16px;">
+        <div>
+          <div class="page-title">Motor de Riesgo</div>
+          <div class="page-sub">Predicción personalizada · PGA 4.72 · IV semestre · MA03</div>
+        </div>
+        <div class="page-actions">
+          <button class="btn">Metodología</button>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom: 14px;">
+        <div class="card-head">
+          <div>
+            <h3>Riesgo compuesto del horario</h3>
+            <div class="sub">Probabilidad marginal de reprobar ≥ 1 asignatura.</div>
+          </div>
+        </div>
+        <div class="risk-summary">
+          <div class="risk-meter">
+            <svg width="104" height="104">
+              <circle class="risk-meter-bg" cx="52" cy="52" r="44"/>
+              <circle class="risk-meter-fg" id="risk-meter-fg-2" cx="52" cy="52" r="44" stroke-dasharray="276.46" stroke-dashoffset="210"/>
+            </svg>
+            <div class="risk-meter-text">
+              <div class="risk-meter-pct" id="risk-meter-pct-2">25%</div>
+              <div class="risk-meter-ci" id="risk-meter-ci-2">± 5%</div>
+            </div>
+          </div>
+          <div class="risk-text">
+            <h3>Descomposición del riesgo</h3>
+            <p>El modelo es una <strong>regresión logística</strong> sobre tu PGA (4.72), créditos acumulados (52), desempeño en prerrequisitos y efectos fijos por profesor. Los coeficientes se calibran con el histórico institucional de cohortes 2021–2025.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Desglose por asignatura</div>
+        <div id="risk-breakdown"></div>
+      </div>
+
+      <div class="card" style="margin-top: 14px;">
+        <div class="card-title">Sugerencias de intercambio</div>
+        <div id="swap-suggestions"></div>
+      </div>
+
+      <div class="card" style="margin-top: 14px;">
+        <div class="card-title">Metodología</div>
+        <div style="font-size: 12px; color: var(--text-2); line-height: 1.6;">
+          Los porcentajes son <strong>estimaciones puntuales</strong> con su intervalo de confianza al 90%. Cuando un par (asignatura × profesor) tiene muestra insuficiente, el motor lo señala explícitamente en lugar de estimar un valor. Las variables sociodemográficas se usan sólo como controles y no se exponen a otros usuarios. La calibración se actualiza cada semestre.
+        </div>
+      </div>
+    </section>
+
+    <!-- =========== MI SÁBANA =========== -->
+    <section id="tab-perfil" class="hidden">
+      <div class="page-head" style="margin-bottom: 16px;">
+        <div>
+          <div class="page-title">Mi Sábana</div>
+          <div class="page-sub">Historia académica consolidada · sincronizada desde SIIGRA · última actualización: 14/04/2026</div>
+        </div>
+        <div class="page-actions">
+          <button class="btn">Exportar PDF</button>
+          <button class="btn">Re-sincronizar</button>
+        </div>
+      </div>
+
+      <div class="perfil-grid">
+        <div class="card">
+          <div class="card-title">Indicadores</div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div class="stat"><div class="stat-label">PGA</div><div class="stat-val">4.72</div><div class="stat-sub">de 5.00</div></div>
+            <div class="stat"><div class="stat-label">Créditos aprobados</div><div class="stat-val">52</div><div class="stat-sub">de 142 requeridos</div></div>
+            <div class="stat"><div class="stat-label">Asignaturas aprobadas</div><div class="stat-val">20</div><div class="stat-sub">con nota o aprobado</div></div>
+            <div class="stat"><div class="stat-label">Semestre</div><div class="stat-val">IV</div><div class="stat-sub">en curso</div></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Créditos por tipología</div>
+          <div style="display: flex; flex-direction: column; gap: 10px;">
+            <div>
+              <div class="progress-header"><span>Obligatoria (T)</span><strong>38 / 108</strong></div>
+              <div class="progress-bar"><div class="progress-fill" style="width: 35.2%"></div></div>
+            </div>
+            <div>
+              <div class="progress-header"><span>Electiva (L)</span><strong>4 / 4</strong></div>
+              <div class="progress-bar"><div class="progress-fill" style="width: 100%"></div></div>
+            </div>
+            <div>
+              <div class="progress-header"><span>Complementaria (C)</span><strong>10 / 12</strong></div>
+              <div class="progress-bar"><div class="progress-fill" style="width: 83.3%"></div></div>
+            </div>
+            <div>
+              <div class="progress-header"><span>Electiva HM (O)</span><strong>0 / 6</strong></div>
+              <div class="progress-bar"><div class="progress-fill" style="width: 0%"></div></div>
+            </div>
+            <div>
+              <div class="progress-header"><span>Opción de grado (P)</span><strong>0 / 12</strong></div>
+              <div class="progress-bar"><div class="progress-fill" style="width: 0%"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top: 16px;">
+        <div class="card-head">
+          <div>
+            <h3>Historia académica</h3>
+            <div class="sub">Todas las asignaturas con su calificación · orden alfabético.</div>
+          </div>
+          <div style="font-size: 11px; color: var(--text-3);">
+            Promedio acumulado: <strong class="mono tabular" style="color: var(--text);">4.72</strong>
+          </div>
+        </div>
+        <div id="periods-list"></div>
+      </div>
+
+      <div class="card" style="margin-top: 16px;">
+        <div class="card-head">
+          <div>
+            <h3>Ruta del plan <span style="font-weight: 400; color: var(--text-3); font-size: 12px;">MA03 · 8 semestres · 142 créditos</span></h3>
+            <div class="sub">Tu progreso materia a materia · semestre actual en ámbar · objetivo en oscuro.</div>
+          </div>
+          <div style="font-size: 11px; color: var(--text-3);">
+            Menor: <strong style="color: var(--text);">Por definir</strong>
+          </div>
+        </div>
+        <div class="ruta-grid" id="ruta-grid"></div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<div class="modal-root" id="modal-root">
+  <div class="modal-bg" id="modal-bg"></div>
+  <div class="modal" id="modal"></div>
+</div>
+
+<footer>
+  Oráculo · Construido en Bogotá · <strong>Datos vivos para decisiones reales.</strong>
+</footer>
+
+<script>
+/* =========================================================================
+   DATA — Lucas Carrasquilla Parra · MA03
+   ========================================================================= */
+
+const student = {
+  name: "Lucas Carrasquilla Parra",
+  initials: "LC",
+  gpa: 4.72,
+  semester: 4,
+  plan: "MA03"
+};
+
+/* ---- All eligible courses for this semester (catalog + schedule) ----
+   Courses with populated `sections` can be scheduled.
+   Courses with empty `sections` are eligible per prereqs but don't
+   yet enter the scheduler (they're for catalog browsing).
+*/
+const ALL_COURSES = [
+  /* --- full section data --- */
+  {
+    id: "ED", code: "52 · MA03", name: "Ecuaciones Diferenciales",
+    credits: 3, difficulty: "alta", sem: "V", color: "var(--c-ed)",
+    prereq: "Cálculo 3 · Álgebra Lineal",
+    sections: [
+      { professor: "JUAN CAMILO ARIAS URIBE", short: "Arias U.",
+        slots: [{day:1,start:"09:00",end:"10:30"},{day:3,start:"09:00",end:"10:30"}],
+        baseRisk: 0.30, personalRisk: 0.16, ci: 0.05, n: 186, yearsTeaching: 6,
+        note: "Historial: curso con alta tasa de reprobación y exámenes exigentes."
+      },
+      { professor: "FABIÁN SÁNCHEZ SALAZAR", short: "Sánchez S.",
+        slots: [{day:1,start:"09:00",end:"10:30"},{day:3,start:"09:00",end:"10:30"}],
+        baseRisk: 0.16, personalRisk: 0.07, ci: 0.03, n: 321, yearsTeaching: 4,
+        note: "Evaluación más gradual; tasa de aprobación superior al promedio."
+      }
+    ]
+  },
+  {
+    id: "GR", code: "45 · MA03", name: "Teoría de Grafos",
+    credits: 3, difficulty: "media", sem: "IV", color: "var(--c-gr)",
+    prereq: "Álgebra Lineal",
+    sections: [
+      { professor: "DANIEL ALFONSO BOJACÁ TORRES", short: "Bojacá T.",
+        slots: [{day:1,start:"15:00",end:"16:30"},{day:3,start:"15:00",end:"16:30"}],
+        baseRisk: 0.08, personalRisk: 0.03, ci: 0.02, n: 187, yearsTeaching: 3,
+        note: "Único docente activo este semestre para esta asignatura."
+      }
+    ]
+  },
+  {
+    id: "PE", code: "54 · MA03", name: "Probabilidad y Estadística 2",
+    credits: 3, difficulty: "alta", sem: "V", color: "var(--c-pe)",
+    prereq: "Probabilidad y Estadística 1",
+    sections: [
+      { professor: "LUZ ADRIANA PINEDA BARÓN", short: "Pineda B.",
+        slots: [{day:0,start:"07:00",end:"09:00"},{day:2,start:"07:00",end:"08:30"},{day:4,start:"07:00",end:"08:30"}],
+        baseRisk: 0.18, personalRisk: 0.09, ci: 0.03, n: 356, yearsTeaching: 8
+      },
+      { professor: "SEBASTIÁN VILLEGAS VELASCO", short: "Villegas V.",
+        slots: [{day:0,start:"07:00",end:"09:00"},{day:2,start:"07:00",end:"08:30"},{day:4,start:"07:00",end:"08:30"}],
+        baseRisk: 0.24, personalRisk: 0.12, ci: 0.04, n: 203, yearsTeaching: 3
+      }
+    ]
+  },
+  {
+    id: "OP", code: "42 · MA03", name: "Optimización",
+    credits: 3, difficulty: "media", sem: "IV", color: "var(--c-op)",
+    prereq: "Cálculo 2 · Álgebra Lineal",
+    sections: [
+      { professor: "ALEXANDER GARRIDO RÍOS", short: "Garrido R.",
+        slots: [{day:1,start:"11:00",end:"12:30"},{day:3,start:"11:00",end:"13:00"},{day:4,start:"11:00",end:"12:30"}],
+        baseRisk: 0.22, personalRisk: 0.11, ci: 0.04, n: 241, yearsTeaching: 7,
+        note: "Tasa de reprobación históricamente elevada incluso para estudiantes con PGA alto."
+      },
+      { professor: "JOHN LEONARDO VARGAS MESA", short: "Vargas M.",
+        slots: [{day:1,start:"11:00",end:"12:30"},{day:3,start:"11:00",end:"13:00"},{day:4,start:"11:00",end:"12:30"}],
+        baseRisk: 0.10, personalRisk: 0.04, ci: 0.02, n: 178, yearsTeaching: 5
+      }
+    ]
+  },
+  {
+    id: "TC", code: "34 · MA03", name: "Teoría de la Computación",
+    credits: 3, difficulty: "media", sem: "III", color: "var(--c-tc)",
+    prereq: "Lógica para Ciencias de la Computación",
+    sections: [
+      { professor: "EDWIN CAMILO CUBIDES GARZÓN", short: "Cubides G.",
+        slots: [{day:1,start:"15:00",end:"16:30"},{day:3,start:"15:00",end:"16:30"}],
+        baseRisk: 0.34, personalRisk: 0.17, ci: 0.05, n: 142, yearsTeaching: 9,
+        note: "Docente con nivel de exigencia significativamente alto; exámenes teórico-formales extensos."
+      },
+      { professor: "JUAN SEBASTIÁN GUERRA GUTIÉRREZ", short: "Guerra G.",
+        slots: [{day:1,start:"07:00",end:"08:30"},{day:3,start:"07:00",end:"08:30"}],
+        baseRisk: 0.09, personalRisk: 0.04, ci: 0.02, n: 98, yearsTeaching: 2,
+        note: "Evaluación más equilibrada; tasa de aprobación muy por encima del promedio."
+      }
+    ]
+  },
+  {
+    id: "AD", code: "43 · MA03", name: "Análisis y Diseño de Algoritmos",
+    credits: 3, difficulty: "alta", sem: "IV", color: "var(--c-ad)",
+    prereq: "Algoritmos y Estructuras · Teoría de la Computación (simultáneo)",
+    sections: [
+      { professor: "EDWIN CAMILO CUBIDES GARZÓN", short: "Cubides G. · A",
+        slots: [{day:0,start:"09:00",end:"12:00"},{day:2,start:"09:00",end:"11:00"}],
+        baseRisk: 0.28, personalRisk: 0.14, ci: 0.04, n: 156, yearsTeaching: 9,
+        note: "Mismo docente que Teoría de la Computación · exigencia alta."
+      },
+      { professor: "EDWIN CAMILO CUBIDES GARZÓN", short: "Cubides G. · B",
+        slots: [{day:1,start:"09:00",end:"10:30"},{day:2,start:"11:00",end:"13:00"},{day:3,start:"09:00",end:"10:30"}],
+        baseRisk: 0.28, personalRisk: 0.14, ci: 0.04, n: 156, yearsTeaching: 9,
+        note: "Mismo docente que Teoría de la Computación · exigencia alta."
+      }
+    ]
+  },
+  /* --- eligible but catalog-only --- */
+  { id: "FI", code: "22 · MA03", name: "Física I",
+    credits: 3, difficulty: "media", sem: "II", color: "var(--c-neutral)",
+    prereq: "Precálculo (cubierto por Cálculo 1)", sections: [] },
+  { id: "VC", code: "51 · MA03", name: "Variable Compleja",
+    credits: 3, difficulty: "media", sem: "V", color: "var(--c-neutral)",
+    prereq: "Cálculo 3", sections: [] },
+  { id: "AR", code: "53 · MA03", name: "Análisis Real",
+    credits: 3, difficulty: "alta", sem: "V", color: "var(--c-neutral)",
+    prereq: "Pensamiento Matemático · Lógica TNC · Cálculo 2 · Cálculo 3", sections: [] },
+  { id: "AA", code: "71 · MA03", name: "Álgebra Abstracta",
+    credits: 3, difficulty: "alta", sem: "VII", color: "var(--c-neutral)",
+    prereq: "Lógica TNC · Álgebra Lineal", sections: [] },
+  { id: "OS", code: "73 · MA03", name: "Operating Systems",
+    credits: 3, difficulty: "media", sem: "VII", color: "var(--c-neutral)",
+    prereq: "Algoritmos y Estructuras · Arquitectura del Computador", sections: [] },
+  { id: "EHM", code: "EHM · MA03", name: "Electiva HM",
+    credits: 3, difficulty: "baja", sem: "IV", color: "var(--c-neutral)",
+    prereq: "Sin prerrequisito", sections: [] },
+  { id: "EG", code: "EGN · MA03", name: "Electiva General",
+    credits: 2, difficulty: "baja", sem: "VI", color: "var(--c-neutral)",
+    prereq: "Sin prerrequisito", sections: [] }
+];
+
+/* Active (schedulable) subset. Mutated in place to keep existing refs. */
+let courses = [];
+function updateActiveCourses(){
+  courses.length = 0;
+  ALL_COURSES.forEach(c => {
+    if(state.selectedCourseIds.has(c.id) && c.sections.length > 0) courses.push(c);
+  });
+}
+
+/* ---- Real sábana with agreed overrides ---- */
+const periods = [
+  { name: "Núcleo de Formación Rosarista", status: "done", rows: [
+    { code: "18310001", name: "Lectura Crítica",             grade: 4.7, credits: 2, type: "COMP" },
+    { code: "18310002", name: "Ética",                       grade: 4.8, credits: 2, type: "COMP" },
+    { code: "18310003", name: "Cátedra Rosarista",           grade: 5.0, credits: 2, type: "COMP" },
+    { code: "18310004", name: "Escritura Académica",         grade: 4.6, credits: 2, type: "COMP" },
+    { code: "18310005", name: "Constitución Política e Instrucción Cívica", grade: 4.6, credits: 2, type: "COMP" }
+  ]},
+  { name: "Intersemestral 2025", status: "done", rows: [
+    { code: "11310025", name: "Pensamiento Matemático",     grade: 4.6, credits: 2, type: "OBL" }
+  ]},
+  { name: "Homologaciones 2025", status: "done", rows: [
+    { code: "11310001", name: "Lógica, Teoría de Números y Conjuntos", grade: 4.7, credits: 3, type: "OBL" },
+    { code: "11310030", name: "Álgebra Lineal",             grade: 4.7, credits: 3, type: "OBL" },
+    { code: "11310003", name: "Cálculo 1",                  grade: 4.5, credits: 3, type: "OBL" },
+    { code: "11310006", name: "Algoritmos y Estructuras de Datos",    grade: 5.0, credits: 3, type: "OBL" },
+    { code: "11310002", name: "Programación de Computadores",          grade: 4.8, credits: 3, type: "OBL" }
+  ]},
+  { name: "Segundo Periodo 2025", status: "done", rows: [
+    { code: "11320002", name: "Arquitectura del Computador",           grade: 5.0, credits: 3, type: "OBL" },
+    { code: "11320001", name: "Lógica para Ciencias de la Computación",grade: 4.2, credits: 3, type: "OBL" },
+    { code: "11310004", name: "Cálculo 2",                             grade: 4.8, credits: 3, type: "OBL" },
+    { code: "11310032", name: "Cornerstone Project",                   grade: 5.0, credits: 3, type: "OBL" },
+    { code: "18610031", name: "Análisis de Textos",                    grade: 4.2, credits: 2, type: "ELEC" },
+    { code: "18610431", name: "Formación Docente 2",                   grade: null, pass: true, credits: 2, type: "ELEC" }
+  ]},
+  { name: "Primer Periodo 2026", status: "current", rows: [
+    { code: "11310005", name: "Probabilidad y Estadística 1",          grade: 4.8, credits: 3, type: "OBL" },
+    { code: "11310036", name: "Ingeniería de Datos",                   grade: 4.9, credits: 3, type: "OBL" },
+    { code: "11310041", name: "Cálculo 3",                             grade: 4.6, credits: 3, type: "OBL" }
+  ]}
+];
+
+/* ---- Plan MACC (MA03) ---- */
+const PLAN = [
+  { sem: "I",    total: 17, courses: [
+    { name: "Precálculo",                          status: "skip", note: "no cursada" },
+    { name: "Pensamiento Matemático",              status: "done" },
+    { name: "Programación de Computadores",        status: "done" },
+    { name: "Lógica, Teoría de Números y Conjuntos", status: "done" },
+    { name: "Lectura Crítica",                     status: "done" },
+    { name: "Ética",                               status: "done" },
+    { name: "Cátedra Rosarista",                   status: "done" }
+  ]},
+  { sem: "II",   total: 19, courses: [
+    { name: "Cálculo 1",                           status: "done" },
+    { name: "Física I",                            status: "pend" },
+    { name: "Algoritmos y Estructuras de Datos",   status: "done" },
+    { name: "Lógica para Ciencias de la Computación", status: "done" },
+    { name: "Escritura Académica",                 status: "done" },
+    { name: "Constitución Política",               status: "done" },
+    { name: "Electiva HM",                         status: "pend" }
+  ]},
+  { sem: "III",  total: 18, courses: [
+    { name: "Cálculo 2",                           status: "done" },
+    { name: "Álgebra Lineal",                      status: "done" },
+    { name: "Arquitectura del Computador",         status: "done" },
+    { name: "Teoría de la Computación",            status: "target" },
+    { name: "Cornerstone Project",                 status: "done" },
+    { name: "Ingeniería de Datos",                 status: "done" }
+  ]},
+  { sem: "IV",   total: 18, courses: [
+    { name: "Cálculo 3",                           status: "done" },
+    { name: "Optimización",                        status: "target" },
+    { name: "Análisis y Diseño de Algoritmos",     status: "pend" },
+    { name: "Probabilidad y Estadística 1",        status: "done" },
+    { name: "Teoría de Grafos",                    status: "target" },
+    { name: "Electiva HM",                         status: "pend" }
+  ]},
+  { sem: "V",    total: 18, courses: [
+    { name: "Variable Compleja",                   status: "pend" },
+    { name: "Ecuaciones Diferenciales",            status: "target" },
+    { name: "Análisis Real",                       status: "pend" },
+    { name: "Probabilidad y Estadística 2",        status: "target" },
+    { name: "Keystone Project",                    status: "pend" },
+    { name: "Menor 1",                             status: "pend" }
+  ]},
+  { sem: "VI",   total: 17, courses: [
+    { name: "Topología",                           status: "pend" },
+    { name: "Análisis Numérico y Comp. Científica",status: "pend" },
+    { name: "Análisis Estadístico de Datos",       status: "pend" },
+    { name: "Redes de Computadores",               status: "pend" },
+    { name: "Menor 2",                             status: "pend" },
+    { name: "Menor 3",                             status: "pend" },
+    { name: "Electiva General",                    status: "pend" }
+  ]},
+  { sem: "VII",  total: 18, courses: [
+    { name: "Álgebra Abstracta",                   status: "pend" },
+    { name: "Math. Model of Syst. in Nat Sci",     status: "pend" },
+    { name: "Operating Systems",                   status: "pend" },
+    { name: "Menor 4",                             status: "pend" },
+    { name: "Opción de Grado 1",                   status: "pend" },
+    { name: "Electiva General",                    status: "pend" }
+  ]},
+  { sem: "VIII", total: 17, courses: [
+    { name: "Geometría",                           status: "pend" },
+    { name: "Capstone Project",                    status: "pend" },
+    { name: "Opción de Grado 2",                   status: "pend" },
+    { name: "Electiva HM",                         status: "pend" }
+  ]}
+];
+
+/* =========================================================================
+   STATE
+   ========================================================================= */
+
+const state = {
+  selectedCourseIds: new Set(),
+  selectedSections: { ED: 1, GR: 0, PE: 0, OP: 1, TC: 1, AD: 0 },
+  weights: { calidad: 20, tiempo: 15, huecos: 15, compresion: 10, balance: 10, riesgo: 30 },
+  activeTab: "seleccion"
+};
+
+const DAYS = ["LUN", "MAR", "MIÉ", "JUE", "VIE"];
+const DIM_META = [
+  { key: "calidad",    label: "Calidad docente",     color: "var(--c-pe)", disabled: true },
+  { key: "tiempo",     label: "Preferencia horaria", color: "var(--c-gr)" },
+  { key: "huecos",     label: "Minimizar huecos",    color: "var(--c-op)" },
+  { key: "compresion", label: "Compresión de días",  color: "var(--c-tc)" },
+  { key: "balance",    label: "Balance de carga",    color: "var(--c-ed)" },
+  { key: "riesgo",     label: "Riesgo (motor)",      color: "var(--text)" }
+];
+
+/* =========================================================================
+   UTILITIES
+   ========================================================================= */
+
+function toMin(hm){ const [h,m]=hm.split(":").map(Number); return h*60+m; }
+function fmtPct(v, d=0){ return (v*100).toFixed(d) + "%"; }
+function riskClass(p){ if(p<0.10) return "risk-low"; if(p<0.20) return "risk-med"; return "risk-high"; }
+function riskColor(p){ if(p<0.10) return "var(--green)"; if(p<0.20) return "var(--amber)"; return "var(--red)"; }
+
+function slotsConflict(a,b){
+  if(a.day !== b.day) return false;
+  return toMin(a.start) < toMin(b.end) && toMin(b.start) < toMin(a.end);
+}
+function sectionsConflict(A,B){
+  for(const a of A.slots) for(const b of B.slots) if(slotsConflict(a,b)) return true;
+  return false;
+}
+function findConflicts(sel = state.selectedSections){
+  const picks = courses.map(c => ({ id: c.id, course: c, section: c.sections[sel[c.id]] }));
+  const pairs = [];
+  for(let i=0;i<picks.length;i++)
+    for(let j=i+1;j<picks.length;j++)
+      if(sectionsConflict(picks[i].section, picks[j].section)) pairs.push([picks[i], picks[j]]);
+  return pairs;
+}
+function getActiveSections(sel = state.selectedSections){
+  return courses.map(c => ({ course: c, section: c.sections[sel[c.id]] }));
+}
+function composite(sel = state.selectedSections){
+  const pairs = getActiveSections(sel);
+  const prob = 1 - pairs.reduce((acc,p)=>acc*(1-p.section.personalRisk), 1);
+  const variance = pairs.reduce((acc,p)=>acc + p.section.ci*p.section.ci, 0);
+  return { prob, ci: Math.sqrt(variance), pairs };
+}
+
+function enumerateSchedules(){
+  const all = [];
+  function rec(idx, acc){
+    if(idx === courses.length){ all.push({...acc}); return; }
+    const c = courses[idx];
+    for(let i=0;i<c.sections.length;i++){ acc[c.id]=i; rec(idx+1, acc); }
+  }
+  rec(0, {}); return all;
+}
+function isValid(sel){ return findConflicts(sel).length === 0; }
+
+function scoreSchedule(sel){
+  const comp = composite(sel);
+  const dims = {
+    calidad: 0, tiempo: 75, huecos: 82, compresion: 70, balance: 88,
+    riesgo: Math.max(0, 100 - comp.prob * 220)
+  };
+  const w = {...state.weights};
+  if(w.calidad > 0){ w.riesgo += w.calidad; w.calidad = 0; }
+  const total = Object.values(w).reduce((a,b)=>a+b,0) || 1;
+  const score = Object.keys(dims).reduce((acc,k)=> acc + dims[k] * (w[k]/total), 0);
+  return { sel, score, dims, comp, valid: isValid(sel) };
+}
+function rankedSchedules(){
+  return enumerateSchedules().map(scoreSchedule).filter(s => s.valid).sort((a,b)=>b.score-a.score);
+}
+function invalidCount(){ return enumerateSchedules().filter(s => !isValid(s)).length; }
+
+/* =========================================================================
+   RENDER: SELECCIÓN
+   ========================================================================= */
+
+function renderSelection(){
+  const el = document.getElementById('sel-grid');
+  if(!el) return;
+
+  el.innerHTML = ALL_COURSES.map(c => {
+    const isSel = state.selectedCourseIds.has(c.id);
+    return `
+      <div class="sel-card ${isSel?'selected':''}" data-id="${c.id}">
+        <div class="sel-card-top">
+          <div class="sel-card-body">
+            <div class="sel-code">${c.code}</div>
+            <div class="sel-name">${c.name}</div>
+          </div>
+          <div class="sel-check">✓</div>
+        </div>
+        <div class="sel-tags">
+          <span class="tag sem">Sem ${c.sem}</span>
+          <span class="tag">${c.credits} cr</span>
+          <span class="tag ${c.difficulty}">Dif. ${c.difficulty}</span>
+        </div>
+        <div class="sel-prereq">
+          <svg width="13" height="13" viewBox="0 0 20 20" fill="none"><path d="M4 10 L8 14 L16 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span><strong style="color: var(--text-2); font-weight: 600;">Prerrequisitos:</strong> ${c.prereq}</span>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  el.querySelectorAll('.sel-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const id = card.dataset.id;
+      if(state.selectedCourseIds.has(id)) state.selectedCourseIds.delete(id);
+      else state.selectedCourseIds.add(id);
+      updateActiveCourses();
+      renderSelection();
+      renderAll();
+    });
+  });
+
+  // Summary
+  const selCount = ALL_COURSES.filter(c => state.selectedCourseIds.has(c.id)).length;
+  const schedCount = courses.length;
+  const totalCr = ALL_COURSES.filter(c => state.selectedCourseIds.has(c.id)).reduce((a,c)=>a+c.credits,0);
+  let riskHtml = '';
+  if(schedCount > 0){
+    const cmp = composite();
+    const cls = riskClass(cmp.prob);
+    riskHtml = `<span class="divider">·</span>
+      <span>Riesgo compuesto: <span class="risk-chip ${cls}">${fmtPct(cmp.prob)}</span></span>`;
+  }
+  document.getElementById('sel-summary').innerHTML = `
+    <span><span class="big">${selCount}</span> <span style="color: var(--text-3);">de ${ALL_COURSES.length} asignaturas</span></span>
+    <span class="divider">·</span>
+    <span><span class="big">${totalCr}</span> <span style="color: var(--text-3);">créditos</span></span>
+    ${riskHtml}
+  `;
+}
+
+/* =========================================================================
+   RENDER: COURSES STRIP
+   ========================================================================= */
+
+function renderCourses(){
+  const el = document.getElementById("courses-strip");
+  if(!el) return;
+
+  if(courses.length === 0){
+    el.innerHTML = `
+      <div style="grid-column: 1/-1; padding: 28px; background: var(--card); border: 1px dashed var(--border-strong); border-radius: var(--r-lg); text-align: center;">
+        <div style="font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 4px;">Aún no has elegido asignaturas</div>
+        <div style="font-size: 12px; color: var(--text-3); margin-bottom: 14px;">Selecciona las asignaturas que quieras inscribir para este semestre y regresa al planeador.</div>
+        <button class="btn primary" data-goto-tab="seleccion">Ir a Selección →</button>
+      </div>
+    `;
+    el.querySelectorAll('[data-goto-tab]').forEach(b => b.addEventListener('click', () => switchTab(b.dataset.gotoTab)));
+    const sub = document.getElementById('horario-sub');
+    if(sub) sub.textContent = 'Ninguna asignatura seleccionada';
+    return;
+  }
+
+  const totalCr = courses.reduce((a,c)=>a+c.credits,0);
+  const rank = rankedSchedules();
+  const invalid = invalidCount();
+  const sub = document.getElementById('horario-sub');
+  if(sub) sub.textContent = `${courses.length} asignaturas · ${totalCr} créditos · ${rank.length} combinaciones válidas${invalid ? ` · ${invalid} bloqueadas por conflicto` : ''}`;
+
+  const currentConflicts = findConflicts();
+  const conflictMap = new Set();
+  currentConflicts.forEach(([a,b]) => { conflictMap.add(a.id); conflictMap.add(b.id); });
+
+  el.innerHTML = courses.map(c => {
+    const selIdx = state.selectedSections[c.id];
+    return `
+      <div class="ccard">
+        <div class="ccard-top">
+          <div>
+            <div class="ccard-name"><span class="ccard-stripe" style="--course-color: ${c.color};"></span>${c.name}</div>
+            <div class="ccard-sub">${c.code} · ${c.credits} cr</div>
+          </div>
+          <span class="tag ${c.difficulty}">${c.difficulty}</span>
+        </div>
+        ${c.sections.map((s,i)=>{
+          const rc = riskClass(s.personalRisk);
+          const trial = {...state.selectedSections, [c.id]: i};
+          const trialConf = findConflicts(trial);
+          const isConfl = i===selIdx ? conflictMap.has(c.id) : trialConf.length>0;
+          const conflictWith = (trialConf.length>0) ? (trialConf[0][0].id===c.id ? trialConf[0][1] : trialConf[0][0]).course.name : '';
+          return `
+            <button class="prof-opt ${i===selIdx?'selected':''} ${isConfl?'conflict':''}" data-course="${c.id}" data-section="${i}">
+              <div class="prof-opt-top">
+                <div class="prof-name">${s.professor}</div>
+                <div class="risk-pill ${rc}">${fmtPct(s.personalRisk)}</div>
+              </div>
+              ${isConfl && conflictWith ? `<div class="conflict-note">Conflicto con ${conflictWith}</div>` : ''}
+            </button>
+          `;
+        }).join('')}
+      </div>
+    `;
+  }).join('');
+
+  el.querySelectorAll('.prof-opt').forEach(btn => {
+    btn.addEventListener('click', () => {
+      state.selectedSections[btn.dataset.course] = parseInt(btn.dataset.section);
+      renderAll();
+    });
+  });
+}
+
+/* =========================================================================
+   RENDER: CALENDAR
+   ========================================================================= */
+
+function renderCalendar(){
+  const el = document.getElementById("calendar");
+  if(!el) return;
+
+  const startMin = 7*60, endMin = 17*60, stepMin = 30;
+  const rows = (endMin - startMin)/stepMin;
+  const rowH = 26;
+
+  let html = `<div class="cal-cell corner"></div>`;
+  DAYS.forEach(d => html += `<div class="cal-cell day-header">${d}</div>`);
+  for(let r=0;r<rows;r++){
+    const mm = startMin + r*stepMin;
+    const label = (mm%60===0) ? `${String(Math.floor(mm/60)).padStart(2,'0')}:00` : '';
+    html += `<div class="cal-cell time">${label}</div>`;
+    for(let d=0;d<5;d++) html += `<div class="cal-cell"></div>`;
+  }
+  el.innerHTML = html;
+  el.style.position = 'relative';
+
+  const headerH = 32;
+  const sections = getActiveSections();
+  const conflicts = findConflicts();
+  const conflictSet = new Set();
+  conflicts.forEach(([a,b]) => { conflictSet.add(a.id); conflictSet.add(b.id); });
+  const badge = document.getElementById('cal-conflict-badge');
+  if(badge) badge.style.display = conflicts.length ? '' : 'none';
+
+  sections.forEach(({course, section}) => {
+    section.slots.forEach(slot => {
+      const startRow = (toMin(slot.start) - startMin)/stepMin;
+      const durRows  = (toMin(slot.end) - toMin(slot.start))/stepMin;
+      const headerEl = el.children[slot.day+1];
+      const headerRect = headerEl.getBoundingClientRect();
+      const gridRect = el.getBoundingClientRect();
+      const left = headerRect.left - gridRect.left;
+      const width = headerRect.width;
+      const top = headerH + startRow*rowH;
+      const height = durRows*rowH - 1;
+      const ev = document.createElement('div');
+      ev.className = 'cal-event' + (conflictSet.has(course.id) ? ' conflict' : '');
+      ev.style.left = (left+2) + 'px';
+      ev.style.width = (width-4) + 'px';
+      ev.style.top = top + 'px';
+      ev.style.height = height + 'px';
+      ev.style.setProperty('--event-color', course.color);
+      ev.innerHTML = `
+        <div class="cal-event-title">${course.name}</div>
+        <div class="cal-event-prof">${section.short}</div>
+        <div class="cal-event-time">${slot.start}–${slot.end}</div>
+      `;
+      ev.addEventListener('click', () => openProfessorModal(course.id, state.selectedSections[course.id]));
+      el.appendChild(ev);
+    });
+  });
+
+  const totalCr = courses.reduce((a,c)=>a+c.credits,0);
+  const activeDays = new Set();
+  sections.forEach(({section}) => section.slots.forEach(s => activeDays.add(s.day)));
+  const sum = document.getElementById('cal-summary');
+  if(sum) sum.textContent = `${courses.length} cursos · ${totalCr} créditos · ${activeDays.size} días activos${conflicts.length?` · ${conflicts.length} conflicto${conflicts.length>1?'s':''}`:''}`;
+}
+
+/* =========================================================================
+   RENDER: RANKING
+   ========================================================================= */
+
+function renderRanking(){
+  const el = document.getElementById('ranking-list');
+  if(!el) return;
+
+  if(courses.length === 0){
+    el.innerHTML = `<div style="font-size: 12px; color: var(--text-3); padding: 14px 4px; line-height: 1.55;">Selecciona asignaturas para ver los horarios candidatos ordenados por tu puntaje compuesto.</div>`;
+    const dn = document.getElementById('discarded-note-wrap');
+    if(dn) dn.innerHTML = '';
+    return;
+  }
+
+  const list = rankedSchedules();
+  const currentKey = JSON.stringify(state.selectedSections);
+  const currentValid = isValid(state.selectedSections);
+
+  el.innerHTML = list.map((s, idx) => {
+    const profs = courses.map(c => c.sections[s.sel[c.id]].short).join(' · ');
+    const key = JSON.stringify(s.sel);
+    const isActive = currentValid && key === currentKey;
+    const bars = DIM_META.map(meta => {
+      const v = s.dims[meta.key] || 0;
+      const muted = meta.disabled ? 'muted' : '';
+      return `<div class="rank-bar ${muted}" title="${meta.label}: ${meta.disabled?'N/A':v.toFixed(0)}">
+        <div class="rank-bar-fill" style="height: ${v}%; --bar-color: ${meta.color};"></div>
+      </div>`;
+    }).join('');
+    return `
+      <div class="rank-item ${isActive?'active':''}" data-sel='${key}'>
+        <div class="rank-top">
+          <div class="rank-left">
+            <div class="rank-num">${idx+1}</div>
+            <div>
+              <div class="rank-score">${s.score.toFixed(1)} pts</div>
+              <div class="rank-score-sub">puntaje</div>
+            </div>
+          </div>
+          <div class="risk-pill ${riskClass(s.comp.prob)}">${fmtPct(s.comp.prob,0)}</div>
+        </div>
+        <div class="rank-profs">${profs}</div>
+        <div class="rank-bars">${bars}</div>
+        <div class="rank-legend">cal · tpo · hue · com · bal · rie</div>
+      </div>
+    `;
+  }).join('');
+
+  el.querySelectorAll('.rank-item').forEach(item => {
+    item.addEventListener('click', () => {
+      state.selectedSections = JSON.parse(item.dataset.sel);
+      renderAll();
+    });
+  });
+
+  const invalid = invalidCount();
+  const dn = document.getElementById('discarded-note-wrap');
+  if(dn){
+    if(invalid > 0){
+      dn.innerHTML = `<div class="discarded-note"><strong>${invalid} combinaciones descartadas</strong> por conflicto de horario. La opción de <strong>Cubides Garzón</strong> en <em>Teoría de la Computación</em> cruza exactamente con <strong>Bojacá Torres</strong> (Teoría de Grafos) los martes y jueves 15:00–16:30.</div>`;
+    } else dn.innerHTML = '';
+  }
+}
+
+/* =========================================================================
+   RENDER: WEIGHTS
+   ========================================================================= */
+
+function renderWeights(){
+  const el = document.getElementById('weights-panel');
+  if(!el) return;
+  el.innerHTML = DIM_META.map(meta => {
+    const val = state.weights[meta.key];
+    const disabledCls = meta.disabled ? 'w-disabled' : '';
+    const display = meta.disabled ? 'N/A' : val+'%';
+    return `
+      <div class="w-row ${disabledCls}">
+        <div class="w-label">
+          <span class="chip" style="--chip: ${meta.color};"></span>
+          ${meta.label}${meta.disabled ? ' <span style="font-size:9px; color:var(--text-4); letter-spacing:0.04em; text-transform:uppercase; margin-left:3px;">· pendiente</span>' : ''}
+        </div>
+        <input type="range" class="slider" min="0" max="50" value="${val}" data-key="${meta.key}" ${meta.disabled?'disabled':''}>
+        <div class="w-val">${display}</div>
+      </div>
+    `;
+  }).join('');
+  el.querySelectorAll('input[type=range]').forEach(s => {
+    s.addEventListener('input', () => {
+      state.weights[s.dataset.key] = parseInt(s.value);
+      renderRanking();
+      s.parentElement.querySelector('.w-val').textContent = s.value + '%';
+    });
+  });
+}
+
+/* =========================================================================
+   RENDER: RISK
+   ========================================================================= */
+
+function renderRiskSummary(){
+  if(courses.length === 0){
+    ['','-2'].forEach(sfx => {
+      const pctEl = document.getElementById('risk-meter-pct'+sfx);
+      const ciEl  = document.getElementById('risk-meter-ci'+sfx);
+      const fgEl  = document.getElementById('risk-meter-fg'+sfx);
+      if(pctEl){ pctEl.textContent = '—'; pctEl.style.color = 'var(--text-3)'; }
+      if(ciEl){ ciEl.textContent = 'sin datos'; }
+      if(fgEl){ fgEl.style.stroke = 'var(--border)'; fgEl.style.strokeDashoffset = 276.46; }
+    });
+    const h3 = document.getElementById('risk-h3');
+    if(h3) h3.textContent = 'Sin asignaturas seleccionadas';
+    const desc = document.getElementById('risk-desc');
+    if(desc) desc.innerHTML = 'Elige asignaturas en la pestaña <strong>Selección</strong> para ver tu riesgo personalizado.';
+    return;
+  }
+  const { prob, ci } = composite();
+  const pct = Math.round(prob*100);
+  const ciPct = Math.round(ci*100);
+  const color = riskColor(prob);
+  const circ = 2 * Math.PI * 44;
+  const offset = circ * (1 - Math.min(1, prob*2));
+
+  ['','-2'].forEach(sfx => {
+    const pctEl = document.getElementById('risk-meter-pct'+sfx);
+    const ciEl  = document.getElementById('risk-meter-ci'+sfx);
+    const fgEl  = document.getElementById('risk-meter-fg'+sfx);
+    if(pctEl){ pctEl.textContent = pct+'%'; pctEl.style.color = color; }
+    if(ciEl){ ciEl.textContent = '± '+ciPct+'%'; }
+    if(fgEl){ fgEl.style.stroke = color; fgEl.style.strokeDashoffset = Math.max(0, offset); }
+  });
+
+  const h3 = document.getElementById('risk-h3');
+  if(h3){
+    if(prob<0.22) h3.textContent = 'Riesgo contenido';
+    else if(prob<0.32) h3.textContent = 'Riesgo moderado';
+    else h3.textContent = 'Riesgo elevado';
+  }
+
+  // Risk drivers: top 2 courses by personalRisk
+  const drivers = [...getActiveSections()].sort((a,b)=>b.section.personalRisk - a.section.personalRisk).slice(0,2).map(p=>p.course.name).join(' y ');
+  const dEl = document.getElementById('risk-drivers');
+  if(dEl) dEl.textContent = drivers;
+}
+
+function renderRiskBreakdown(){
+  const el = document.getElementById('risk-breakdown');
+  if(!el) return;
+  if(courses.length === 0){
+    el.innerHTML = `<div style="font-size: 12px; color: var(--text-3); padding: 10px 0;">Selecciona asignaturas para ver el desglose de riesgo por curso.</div>`;
+    const sw = document.getElementById('swap-suggestions');
+    if(sw) sw.innerHTML = '';
+    return;
+  }
+  const pairs = getActiveSections();
+  el.innerHTML = pairs.map(({course, section}) => {
+    const p = section.personalRisk;
+    const color = riskColor(p);
+    const widthPct = Math.min(100, p * 300);
+    const rc = riskClass(p);
+    return `
+      <div class="risk-row">
+        <div class="risk-course">
+          <span class="chip" style="--chip: ${course.color};"></span>
+          <div>
+            <div>${course.name}</div>
+            <div class="risk-prof">${section.professor}</div>
+          </div>
+        </div>
+        <div class="risk-gauge"><div class="risk-gauge-fill" style="width: ${widthPct}%; background: ${color};"></div></div>
+        <div class="risk-val">${fmtPct(p)}</div>
+        <div class="risk-factor">±${fmtPct(section.ci)} · n=${section.n}</div>
+      </div>
+    `;
+  }).join('');
+  renderSwapSuggestions();
+}
+
+function renderSwapSuggestions(){
+  const el = document.getElementById('swap-suggestions');
+  if(!el) return;
+  const current = composite();
+  const best = rankedSchedules()[0];
+  if(!best){ el.innerHTML = ''; return; }
+  let html = '';
+
+  if(!isValid(state.selectedSections)){
+    html += `
+      <div class="suggestion warn">
+        <div class="suggestion-icon">!</div>
+        <div class="suggestion-body">
+          <strong>Conflicto de horario activo.</strong> La selección actual no es un horario válido. Resuelve primero los cruces antes de optimizar por riesgo.
+        </div>
+      </div>`;
+  } else if(Math.abs(current.prob - best.comp.prob) < 0.001){
+    html += `
+      <div class="suggestion">
+        <div class="suggestion-icon">✓</div>
+        <div class="suggestion-body">
+          <strong>Selección óptima.</strong> Tu combinación actual minimiza el riesgo compuesto disponible. Cualquier intercambio aumenta la probabilidad estimada de reprobar al menos una asignatura.
+        </div>
+      </div>`;
+  } else {
+    const currentKey = state.selectedSections;
+    courses.forEach(c => {
+      if(c.sections.length < 2) return;
+      const curIdx = currentKey[c.id];
+      for(let i=0;i<c.sections.length;i++){
+        if(i===curIdx) continue;
+        const trial = {...currentKey, [c.id]: i};
+        if(!isValid(trial)) continue;
+        const tp = composite(trial).prob;
+        const delta = current.prob - tp;
+        if(delta > 0.005){
+          html += `
+            <div class="suggestion">
+              <div class="suggestion-icon">⇄</div>
+              <div class="suggestion-body">
+                Cambiar <strong>${c.name}</strong> de <strong>${c.sections[curIdx].short}</strong> a <strong>${c.sections[i].short}</strong> reduce tu riesgo compuesto de <strong>${fmtPct(current.prob)}</strong> a <strong>${fmtPct(tp)}</strong> (−${(delta*100).toFixed(1)} pp).
+              </div>
+            </div>`;
+        }
+      }
+    });
+  }
+  el.innerHTML = html || `<div style="font-size: 12px; color: var(--text-3); padding: 8px 0;">Sin sugerencias activas.</div>`;
+}
+
+/* =========================================================================
+   RENDER: PROFESORES
+   ========================================================================= */
+
+function renderProfessors(){
+  const el = document.getElementById('prof-grid');
+  if(!el) return;
+  const cards = [];
+  courses.forEach(c => c.sections.forEach((s,i) => cards.push({ course:c, section:s, idx:i })));
+  const sub = document.getElementById('prof-sub');
+  if(sub) sub.textContent = courses.length === 0
+    ? 'Selecciona asignaturas para ver los docentes asignados.'
+    : `${cards.length} docentes asignados a tus ${courses.length} asignaturas · reseñas en recopilación`;
+
+  if(cards.length === 0){
+    el.innerHTML = `<div style="grid-column: 1/-1; padding: 28px; background: var(--card); border: 1px dashed var(--border-strong); border-radius: var(--r-lg); text-align: center; font-size: 13px; color: var(--text-3);">
+      <div style="font-weight: 600; color: var(--text); margin-bottom: 4px;">Sin asignaturas seleccionadas</div>
+      Los docentes aparecen automáticamente cuando eliges tus asignaturas en <strong>Selección</strong>.
+    </div>`;
+    return;
+  }
+
+  el.innerHTML = cards.map(({course, section, idx}) => `
+    <div class="prof-card" data-course="${course.id}" data-idx="${idx}">
+      <div class="prof-head">
+        <div class="prof-avatar">sin<br>foto</div>
+        <div>
+          <div class="prof-full">${section.professor}</div>
+          <div class="prof-course">${course.name}</div>
+          <div class="stars">
+            ${Array.from({length:5}).map(()=>'<span class="star">★</span>').join('')}
+          </div>
+          <div class="stars-label">0.0 · sin calificaciones</div>
+        </div>
+      </div>
+      <div class="empty">
+        <div class="empty-title">Aún no hay reseñas</div>
+        <div class="empty-sub">Sé uno de los primeros en compartir tu experiencia.</div>
+        <button class="empty-cta">Escribir reseña →</button>
+      </div>
+    </div>
+  `).join('');
+
+  el.querySelectorAll('.prof-card').forEach(card => {
+    card.addEventListener('click', () => openProfessorModal(card.dataset.course, parseInt(card.dataset.idx)));
+  });
+}
+
+/* =========================================================================
+   MODAL
+   ========================================================================= */
+
+function openProfessorModal(courseId, sectionIdx){
+  const course = courses.find(c=>c.id===courseId);
+  const section = course.sections[sectionIdx];
+  const color = riskColor(section.personalRisk);
+
+  document.getElementById('modal').innerHTML = `
+    <button class="modal-close" id="modal-close-btn">✕</button>
+    <div class="modal-head">
+      <div class="modal-avatar">sin<br>foto</div>
+      <div>
+        <div class="modal-prof-name">${section.professor}</div>
+        <div class="modal-prof-course">${course.code} · ${course.name}</div>
+        <div class="modal-prof-meta">Docente URosario · ${section.yearsTeaching} años enseñando esta asignatura · n=${section.n} estudiantes históricos</div>
+      </div>
+    </div>
+
+    <div class="modal-stats">
+      <div class="modal-stat"><div class="modal-stat-val">0.0</div><div class="modal-stat-label">Calidad</div></div>
+      <div class="modal-stat"><div class="modal-stat-val">—</div><div class="modal-stat-label">Claridad</div></div>
+      <div class="modal-stat"><div class="modal-stat-val">—</div><div class="modal-stat-label">Dificultad</div></div>
+      <div class="modal-stat"><div class="modal-stat-val">—</div><div class="modal-stat-label">Justicia</div></div>
+    </div>
+
+    <div class="section-heading">Predicción personalizada <span class="badge">Motor v0.4</span></div>
+    <div class="modal-risk-panel">
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 14px; flex-wrap: wrap;">
+        <div>
+          <div style="font-size: 10px; color: var(--text-3); letter-spacing: 0.04em; text-transform: uppercase;">Probabilidad estimada de reprobar</div>
+          <div style="margin-top: 4px;">
+            <span class="modal-risk-big" style="--risk-color: ${color};">${fmtPct(section.personalRisk)}</span>
+            <span class="modal-risk-ci">± ${fmtPct(section.ci)}</span>
+          </div>
+          <div style="font-size: 11px; color: var(--text-3); margin-top: 5px;">vs. tasa base con este docente: <strong style="color: var(--text-2);">${fmtPct(section.baseRisk)}</strong></div>
+          ${section.note ? `<div style="font-size: 11px; color: var(--text-2); margin-top: 10px; max-width: 320px; line-height: 1.55;"><em>${section.note}</em></div>` : ''}
+        </div>
+        <div style="text-align: right;">
+          <div style="font-size: 10px; color: var(--text-3); letter-spacing: 0.04em; text-transform: uppercase;">Horario</div>
+          <div style="font-size: 12px; color: var(--text-2); line-height: 1.55; margin-top: 4px;">
+            ${section.slots.map(s=>`<div>${DAYS[s.day]} &nbsp;<span class="mono">${s.start}–${s.end}</span></div>`).join('')}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-heading">Reseñas de estudiantes <span class="badge">0 reseñas</span></div>
+    <div class="empty">
+      <div class="empty-title">Aún no hay reseñas</div>
+      <div class="empty-sub">
+        La recopilación de reseñas está en curso. Cada reseña verificada refuerza la predicción del motor para futuros estudiantes.<br>
+        <span class="mono" style="color: var(--text-4); font-size: 10px; margin-top: 8px; display: inline-block;">reviews = { null }</span>
+      </div>
+      <button class="empty-cta">Notificarme cuando abra →</button>
+    </div>
+
+    <div class="section-heading">Resumen IA de reseñas <span class="badge">Claude</span></div>
+    <div class="empty" style="text-align: left;">
+      <div style="font-size: 12px; color: var(--text-2); line-height: 1.6;">
+        <strong style="color: var(--text);">Pendiente de datos.</strong> El generador de perfil por IA sintetiza el estilo de enseñanza, dificultad y patrones de calificación a partir de las reseñas verificadas. Se activará automáticamente al superar el umbral de <strong>8 reseñas</strong>.
+      </div>
+    </div>
+  `;
+  document.getElementById('modal-root').classList.add('open');
+  document.getElementById('modal-close-btn').addEventListener('click', closeModal);
+}
+function closeModal(){ document.getElementById('modal-root').classList.remove('open'); }
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('modal-bg').addEventListener('click', closeModal);
+  document.addEventListener('keydown', e => { if(e.key==='Escape') closeModal(); });
+});
+
+/* =========================================================================
+   SÁBANA
+   ========================================================================= */
+
+function renderPeriods(){
+  const el = document.getElementById('periods-list');
+  if(!el) return;
+  const allRows = [];
+  periods.forEach(p => p.rows.forEach(r => allRows.push(r)));
+  allRows.sort((a,b) => a.name.localeCompare(b.name, 'es'));
+
+  el.innerHTML = allRows.map(r => {
+    let val, cls;
+    if(r.grade === null && r.inProgress){ val = 'en curso'; cls = 'inprog'; }
+    else if(r.grade === null && r.pass){ val = 'APROB'; cls = 'pass'; }
+    else { val = r.grade.toFixed(1); cls = 'ok'; }
+    const tc = r.type==='OBL' ? 'obl' : (r.type==='COMP' ? 'comp' : 'elec');
+    return `
+      <div class="grade-row">
+        <div>
+          <div class="grade-name">${r.name}</div>
+          <div class="grade-code">${r.code}</div>
+        </div>
+        <div class="grade-cr">${r.credits} cr</div>
+        <div class="grade-type ${tc}">${r.type}</div>
+        <div class="grade-val ${cls}">${val}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderRuta(){
+  const el = document.getElementById('ruta-grid');
+  if(!el) return;
+  el.innerHTML = PLAN.map(sem => {
+    const isCurrent = sem.sem === "IV";
+    const isTarget  = sem.sem === "V";
+    const cls = isCurrent ? 'current' : (isTarget ? 'target' : '');
+    const done = sem.courses.filter(c=>c.status==='done').length;
+    return `
+      <div class="sem-card ${cls}">
+        <div class="sem-card-head">
+          <div class="sem-card-title">Semestre ${sem.sem}${isCurrent?' · actual':''}${isTarget?' · objetivo':''}</div>
+          <div class="sem-card-progress">${done}/${sem.courses.length}</div>
+        </div>
+        ${sem.courses.map(c => {
+          let tick = '○';
+          if(c.status==='done')   tick = '✓';
+          else if(c.status==='inprog') tick = '◐';
+          else if(c.status==='target') tick = '★';
+          else if(c.status==='skip')   tick = '✕';
+          return `
+            <div class="sem-course ${c.status}">
+              <span class="tick">${tick}</span>
+              <span>${c.name}${c.note?` <span style="color: var(--text-4); font-size: 10px;">· ${c.note}</span>`:''}</span>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    `;
+  }).join('');
+}
+
+/* =========================================================================
+   TABS + INIT
+   ========================================================================= */
+
+function switchTab(tab){
+  state.activeTab = tab;
+  document.querySelectorAll('#nav-tabs .tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.tab===tab);
+  });
+  ['seleccion','horario','profesores','riesgo','perfil'].forEach(t => {
+    const el = document.getElementById('tab-'+t);
+    if(el) el.classList.toggle('hidden', t!==tab);
+  });
+  if(tab==='seleccion') renderSelection();
+  if(tab==='horario') setTimeout(renderCalendar, 20);
+  if(tab==='riesgo'){ renderRiskSummary(); renderRiskBreakdown(); }
+  if(tab==='profesores') renderProfessors();
+  if(tab==='perfil'){ renderPeriods(); renderRuta(); }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('#nav-tabs .tab').forEach(t => {
+    t.addEventListener('click', () => switchTab(t.dataset.tab));
+  });
+  document.querySelectorAll('[data-goto-tab]').forEach(b => {
+    b.addEventListener('click', () => switchTab(b.dataset.gotoTab));
+  });
+  ['continue-btn','continue-btn-2'].forEach(id => {
+    const b = document.getElementById(id);
+    if(b) b.addEventListener('click', () => switchTab('horario'));
+  });
+});
+
+function renderAll(){
+  renderCourses();
+  renderRanking();
+  renderRiskSummary();
+  renderRiskBreakdown();
+  if(state.activeTab==='horario') setTimeout(renderCalendar, 10);
+}
+
+window.addEventListener('load', () => {
+  updateActiveCourses();
+  renderWeights();
+  renderSelection();
+  renderAll();
+  renderProfessors();
+  renderPeriods();
+  renderRuta();
+});
+window.addEventListener('resize', () => {
+  if(state.activeTab==='horario') renderCalendar();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,468 @@
+{
+    "estatus": 200,
+    "data": [
+        {
+            "codAsignatura": 34010012,
+            "nombre": "ACELERACIÓN DE EMPRENDIMIENTO I",
+            "nombreIngles": "ACELERACIÓN DE EMPRENDIMIENTO I",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 34010015,
+            "nombre": "ACELERACIÓN DE EMPRENDIMIENTO II",
+            "nombreIngles": "ACELERACIÓN DE EMPRENDIMIENTO II",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 16910066,
+            "nombre": "BUSINESS INTELLIGENCE WITH BIG DATA",
+            "nombreIngles": "INTELIGENCIA DE NEGOCIOS",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 34010011,
+            "nombre": "BUSINESS PLAN",
+            "nombreIngles": "BUSINESS PLAN",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 60110260,
+            "nombre": "CÁTEDRA ROSARISTA, HISTORIA Y ACTUALIDAD",
+            "nombreIngles": "CÁTEDRA ROSARISTA, HISTORIA Y ACTUALIDAD",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 15210033,
+            "nombre": "COMPORTAMIENTO DE COMPRA DEL CLIENTE Y CONSUMIDOR",
+            "nombreIngles": "COMPORTAMIENTO DEL CONSUMIDOR",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11210007,
+            "nombre": "CONSTITUCIÓN POLITICA E INSTRUCCIÓN CIVICA",
+            "nombreIngles": "CONSTITUCIÓN POLITICA E INSTRUCCIÓN CIVICA",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 15220002,
+            "nombre": "COSTOS Y PRESUPUESTOS",
+            "nombreIngles": "COSTOS Y PRESUPUESTOS",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 15210182,
+            "nombre": "CUSTOMER EXPERIENCE MANAGEMENT",
+            "nombreIngles": "CUSTOMER EXPERIENCE MANAGEMENT",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 10810006,
+            "nombre": "DESARROLLO DE NUEVOS PRODUCTOS",
+            "nombreIngles": "DESARROLLO DE NUEVOS PRODUCTOS",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 10810016,
+            "nombre": "DIGITAL BUSINESS",
+            "nombreIngles": "DIGITAL BUSINESS",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 16920051,
+            "nombre": "DISEÑO DIGITAL",
+            "nombreIngles": "DISEÑO DIGITAL",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 84220002,
+            "nombre": "ECOEFFICIENCY AND REVERSE LOGISTICS",
+            "nombreIngles": "ECOEFFICIENCY AND REVERSE LOGISTICS",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 15210047,
+            "nombre": "EMPRENDIMIENTO",
+            "nombreIngles": "EMPRENDIMIENTO",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 89510002,
+            "nombre": "EMPRENDIMIENTO: EL ARTE DE EMPRENDER",
+            "nombreIngles": "EMPRENDIMIENTO: EL ARTE DE EMPRENDER",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 15210143,
+            "nombre": "EMPRENDIMIENTO: FROM IDEAS TO PROTOTYPES",
+            "nombreIngles": "EMPRENDIMIENTO: FROM IDEAS TO PROTOTYPES",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 89510001,
+            "nombre": "EMPRENDIMIENTO: GESTIÓN LEGAL PARA EMPRENDIMIENTOS",
+            "nombreIngles": "EMPRENDIMIENTO: GESTIÓN LEGAL PARA EMPRENDIMIENTOS",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 15210126,
+            "nombre": "EMPRENDIMIENTO: IDENTIFICACIÓN DE OPORTUNIDADES PARA EMPRENDER",
+            "nombreIngles": "IDENTIFICACIÓN DE OPORTUNIDADES PARA EMPRENDER",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 89510008,
+            "nombre": "EMPRENDIMIENTO: INTELIGENCIA EMOCIONAL PARA EMPRENDER",
+            "nombreIngles": "EMPRENDIMIENTO: INTELIGENCIA EMOCIONAL PARA EMPRENDER",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 34010014,
+            "nombre": "ESTRATEGIAS DE CRECIMIENTO DE NEGOCIOS",
+            "nombreIngles": "ESTRATEGIAS DE CRECIMIENTO DE NEGOCIOS",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 17210004,
+            "nombre": "ÉTICA",
+            "nombreIngles": "ÉTICA",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 16920052,
+            "nombre": "EXPERIENCE MARKETING CAMPAIGNS",
+            "nombreIngles": "EXPERIENCE MARKETING CAMPAIGNS",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 34010002,
+            "nombre": "EXPERIENCIA DE EMPRENDIMIENTO EN UNA STARTUP I",
+            "nombreIngles": "EXPERIENCIA DE EMPRENDIMIENTO EN UNA STARTUP I",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 34010004,
+            "nombre": "EXPERIENCIA DE EMPRENDIMIENTO EN UNA STARTUP II",
+            "nombreIngles": "EXPERIENCIA DE EMPRENDIMIENTO EN UNA STARTUP II",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 34010013,
+            "nombre": "EXPERIENCIA DE EMPRENDIMIENTO ORGANIZACIONAL I",
+            "nombreIngles": "EXPERIENCIA DE EMPRENDIMIENTO ORGANIZACIONAL I",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 34010016,
+            "nombre": "EXPERIENCIA DE EMPRENDIMIENTO ORGANIZACIONAL II",
+            "nombreIngles": "EXPERIENCIA DE EMPRENDIMIENTO ORGANIZACIONAL II",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 34010006,
+            "nombre": "EXPERIENCIA DE EMPRENDIMIENTO SOCIAL I",
+            "nombreIngles": "EXPERIENCIA DE EMPRENDIMIENTO SOCIAL I",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 34010009,
+            "nombre": "EXPERIENCIA DE EMPRENDIMIENTO SOCIAL II",
+            "nombreIngles": "EXPERIENCIA DE EMPRENDIMIENTO SOCIAL II",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 10810009,
+            "nombre": "GERENCIA FINANCIERA",
+            "nombreIngles": "GERENCIA FINANCIERA",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 84220001,
+            "nombre": "GESTIÓN DE ABASTECIMIENTO E INVENTARIOS",
+            "nombreIngles": "GESTIÓN DE ABASTECIMIENTO E INVENTARIOS",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 34010005,
+            "nombre": "INCUBACIÓN DE EMPRENDIMIENTO I",
+            "nombreIngles": "INCUBACIÓN DE EMPRENDIMIENTO I",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 34010008,
+            "nombre": "INCUBACIÓN DE EMPRENDIMIENTO II",
+            "nombreIngles": "INCUBACIÓN DE EMPRENDIMIENTO II",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 10810007,
+            "nombre": "INNOVACIÓN",
+            "nombreIngles": "INNOVACIÓN",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 16910051,
+            "nombre": "INNOVATION MANAGEMENT (IM)",
+            "nombreIngles": "INNOVATION MANAGEMENT (IM)",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 16920049,
+            "nombre": "INSIGHTS DEL CONSUMIDOR Y ANALÍTICA DE DATOS",
+            "nombreIngles": "INSIGHTS DEL CONSUMIDOR Y ANALÍTICA DE DATOS",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 84210029,
+            "nombre": "INTRODUCCIÓN A SUPPLY CHAIN MANAGEMENT",
+            "nombreIngles": "INTRODUCCIÓN A SUPPLY CHAIN MANAGEMENT",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 84210037,
+            "nombre": "INVESTIGACIÓN DE OPERACIONES",
+            "nombreIngles": "INVESTIGACIÓN DE OPERACIONES",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 10810017,
+            "nombre": "JOBS4U",
+            "nombreIngles": "JOBS4U",
+            "creditos": 1.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 10810008,
+            "nombre": "LEADERSHIP AND SUSTAINABILITY",
+            "nombreIngles": "LEADERSHIP AND SUSTAINABILITY",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 18610528,
+            "nombre": "LECTURA CRÍTICA",
+            "nombreIngles": "LECTURA CRÍTICA",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 18610033,
+            "nombre": "LÓGICA",
+            "nombreIngles": "LÓGICA",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 10810003,
+            "nombre": "MARKETING",
+            "nombreIngles": "MARKETING",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 10810018,
+            "nombre": "MARKETING PLAN",
+            "nombreIngles": "MARKETING PLAN",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 15210006,
+            "nombre": "METODOS DE INVESTIGACIÓN CIENTIFÍCA",
+            "nombreIngles": "METODOS DE INVESTIGACIÓN CIENTIFÍCA",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 34010017,
+            "nombre": "MISIÓN INTERNACIONAL",
+            "nombreIngles": "MISIÓN INTERNACIONAL",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 34010010,
+            "nombre": "MISIÓN REGIONAL / NACIONAL",
+            "nombreIngles": "MISIÓN REGIONAL / NACIONAL",
+            "creditos": 1.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 84210067,
+            "nombre": "MODELAMIENTO Y SIMULACION DE OPERACIONES",
+            "nombreIngles": "MODELAMIENTO Y SIMULACION DE OPERACIONES",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 34010007,
+            "nombre": "MODELOS DE NEGOCIO SOSTENIBLES",
+            "nombreIngles": "MODELOS DE NEGOCIO SOSTENIBLES",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 84220003,
+            "nombre": "NATIONAL TRANSPORTATION MANAGEMENT",
+            "nombreIngles": "NATIONAL TRANSPORTATION MANAGEMENT",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 16910076,
+            "nombre": "NEUROMARKETING",
+            "nombreIngles": "NEUROMARKETING",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 10810038,
+            "nombre": "OPCIÓN DE GRADO 1",
+            "nombreIngles": "OPCIÓN DE GRADO 1",
+            "creditos": 6.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 10810039,
+            "nombre": "OPCIÓN DE GRADO 2",
+            "nombreIngles": "OPCIÓN GRADO 2",
+            "creditos": 6.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 89510010,
+            "nombre": "OPCIÓN DE GRADO EN EMPRENDIMIENTO 2",
+            "nombreIngles": "OPCIÓN DE GRADO EN EMPRENDIMIENTO 2",
+            "creditos": 6.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 89510011,
+            "nombre": "OPCIÓN DE GRADO EN EMPRENDIMIENTO 3",
+            "nombreIngles": "OPCIÓN DE GRADO EN EMPRENDIMIENTO 3",
+            "creditos": 6.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 10810032,
+            "nombre": "OPCIÓN GRADO ASISTENTE DE INVESTIGACIÓN 3",
+            "nombreIngles": "OPCIÓN GRADO ASISTENTE DE INVESTIGACIÓN III",
+            "creditos": 6.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 10810034,
+            "nombre": "OPCIÓN GRADO CAPSTONE 3",
+            "nombreIngles": "OPCIÓN GRADO CAPSTONE 3",
+            "creditos": 6.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 10810029,
+            "nombre": "OPCIÓN GRADO PADE 2",
+            "nombreIngles": "OPCIÓN GRADO PADE 2",
+            "creditos": 6.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 10810033,
+            "nombre": "OPCIÓN GRADO PADE 3",
+            "nombreIngles": "OPCIÓN GRADO PADE 3",
+            "creditos": 6.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 34010019,
+            "nombre": "PRÁCTICA SEMESTRAL: PROFESIONAL",
+            "nombreIngles": "PRÁCTICA SEMESTRAL: PROFESIONAL",
+            "creditos": 12.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 34010001,
+            "nombre": "PREINCUBACIÓN DE EMPRENDIMIENTO I",
+            "nombreIngles": "PREINCUBACIÓN DE EMPRENDIMIENTO I",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 34010003,
+            "nombre": "PREINCUBACIÓN DE EMPRENDIMIENTO II",
+            "nombreIngles": "PREINCUBACIÓN DE EMPRENDIMIENTO II",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 16920053,
+            "nombre": "PUBLICIDAD DIGITAL",
+            "nombreIngles": "PUBLICIDAD DIGITAL",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 84220004,
+            "nombre": "QUALITY MANAGEMENT",
+            "nombreIngles": "QUALITY MANAGEMENT",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 10810019,
+            "nombre": "SEMINARIO DE ACTUALIZACIÓN",
+            "nombreIngles": "SEMINARIO DE ACTUALIZACIÓN",
+            "creditos": 1.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 10810012,
+            "nombre": "STRATEGY",
+            "nombreIngles": "STRATEGY",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 16920022,
+            "nombre": "VALORACIÓN DE EMPRESAS Y BANCA DE INVERSIÓN",
+            "nombreIngles": "VALORACIÓN DE EMPRESAS Y BANCA DE INVERSIÓN",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        }
+    ],
+    "mensaje": "La información se generó correctamente."
+}

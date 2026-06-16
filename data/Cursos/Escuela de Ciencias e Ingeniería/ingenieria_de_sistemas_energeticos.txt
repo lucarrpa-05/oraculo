@@ -1,0 +1,419 @@
+{
+    "estatus": 200,
+    "data": [
+        {
+            "codAsignatura": 11310030,
+            "nombre": "ÁLGEBRA LINEAL",
+            "nombreIngles": "ÁLGEBRA LINEAL",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 32710007,
+            "nombre": "ANÁLISIS DE SISTEMAS DE POTENCIA",
+            "nombreIngles": "ANÁLISIS DE SISTEMAS DE POTENCIA",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 32510010,
+            "nombre": "CADENAS DE SUMINISTRO COLABORATIVAS Y RESILIENTES",
+            "nombreIngles": "CADENAS DE SUMINISTRO COLABORATIVAS Y RESILIENTES",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11310003,
+            "nombre": "CÁLCULO 1",
+            "nombreIngles": "CÁLCULO 1",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11310004,
+            "nombre": "CÁLCULO 2",
+            "nombreIngles": "CÁLCULO 2",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11310036,
+            "nombre": "CÁLCULO 3",
+            "nombreIngles": "CÁLCULO 3",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11310029,
+            "nombre": "CAPSTONE PROJECT",
+            "nombreIngles": "CAPSTONE PROJECT",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11320035,
+            "nombre": "CAPSTONE PROJECT",
+            "nombreIngles": "CAPSTONE PROJECT",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 60110260,
+            "nombre": "CÁTEDRA ROSARISTA, HISTORIA Y ACTUALIDAD",
+            "nombreIngles": "CÁTEDRA ROSARISTA, HISTORIA Y ACTUALIDAD",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11210007,
+            "nombre": "CONSTITUCIÓN POLITICA E INSTRUCCIÓN CIVICA",
+            "nombreIngles": "CONSTITUCIÓN POLITICA E INSTRUCCIÓN CIVICA",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 32710008,
+            "nombre": "CONTROL",
+            "nombreIngles": "CONTROL",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11310032,
+            "nombre": "CORNERSTONE PROJECT",
+            "nombreIngles": "INFORME PASANTÍA",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11310073,
+            "nombre": "DESARROLLO MÓVIL",
+            "nombreIngles": "DESARROLLO MÓVIL",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11310070,
+            "nombre": "DISEÑO Y ARQUITECTURA DE SOFTWARE",
+            "nombreIngles": "DISEÑO Y ARQUITECTURA DE SOFTWARE",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 32710004,
+            "nombre": "ECONOMÍA DE SISTEMAS DE ENERGÍA",
+            "nombreIngles": "ECONOMÍA DE SISTEMAS DE ENERGÍA",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 73210066,
+            "nombre": "ECUACIONES DIFERENCIALES Y SISTEMAS DINÁMICOS",
+            "nombreIngles": "ECUACIONES DIFERENCIALES Y SISTEMAS DINÁMICOS",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 32710019,
+            "nombre": "ELECTRÓNICA DE POTENCIA",
+            "nombreIngles": "ELECTRÓNICA DE POTENCIA",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 32710002,
+            "nombre": "ELEMENTOS DE SISTEMAS ELÉCTRICOS",
+            "nombreIngles": "ELEMENTOS DE SISTEMAS ELÉCTRICOS",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 18610304,
+            "nombre": "ESCRITURA ACADÉMICA PARA INGENIERÍA, CIENCIA Y TECNOLOGÍA",
+            "nombreIngles": "ESCRITURA ACADÉMICA PARA INGENIERÍA, CIENCIA Y TECNOLOGÍA",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11320040,
+            "nombre": "ESTANCIA DE INVESTIGACIÓN INTERNACIONAL",
+            "nombreIngles": "ESTANCIA DE INVESTIGACIÓN INTERNACIONAL",
+            "creditos": 12.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 17210004,
+            "nombre": "ÉTICA",
+            "nombreIngles": "ÉTICA",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 73210064,
+            "nombre": "FÍSICA 1",
+            "nombreIngles": "FÍSICA 1",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 73210065,
+            "nombre": "FÍSICA 2",
+            "nombreIngles": "FÍSICA 2",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 73210067,
+            "nombre": "FÍSICA 3",
+            "nombreIngles": "FÍSICA 3",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 32610001,
+            "nombre": "FUNDAMENTOS DE CIRCUITOS",
+            "nombreIngles": "FUNDAMENTOS DE CIRCUITOS",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 32710003,
+            "nombre": "FUNDAMENTOS DE ENERGÍAS RENOVABLES",
+            "nombreIngles": "FUNDAMENTOS DE ENERGÍAS RENOVABLES",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 32710015,
+            "nombre": "GESTIÓN Y EFICIENCIA ENERGÉTICA",
+            "nombreIngles": "GESTIÓN Y EFICIENCIA ENERGÉTICA",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11310017,
+            "nombre": "INGENIERÍA DE DATOS",
+            "nombreIngles": "MANEJO DE BASES DE DATOS",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 32610004,
+            "nombre": "INSTRUMENTACIÓN",
+            "nombreIngles": "INSTRUMENTACIÓN",
+            "creditos": 1.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11310041,
+            "nombre": "KEYSTONE PROJECT",
+            "nombreIngles": "KEYSTONE PROJECT",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 18610302,
+            "nombre": "LECTURA CRÍTICA PARA INGENIERÍA, CIENCIA Y TECNOLOGÍA",
+            "nombreIngles": "LECTURA CRÍTICA PARA INGENIERÍA, CIENCIA Y TECNOLOGÍA",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 32710005,
+            "nombre": "MECÁNICA DE FLUIDOS",
+            "nombreIngles": "MECÁNICA DE FLUIDOS",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11320028,
+            "nombre": "MODELADO CON DINÁMICA DE SISTEMAS",
+            "nombreIngles": "MODELADO CON DINÁMICA DE SISTEMAS",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 32710013,
+            "nombre": "MODELAMIENTO DE ENERGÍA SOLAR",
+            "nombreIngles": "MODELAMIENTO DE ENERGÍA SOLAR",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 32710016,
+            "nombre": "MODERN RENEWABLE ENERGIES",
+            "nombreIngles": "MODERN RENEWABLE ENERGIES",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11310079,
+            "nombre": "OPERATING SYSTEMS",
+            "nombreIngles": "OPERATING SYSTEMS",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11310012,
+            "nombre": "OPTIMIZACIÓN",
+            "nombreIngles": "OPTIMIZACIÓN",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11310057,
+            "nombre": "PASANTIA",
+            "nombreIngles": "PROBABILIDAD Y ESTADÍSTICA 2",
+            "creditos": 8.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11320039,
+            "nombre": "PASANTÍA LABORAL",
+            "nombreIngles": "PASANTÍA LABORAL",
+            "creditos": 12.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 32710014,
+            "nombre": "POLÍTICA ENERGÉTICA Y REGULACIÓN",
+            "nombreIngles": "POLÍTICA ENERGÉTICA Y REGULACIÓN",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11310044,
+            "nombre": "PRECÁLCULO",
+            "nombreIngles": "PRECÁLCULO",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11310031,
+            "nombre": "PROBABILIDAD Y ESTADÍSTICA 1",
+            "nombreIngles": "PROBABILIDAD Y ESTADÍSTICA 1",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11310002,
+            "nombre": "PROGRAMACIÓN DE COMPUTADORES",
+            "nombreIngles": "PROGRAMACIÓN DE COMPUTADORES",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 32710021,
+            "nombre": "PROTECCIONES ELÉCTRICAS Y ANÁLISIS DE FALLA",
+            "nombreIngles": "PROTECCIONES ELÉCTRICAS Y ANÁLISIS DE FALLA",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11010003,
+            "nombre": "QUÍMICA I",
+            "nombreIngles": "QUÍMICA GENERAL",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11310052,
+            "nombre": "REDES DE COMPUTADORES",
+            "nombreIngles": "REDES DE COMPUTADORES",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 32710010,
+            "nombre": "REDES DE TRANSPORTE Y DISTRIBUCIÓN",
+            "nombreIngles": "REDES DE TRANSPORTE Y DISTRIBUCIÓN",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11310060,
+            "nombre": "SEGURIDAD DE REDES",
+            "nombreIngles": "SEGURIDAD DE REDES",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11310028,
+            "nombre": "SEMINARIO DE GRADO",
+            "nombreIngles": "SEMINARIO DE GRADO",
+            "creditos": 1.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 32710011,
+            "nombre": "SISTEMAS DE CONVERSIÓN DE ENERGÍA",
+            "nombreIngles": "SISTEMAS DE CONVERSIÓN DE ENERGÍA",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11310078,
+            "nombre": "TEORIA DE NÚMEROS",
+            "nombreIngles": "TEORIA DE NÚMEROS",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 32710006,
+            "nombre": "TERMODINÁMICA",
+            "nombreIngles": "TERMODINÁMICA",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 83020002,
+            "nombre": "TERRITORIO Y ESPACIO URBANO",
+            "nombreIngles": "TERRITORIO Y ESPACIO URBANO",
+            "creditos": 4.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11320037,
+            "nombre": "TRABAJO DE GRADO 1",
+            "nombreIngles": "TRABAJO DE GRADO 1",
+            "creditos": 6.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11310054,
+            "nombre": "TRABAJO DE GRADO 1",
+            "nombreIngles": "ÁLGEBRA LINEAL",
+            "creditos": 4.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11310055,
+            "nombre": "TRABAJO DE GRADO 2",
+            "nombreIngles": "PROBABILIDAD Y ESTADÍSTICA 1",
+            "creditos": 4.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11320038,
+            "nombre": "TRABAJO DE GRADO 2",
+            "nombreIngles": "TRABAJO DE GRADO 2",
+            "creditos": 6.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 32710009,
+            "nombre": "TRANSFERENCIA DE CALOR",
+            "nombreIngles": "TRANSFERENCIA DE CALOR",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11320005,
+            "nombre": "VARIABLE COMPLEJA",
+            "nombreIngles": "VARIABLE COMPLEJA",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        }
+    ],
+    "mensaje": "La información se generó correctamente."
+}

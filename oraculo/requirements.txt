@@ -1,0 +1,8 @@
+# Oráculo risk + difficulty engine. Python 3.11+ (tested on 3.14).
+# Standard-library http.server is used for serving — no web framework needed.
+numpy
+pandas
+scikit-learn>=1.4
+openpyxl        # read the source panel .xlsx (pipeline only)
+joblib          # model persistence
+pdfplumber      # layout-aware parse of the Historia Académica PDF (code/grade by x,y)

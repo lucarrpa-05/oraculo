@@ -1,0 +1,412 @@
+{
+    "estatus": 200,
+    "data": [
+        {
+            "codAsignatura": 11310030,
+            "nombre": "ÁLGEBRA LINEAL",
+            "nombreIngles": "ÁLGEBRA LINEAL",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 32210030,
+            "nombre": "ALGEBRA LINEAL Y ECUACIONES DIFERENCIALES",
+            "nombreIngles": "ALGEBRA LINEAL Y ECUACIONES DIFERENCIALES",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 73210068,
+            "nombre": "ANÁLISIS ESTADÍSTICO DE DATOS",
+            "nombreIngles": "ANÁLISIS ESTADÍSTICO DE DATOS",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11020057,
+            "nombre": "ARGUMENTACIÓN PARA CIENCIAS NATURALES",
+            "nombreIngles": "ARGUMENTACIÓN PARA CIENCIAS NATURALES",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11010007,
+            "nombre": "BIOLOGÍA CELULAR",
+            "nombreIngles": "BIOLOGÍA CELULAR",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11020011,
+            "nombre": "BIOLOGÍA MOLECULAR",
+            "nombreIngles": "BIOLOGÍA MOLECULAR",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11010008,
+            "nombre": "BIOQUÍMICA FUNCIONAL",
+            "nombreIngles": "BIOQUÍMICA FUNCIONAL",
+            "creditos": 4.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 32210036,
+            "nombre": "BOSQUES Y CAMBIO CLIMÁTICO",
+            "nombreIngles": "SISTEMAS ACUÁTICOS CONTINENTALES",
+            "creditos": 4.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11020009,
+            "nombre": "BOTÁNICA",
+            "nombreIngles": "BOTÁNICA",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 73210058,
+            "nombre": "CÁLCULO 1",
+            "nombreIngles": "CÁLCULO 1",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 73210059,
+            "nombre": "CÁLCULO 2",
+            "nombreIngles": "CÁLCULO 2",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 60110260,
+            "nombre": "CÁTEDRA ROSARISTA, HISTORIA Y ACTUALIDAD",
+            "nombreIngles": "CÁTEDRA ROSARISTA, HISTORIA Y ACTUALIDAD",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 32210002,
+            "nombre": "CICLOS BIOGEOQUÍMICOS E ISÓTOPOS ESTABLES",
+            "nombreIngles": "CICLOS BIOGEOQUÍMICOS E ISÓTOPOS ESTABLES",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 32210003,
+            "nombre": "CLIMATOLOGÍA GENERAL",
+            "nombreIngles": "CLIMATOLOGÍA GENERAL",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11010021,
+            "nombre": "CONSERVACIÓN Y RESTAURACIÓN",
+            "nombreIngles": "CONSERVACIÓN Y RESTAURACIÓN",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11210007,
+            "nombre": "CONSTITUCIÓN POLITICA E INSTRUCCIÓN CIVICA",
+            "nombreIngles": "CONSTITUCIÓN POLITICA E INSTRUCCIÓN CIVICA",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11020012,
+            "nombre": "ECOLOGÍA",
+            "nombreIngles": "ECOLOGÍA",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 73210066,
+            "nombre": "ECUACIONES DIFERENCIALES Y SISTEMAS DINÁMICOS",
+            "nombreIngles": "ECUACIONES DIFERENCIALES Y SISTEMAS DINÁMICOS",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 32210047,
+            "nombre": "ESTANCIA DE INVESTIGACIÓN NACIONAL O INTERNACIONAL",
+            "nombreIngles": "ESTANCIA DE INVESTIGACIÓN NACIONAL O INTERNACIONAL",
+            "creditos": 12.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 17210004,
+            "nombre": "ÉTICA",
+            "nombreIngles": "ÉTICA",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11010022,
+            "nombre": "EVOLUCIÓN",
+            "nombreIngles": "EVOLUCIÓN",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11010004,
+            "nombre": "EVOLUCIÓN DE LA VIDA",
+            "nombreIngles": "EVOLUCIÓN DE LA VIDA",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 18210002,
+            "nombre": "FÍSICA I",
+            "nombreIngles": "FÍSICA I",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 18210003,
+            "nombre": "FÍSICA II",
+            "nombreIngles": "FÍSICA II",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11010014,
+            "nombre": "FISIOLOGÍA ANIMAL",
+            "nombreIngles": "FISIOLOGÍA ANIMAL",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 32710003,
+            "nombre": "FUNDAMENTOS DE ENERGÍAS RENOVABLES",
+            "nombreIngles": "FUNDAMENTOS DE ENERGÍAS RENOVABLES",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11010016,
+            "nombre": "GENÉTICA",
+            "nombreIngles": "GENÉTICA",
+            "creditos": 4.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 32210042,
+            "nombre": "GEOFÍSICA CON ÉNFASIS EN SISMOLOGÍA",
+            "nombreIngles": "GEOFÍSICA CON ÉNFASIS EN SISMOLOGÍA",
+            "creditos": 4.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 32210004,
+            "nombre": "GEOLOGÍA DE COLOMBIA",
+            "nombreIngles": "GEOLOGÍA DE COLOMBIA",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 32210001,
+            "nombre": "GEOLOGÍA FÍSICA",
+            "nombreIngles": "GEOLOGÍA FÍSICA",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 32210007,
+            "nombre": "GEOMORFOLOGÍA Y PROCESOS EROSIVOS",
+            "nombreIngles": "GEOMORFOLOGÍA Y PROCESOS EROSIVOS",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 32210034,
+            "nombre": "HIDROLOGÍA AVANZADA",
+            "nombreIngles": "HIDROLOGÍA AVANZADA",
+            "creditos": 4.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 73210037,
+            "nombre": "INTRODUCCIÓN A LA PROGRAMACIÓN DE COMPUTADORES",
+            "nombreIngles": "PROGRAMACIÓN DE COMPUTADORES",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11020055,
+            "nombre": "LECTURA CRÍTICA PARA CIENCIAS NATURALES",
+            "nombreIngles": "LECTURA CRÍTICA PARA CIENCIAS NATURALES",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 32710005,
+            "nombre": "MECÁNICA DE FLUIDOS",
+            "nombreIngles": "MECÁNICA DE FLUIDOS",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 32210029,
+            "nombre": "MÉTODOS DE CAMPO Y LABORATORIO",
+            "nombreIngles": "MÉTODOS DE CAMPO Y LABORATORIO",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 32210008,
+            "nombre": "MITIGACIÓN Y ADAPTACIÓN AL CAMBIO CLIMÁTICO",
+            "nombreIngles": "MITIGACIÓN Y ADAPTACIÓN AL CAMBIO CLIMÁTICO",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 32210011,
+            "nombre": "MODELAMIENTO CLIMÁTICO- AMBIENTAL",
+            "nombreIngles": "MODELAMIENTO CLIMÁTICO- AMBIENTAL",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 32210009,
+            "nombre": "OCEANOGRAFÍA",
+            "nombreIngles": "OCEANOGRAFÍA",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 32210039,
+            "nombre": "OCEANOGRAFÍA AVANZADA",
+            "nombreIngles": "PROCESOS DE INTERACCIÓN OCÉANO-ATMÓSFERA-COSTA",
+            "creditos": 4.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 32210027,
+            "nombre": "OPCIÓN DE GRADO PASANTÍA INTERNACIONAL",
+            "nombreIngles": "OPCIÓN DE GRADO PASANTÍA INTERNACIONAL",
+            "creditos": 12.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 32210017,
+            "nombre": "OPCIÓN DE GRADO PASANTÍA NACIONAL",
+            "nombreIngles": "OPCIÓN DE GRADO / PASANTÍA NACIONAL O INTERNACIONAL",
+            "creditos": 12.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 32210018,
+            "nombre": "OPCIÓN DE GRADO PROYECTO DE GRADO",
+            "nombreIngles": "OPCIÓN DE GRADO PROYECTO DE GRADO",
+            "creditos": 12.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 32210041,
+            "nombre": "PETROLOGÍA ÍGNEA Y METAMÓRFICA",
+            "nombreIngles": "PETROLOGÍA ÍGNEA Y METAMÓRFICA",
+            "creditos": 4.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 73210057,
+            "nombre": "PRECÁLCULO",
+            "nombreIngles": "PRECÁLCULO",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11310031,
+            "nombre": "PROBABILIDAD Y ESTADÍSTICA 1",
+            "nombreIngles": "PROBABILIDAD Y ESTADÍSTICA 1",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11010003,
+            "nombre": "QUÍMICA I",
+            "nombreIngles": "QUÍMICA GENERAL",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11010006,
+            "nombre": "QUÍMICA II",
+            "nombreIngles": "QUÍMICA ORGÁNICA",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11020017,
+            "nombre": "REDACCIÓN DE MANUSCRITOS Y PROYECTOS",
+            "nombreIngles": "REDACCIÓN DE MANUSCRITOS Y PROYECTOS / REDACCIÓN DE MANUSCRITOS CIENTÍFICOS",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 32210013,
+            "nombre": "SEMINARIO DE CIENCIAS DEL SISTEMA TIERRA",
+            "nombreIngles": "SEMINARIO DE CIENCIAS DEL SISTEMA TIERRA",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11010030,
+            "nombre": "SERVICIOS ECOSISTÉMICOS",
+            "nombreIngles": "PROFUNDIZACIÓN: SERVICIOS ECOSISTÉMICOS",
+            "creditos": 4.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11010001,
+            "nombre": "SISTEMA TIERRA Y CAMBIOS GLOBALES",
+            "nombreIngles": "BIOLOGÍA DE LOS CAMBIOS GLOBALES",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 32710011,
+            "nombre": "SISTEMAS DE CONVERSIÓN DE ENERGÍA",
+            "nombreIngles": "SISTEMAS DE CONVERSIÓN DE ENERGÍA",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11010018,
+            "nombre": "SISTEMAS DE INFORMACIÓN GEOGRÁFICA",
+            "nombreIngles": "SISTEMAS DE INFORMACIÓN GEOGRÁFICA",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11020056,
+            "nombre": "SISTEMAS SOCIO-ECOLÓGICOS",
+            "nombreIngles": "SISTEMAS SOCIO-ECOLÓGICOS",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 32710006,
+            "nombre": "TERMODINÁMICA",
+            "nombreIngles": "TERMODINÁMICA",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 32710009,
+            "nombre": "TRANSFERENCIA DE CALOR",
+            "nombreIngles": "TRANSFERENCIA DE CALOR",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11010019,
+            "nombre": "ZOOLOGÍA DE INVERTEBRADOS",
+            "nombreIngles": "ZOOLOGÍA DE INVERTEBRADOS",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        }
+    ],
+    "mensaje": "La información se generó correctamente."
+}

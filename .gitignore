@@ -1,0 +1,13 @@
+# large derived cache (92 MB; rebuild via pipeline/build_and_train.py)
+oraculo/cache/
+# python / node / tooling
+__pycache__/
+*.pyc
+node_modules/
+.claude/
+# latex build cruft
+*.aux
+*.out
+# os
+Thumbs.db
+.DS_Store

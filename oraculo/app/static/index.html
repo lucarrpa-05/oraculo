@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oráculo · Dificultad y Riesgo Académico</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FAFAF9;--bg-soft:#F4F4F3;--card:#FFFFFF;--card-hover:#FCFCFC;--border:#E7E5E4;--border-strong:#D6D3D1;
+    --text:#18181B;--text-2:#3F3F46;--text-3:#71717A;--text-4:#A1A1AA;
+    --accent:#7A1F25;--accent-hover:#661A1F;--accent-tint:#FBF3F4;
+    --green:#047857;--green-tint:#ECFDF5;--amber:#B45309;--amber-tint:#FFFBEB;--red:#B91C1C;--red-tint:#FEF2F2;
+    --star:#B45309;--r-sm:4px;--r:6px;--r-lg:10px;
+    --shadow-1:0 1px 2px rgba(15,15,20,.04),0 1px 1px rgba(15,15,20,.03);
+    --shadow-2:0 1px 2px rgba(15,15,20,.04),0 4px 12px rgba(15,15,20,.05);
+    --shadow-3:0 2px 4px rgba(15,15,20,.04),0 12px 28px rgba(15,15,20,.08);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);font-size:13px;
+    line-height:1.55;-webkit-font-smoothing:antialiased;font-feature-settings:'cv11','ss01'}
+  .mono{font-family:'JetBrains Mono',monospace}.tabular{font-variant-numeric:tabular-nums}
+  button,input{font-family:inherit}button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
+  ::selection{background:var(--accent);color:#fff}a{color:var(--accent);text-decoration:none}
+
+  .topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:14px;padding:0 28px;height:58px;
+    background:rgba(255,255,255,.85);backdrop-filter:saturate(180%) blur(10px);border-bottom:1px solid var(--border)}
+  .brand-mark{width:26px;height:26px;border-radius:5px;background:var(--accent);color:#fff;display:grid;place-items:center;font-weight:700;font-size:15px}
+  .brand-name{font-weight:600;font-size:14px}
+  .brand-sub{color:var(--text-3);font-size:12px;border-left:1px solid var(--border-strong);padding-left:14px;margin-left:4px}
+  .spacer{flex:1}.pill{font-size:11px;color:var(--text-3);background:var(--bg-soft);border:1px solid var(--border);border-radius:100px;padding:4px 11px}
+
+  .wrap{max-width:1180px;margin:0 auto;padding:30px 28px 80px}
+  .grid{display:grid;grid-template-columns:1fr 372px;gap:24px;align-items:start}
+  @media(max-width:980px){.grid{grid-template-columns:1fr}}
+  h1{font-size:21px;font-weight:600;letter-spacing:-.02em;margin-bottom:5px}
+  .lead{color:var(--text-3);font-size:13px;margin-bottom:24px;max-width:660px}
+  .section-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--text-4);margin:0 0 12px}
+
+  .drop{border:1.5px dashed var(--border-strong);border-radius:var(--r-lg);background:var(--card);padding:40px 28px;text-align:center;transition:.15s;cursor:pointer}
+  .drop:hover,.drop.over{border-color:var(--accent);background:var(--accent-tint)}
+  .drop .ico{width:42px;height:42px;border-radius:10px;background:var(--accent-tint);color:var(--accent);display:grid;place-items:center;margin:0 auto 14px;font-size:20px}
+  .drop h3{font-size:14px;font-weight:600;margin-bottom:4px}.drop p{color:var(--text-3);font-size:12px}.browse{color:var(--accent);font-weight:500}
+
+  .card{background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--shadow-1)}
+  .stu{display:flex;align-items:center;gap:16px;padding:16px 18px;margin-bottom:22px}
+  .stu .avatar{width:40px;height:40px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-weight:600;font-size:15px}
+  .stu .meta{flex:1}.stu .nm{font-weight:600;font-size:14px}.stu .pl{color:var(--text-3);font-size:12px}
+  .stu .stat{text-align:right}.stu .stat .v{font-weight:600;font-size:16px}.stu .stat .k{color:var(--text-4);font-size:10px;text-transform:uppercase;letter-spacing:.05em}
+  .stu .divider{width:1px;align-self:stretch;background:var(--border);margin:4px 0}
+
+  .course{display:flex;align-items:center;gap:14px;padding:11px 14px;border:1px solid var(--border);border-radius:var(--r);background:var(--card);margin-bottom:7px;transition:.12s;cursor:pointer}
+  .course:hover{border-color:var(--border-strong);background:var(--card-hover)}
+  .course.sel{border-color:var(--accent);background:var(--accent-tint);box-shadow:inset 0 0 0 1px var(--accent)}
+  .course.locked{opacity:.6;cursor:not-allowed;background:var(--bg-soft)}
+  .chk{width:18px;height:18px;border:1.5px solid var(--border-strong);border-radius:5px;flex-shrink:0;display:grid;place-items:center;font-size:11px;transition:.12s}
+  .course.sel .chk{background:var(--accent);border-color:var(--accent);color:#fff}
+  .course.locked .chk{border-style:dashed}
+  .c-body{flex:1;min-width:0}
+  .c-name{font-weight:500;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .c-sub{color:var(--text-4);font-size:11px;margin-top:2px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .c-sub .code{font-family:'JetBrains Mono',monospace}
+  .stars{letter-spacing:1px;font-size:12px;line-height:1;white-space:nowrap}
+  .stars .on{color:var(--star)}.stars .off{color:var(--border-strong)}
+  .c-right{display:flex;flex-direction:column;align-items:flex-end;flex-shrink:0;gap:3px;min-width:74px}
+  .exp{font-weight:600;font-size:14px;font-variant-numeric:tabular-nums}
+  .exp small{font-weight:400;color:var(--text-4);font-size:10px}
+  .effort{font-size:11px;letter-spacing:1px;color:var(--accent)}
+  .lock-reason{font-size:11px;color:var(--amber)}
+  .conf{font-size:9px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-4);border:1px solid var(--border);border-radius:100px;padding:1px 6px}
+  .riskdot{font-size:10px;color:var(--text-3)}
+
+  .tabs{display:flex;gap:4px;margin-bottom:14px;border-bottom:1px solid var(--border)}
+  .tab{padding:8px 14px;font-size:13px;font-weight:500;color:var(--text-3);border-bottom:2px solid transparent;margin-bottom:-1px;transition:.12s}
+  .tab:hover{color:var(--text)}
+  .tab.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
+  .tcount{font-size:11px;color:var(--text-4);background:var(--bg-soft);border-radius:100px;padding:1px 7px;margin-left:4px}
+  .tab.active .tcount{background:var(--accent-tint);color:var(--accent)}
+  .searchbar{display:flex;align-items:center;gap:8px;border:1px solid var(--border);border-radius:var(--r);background:var(--card);padding:0 11px;margin-bottom:12px;transition:.12s}
+  .searchbar:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-tint)}
+  .searchbar .si{color:var(--text-4);font-size:15px}
+  .searchbar input{flex:1;border:none;outline:none;background:none;padding:9px 0;font-size:13px;color:var(--text)}
+  .searchbar .sx{color:var(--text-4);font-size:11px;cursor:pointer;padding:4px}
+  .searchbar .sx:hover{color:var(--text)}
+  .no-name{color:var(--text-4);font-style:italic}
+  .typsem{font-size:10px;color:var(--text-4)}
+  .group-h{display:flex;align-items:center;gap:8px;margin:22px 0 10px}.group-h .t{font-size:12px;font-weight:600;color:var(--text-2)}
+  .group-h .n{font-size:11px;color:var(--text-4)}.group-h .line{flex:1;height:1px;background:var(--border)}
+
+  .panel{position:sticky;top:78px}
+  .hero{padding:22px 20px;text-align:center;margin-bottom:14px}
+  .sem-stars{font-size:30px;letter-spacing:4px;line-height:1;margin:2px 0 4px}
+  .sem-stars .on{color:var(--star)}.sem-stars .off{color:var(--border-strong)}
+  .sem-label{font-size:13px;font-weight:600}
+  .gpa-block{display:flex;align-items:baseline;justify-content:center;gap:8px;margin:16px 0 2px}
+  .gpa-block .big{font-size:38px;font-weight:600;letter-spacing:-.02em;line-height:1}
+  .gpa-block .delta{font-size:14px;font-weight:600}
+  .gpa-cap{font-size:10px;color:var(--text-4);text-transform:uppercase;letter-spacing:.06em}
+  .summ{display:flex;justify-content:space-around;padding:14px 0 2px;margin-top:16px;border-top:1px solid var(--border)}
+  .summ .s{text-align:center}.summ .s .v{font-weight:600;font-size:15px}.summ .s .k{font-size:10px;color:var(--text-4);text-transform:uppercase;letter-spacing:.05em}
+  .warn-box{margin:12px 0 0;padding:10px 12px;background:var(--amber-tint);border:1px solid #FDE9C8;border-radius:var(--r);color:var(--amber);font-size:11.5px;line-height:1.5;display:flex;gap:8px}
+  .warn-box.bad{background:var(--red-tint);border-color:#FBD0D0;color:var(--red)}
+
+  .sched-head{display:flex;align-items:center;justify-content:space-between;padding:13px 14px 8px}
+  .sched-ok{font-size:11px;font-weight:600;color:var(--green);background:var(--green-tint);padding:3px 9px;border-radius:100px}
+  .sched-bad{font-size:11px;font-weight:600;color:var(--red);background:var(--red-tint);padding:3px 9px;border-radius:100px}
+  .cal{display:grid;grid-template-columns:30px repeat(5,1fr);gap:1px;padding:0 12px 10px;background:var(--border);border-radius:6px;margin:0 8px}
+  .cal>div{background:var(--card)}
+  .cal .ch{font-size:9px;color:var(--text-4);text-align:center;padding:3px 0;font-weight:600;background:var(--bg-soft)}
+  .cal .hr{font-size:8px;color:var(--text-4);text-align:right;padding-right:3px}
+  .cal .cell{position:relative;height:15px;border-top:1px solid var(--bg-soft)}
+  .cal .ev{position:absolute;left:1px;right:1px;border-radius:3px;font-size:8px;line-height:1.05;color:#fff;padding:1px 2px;overflow:hidden;z-index:1}
+  .plan-list{padding:14px}
+  .plan-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}.plan-row:last-child{border-bottom:none}
+  .plan-row .nm{flex:1;font-size:12px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .plan-row .nm .st{font-size:10px;letter-spacing:.5px;color:var(--star)}
+  .plan-row .rk{font-weight:600;font-size:13px;font-variant-numeric:tabular-nums;text-align:right}
+  .plan-row .rk small{display:block;font-weight:400;font-size:10px;color:var(--text-4)}
+  .plan-empty{padding:30px 14px;text-align:center;color:var(--text-4);font-size:12px}
+  .note{font-size:11px;color:var(--text-4);padding:11px 14px;border-top:1px solid var(--border);line-height:1.5}
+
+  .hidden{display:none!important}
+  .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--text);color:#fff;padding:9px 16px;border-radius:var(--r);font-size:12px;box-shadow:var(--shadow-3);opacity:0;transition:.2s;pointer-events:none}
+  .toast.show{opacity:1}
+  .spin{width:30px;height:30px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:sp .7s linear infinite;margin:30px auto}@keyframes sp{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand-mark">O</div><div class="brand-name">Oráculo</div>
+    <div class="brand-sub">Dificultad &amp; Riesgo Académico</div>
+    <div class="spacer"></div><div class="pill" id="model-pill">modelo · cargando…</div>
+  </div>
+
+  <div class="wrap">
+    <div id="view-upload">
+      <h1>¿Qué tan duro será tu semestre?</h1>
+      <p class="lead">Sube tu <strong>Historia Académica</strong>. Oráculo estima la <strong>dificultad</strong> de cada
+        asignatura que puedes inscribir y tu <strong>nota esperada</strong> en ella, según tu desempeño por área y el
+        histórico institucional, y proyecta el promedio y la carga del semestre que armes.</p>
+      <div class="drop" id="drop">
+        <div class="ico">↑</div><h3>Arrastra tu Historia Académica aquí</h3>
+        <p>o <span class="browse">selecciona el archivo</span> · PDF</p>
+        <input type="file" id="file" accept="application/pdf" class="hidden">
+      </div>
+      <p class="note" style="border:none;text-align:center;margin-top:14px">Se procesa localmente. Nada se envía a servidores externos.</p>
+    </div>
+
+    <div id="view-results" class="hidden">
+      <div class="card stu" id="stu-card"></div>
+      <div class="grid">
+        <div>
+          <div class="tabs">
+            <button class="tab active" data-tab="req">Disponibles <span class="tcount" id="req-count">0</span></button>
+            <button class="tab" data-tab="elec">Electivas <span class="tcount" id="elec-count">0</span></button>
+            <button class="tab" data-tab="taken">Cursadas <span class="tcount" id="taken-count">0</span></button>
+          </div>
+          <div class="searchbar"><span class="si">⌕</span><input id="search" type="text" placeholder="Buscar asignatura o código"><span id="search-x" class="sx hidden">✕</span></div>
+          <div id="tab-req">
+            <div id="required-list"></div>
+            <div id="locked-wrap"></div>
+          </div>
+          <div id="tab-elec" class="hidden"><div id="electives-list"></div></div>
+          <div id="tab-taken" class="hidden"><div id="taken-list"></div></div>
+          <p class="note" style="border:none">★ dificultad del curso <em>dentro de tu carrera</em> · ● esfuerzo estimado <em>para ti</em> · la nota esperada usa tu desempeño por área.</p>
+        </div>
+        <div class="panel">
+          <div class="card hero">
+            <p class="section-label" style="margin-bottom:8px">Semestre planeado</p>
+            <div class="sem-stars" id="sem-stars">☆☆☆☆☆</div>
+            <div class="sem-label" id="sem-label">Sin asignaturas</div>
+            <div class="gpa-block"><div class="big tabular" id="pred-gpa">·</div><div class="delta" id="gpa-delta"></div></div>
+            <div class="gpa-cap">promedio proyectado del semestre</div>
+            <div class="summ">
+              <div class="s"><div class="v tabular" id="s-courses">0</div><div class="k">Materias</div></div>
+              <div class="s"><div class="v tabular" id="s-credits">0</div><div class="k">Créditos</div></div>
+              <div class="s"><div class="v tabular" id="s-risk">0%</div><div class="k">Perder ≥1</div></div>
+            </div>
+            <div id="warn-wrap"></div>
+          </div>
+          <div class="card">
+            <div id="plan-list" class="plan-list"><div class="plan-empty">Selecciona asignaturas para proyectar tu semestre.</div></div>
+            <div class="note" id="foot-note"></div>
+          </div>
+          <div class="card" id="sched-card" style="margin-top:14px;display:none">
+            <div class="sched-head"><span class="section-label" style="margin:0">Horario</span><span id="sched-banner"></span></div>
+            <div id="calendar"></div>
+            <div class="note" id="sched-note"></div>
+          </div>
+          <p class="note" style="text-align:center;border:none"><a href="#" id="reset">subir otro PDF</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="toast" id="toast"></div>
+
+<script>
+const $=s=>document.querySelector(s);
+let STATE=null,REQUIRED=[],LOCKED=[],ELECTIVES=[],TRANSCRIPT=[],ELEC_TOTAL=0,SEARCH='',SEL=new Set(),SIM=null;
+fetch('/').then(()=>$('#model-pill').textContent='modelo · activo');
+
+const drop=$('#drop'),file=$('#file');
+drop.onclick=()=>file.click();
+file.onchange=e=>{if(e.target.files[0])upload(e.target.files[0]);};
+['dragover','dragenter'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add('over')}));
+['dragleave','drop'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove('over')}));
+drop.addEventListener('drop',e=>{const f=e.dataTransfer.files[0];if(f)upload(f);});
+
+async function upload(f){
+  if(f.type!=='application/pdf'){toast('El archivo debe ser un PDF');return;}
+  drop.innerHTML='<div class="spin"></div><p>Analizando historia académica…</p>';
+  try{
+    const buf=await f.arrayBuffer();
+    const r=await fetch('/api/analyze',{method:'POST',body:buf});
+    const d=await r.json(); if(d.error)throw new Error(d.error);
+    STATE=d.state;REQUIRED=d.required;LOCKED=d.locked;ELECTIVES=d.electives;TRANSCRIPT=d.transcript||[];ELEC_TOTAL=d.n_electives_total||d.electives.length;SEL=new Set();
+    if(!d.has_plan)toast('No hay plan de estudios para este programa; mostrando electivas');
+    renderResults();
+  }catch(err){toast('Error: '+err.message);
+    drop.innerHTML='<div class="ico">↑</div><h3>Arrastra tu Historia Académica aquí</h3><p>o <span class="browse">selecciona el archivo</span> · PDF</p>';}
+}
+
+const stars=(n,max=5,cls='stars')=>`<span class="${cls}"><span class="on">${'★'.repeat(n)}</span><span class="off">${'★'.repeat(max-n)}</span></span>`;
+const dots=n=>`<span class="effort">${'●'.repeat(n)}${'○'.repeat(5-n)}</span>`;
+const initials=n=>!n?'·':n.split(' ').filter(Boolean).slice(0,2).map(w=>w[0]).join('').toUpperCase();
+const SMALLW=new Set(['de','del','la','las','los','el','y','e','o','u','en','a','con','para','por','sin']);
+function title(s){
+  if(!s)return'';
+  return s.toLowerCase().split(/\s+/).map((w,i)=>
+    (i>0&&SMALLW.has(w))?w:(w.charAt(0).toUpperCase()+w.slice(1))
+  ).join(' ');
+}
+
+function renderResults(){
+  $('#view-upload').classList.add('hidden');$('#view-results').classList.remove('hidden');
+  const s=STATE;
+  $('#stu-card').innerHTML=`<div class="avatar">${initials(s.name)}</div>
+    <div class="meta"><div class="nm">${s.name||'Estudiante'}</div>
+      <div class="pl">${s.plan?('Plan '+s.plan):'Plan no reconocido'} · ${s.passed.length} asignaturas aprobadas</div></div>
+    <div class="stat"><div class="v tabular">${s.cumgpa??'·'}</div><div class="k">PGA</div></div>
+    <div class="divider"></div><div class="stat"><div class="v tabular">${s.cumcred??'·'}</div><div class="k">Créditos</div></div>`;
+  renderLists();
+  refreshSim();
+}
+const cname=c=>c.name?title(c.name):`<span class="no-name">Asignatura ${c.code}</span>`;
+const deburr=s=>(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+function matchq(c){if(!SEARCH)return true;return deburr(c.name).includes(SEARCH)||(c.code||'').includes(SEARCH);}
+function renderLists(){
+  const reqF=REQUIRED.filter(matchq),lockF=LOCKED.filter(matchq),elecF=ELECTIVES.filter(matchq),takF=TRANSCRIPT.filter(matchq);
+  $('#req-count').textContent=SEARCH?(reqF.length+lockF.length):(REQUIRED.length+LOCKED.length);
+  $('#elec-count').textContent=SEARCH?elecF.length:ELEC_TOTAL;
+  $('#taken-count').textContent=SEARCH?takF.length:TRANSCRIPT.length;
+  $('#required-list').innerHTML=reqF.map(courseRow).join('')||'<p class="plan-empty">Sin asignaturas del plan disponibles.</p>';
+  const shown=SEARCH?elecF:elecF.slice(0,150);
+  const note=SEARCH?`<p class="note" style="border:none;padding-top:0">${elecF.length} resultado(s).</p>`
+    :(ELEC_TOTAL>shown.length?`<p class="note" style="border:none;padding-top:0">Mostrando ${shown.length} de ${ELEC_TOTAL} electivas de la universidad. Usa el buscador para ver todas.</p>`:'');
+  $('#electives-list').innerHTML=note+(shown.map(courseRow).join('')||'<p class="plan-empty">Sin coincidencias.</p>');
+  $('#taken-list').innerHTML=renderTranscript(takF);
+  renderLocked(lockF);
+  bindCourses();
+}
+
+function courseRow(c){
+  const risk=c.risk>=0.08?`<span class="riskdot">· riesgo ${(c.risk*100).toFixed(0)}%</span>`:'';
+  const conf=c.confidence!=='high'?`<span class="conf">datos ${c.confidence==='low'?'limitados':'parciales'}</span>`:'';
+  const sem=c.typ_sem?`<span class="typsem">· sem. ${c.typ_sem} típico</span>`:'';
+  return `<div class="course ${SEL.has(c.code)?'sel':''}" data-code="${c.code}">
+    <div class="chk">${SEL.has(c.code)?'✓':''}</div>
+    <div class="c-body"><div class="c-name">${cname(c)}</div>
+      <div class="c-sub">${stars(c.stars)} <span class="code">${c.code}</span> · ${c.credits} créd ${sem} ${risk} ${conf}</div></div>
+    <div class="c-right"><div class="exp">${c.exp_grade}<small> nota</small></div>${dots(c.stars_personal)}</div>
+  </div>`;
+}
+function renderLocked(list){
+  list=list||LOCKED;
+  if(!list.length){$('#locked-wrap').innerHTML='';return;}
+  $('#locked-wrap').innerHTML=`<div class="group-h"><span class="t">Bloqueadas por prerrequisitos</span><span class="n">${list.length}</span><span class="line"></span></div>`+
+    list.map(c=>`<div class="course locked"><div class="chk"></div>
+      <div class="c-body"><div class="c-name">${cname(c)}</div>
+      <div class="c-sub lock-reason">Falta: ${c.missing.map(m=>m.name?title(m.name):m.code).join(', ')}</div></div>
+      <div class="c-right">${stars(c.stars)}</div></div>`).join('');
+}
+function bindCourses(){
+  document.querySelectorAll('.course[data-code]').forEach(el=>{el.onclick=()=>{
+    const code=el.dataset.code;SEL.has(code)?SEL.delete(code):SEL.add(code);
+    el.classList.toggle('sel');el.querySelector('.chk').textContent=SEL.has(code)?'✓':'';refreshSim();};});
+}
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));t.classList.add('active');
+  const k=t.dataset.tab;
+  $('#tab-req').classList.toggle('hidden',k!=='req');
+  $('#tab-elec').classList.toggle('hidden',k!=='elec');
+  $('#tab-taken').classList.toggle('hidden',k!=='taken');
+});
+$('#search').addEventListener('input',e=>{SEARCH=deburr(e.target.value.trim());$('#search-x').classList.toggle('hidden',!e.target.value);if(REQUIRED.length||ELECTIVES.length||TRANSCRIPT.length)renderLists();});
+$('#search-x').onclick=()=>{const i=$('#search');i.value='';SEARCH='';$('#search-x').classList.add('hidden');renderLists();i.focus();};
+function gradeColor(g){return g==null?'var(--text-4)':g<3?'var(--red)':g<3.8?'var(--amber)':'var(--green)';}
+function renderTranscript(list){
+  list=list||TRANSCRIPT;
+  if(!list.length)return '<p class="plan-empty">Sin coincidencias.</p>';
+  return list.map(c=>`<div class="course" style="cursor:default">
+    <div class="c-body"><div class="c-name">${c.name?title(c.name):'<span class="no-name">Asignatura '+c.code+'</span>'}</div>
+      <div class="c-sub"><span class="code">${c.code}</span> · ${c.credits} créd ${c.in_plan?'':'· <span class="typsem">otra carrera</span>'}</div></div>
+    <div class="c-right"><div class="exp" style="color:${c.grade!=null?gradeColor(c.grade):'var(--green)'}">${c.grade!=null?c.grade.toFixed(1):(c.passfail?'Apr.':'·')}<small> ${c.grade!=null?'nota':''}</small></div></div>
+  </div>`).join('');
+}
+
+async function refreshSim(){
+  const basket=[...SEL];
+  if(!basket.length){SIM=null;renderPanel();return;}
+  const r=await fetch('/api/simulate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({state:STATE,basket})});
+  SIM=await r.json();renderPanel();
+}
+
+function renderPanel(){
+  if(!SIM||!SIM.n_courses){
+    $('#sem-stars').innerHTML='☆☆☆☆☆';$('#sem-label').textContent='Sin asignaturas';
+    $('#pred-gpa').textContent='·';$('#gpa-delta').textContent='';
+    $('#s-courses').textContent='0';$('#s-credits').textContent='0';$('#s-risk').textContent='0%';
+    $('#warn-wrap').innerHTML='';$('#plan-list').innerHTML='<div class="plan-empty">Selecciona asignaturas para proyectar tu semestre.</div>';
+    $('#foot-note').textContent='';$('#sched-card').style.display='none';return;
+  }
+  const lbl=['','Ligero','Llevadero','Exigente','Muy exigente','Durísimo'][SIM.sem_stars];
+  $('#sem-stars').innerHTML=`<span class="on">${'★'.repeat(SIM.sem_stars)}</span><span class="off">${'★'.repeat(5-SIM.sem_stars)}</span>`;
+  $('#sem-label').textContent=lbl;
+  $('#pred-gpa').textContent=SIM.pred_gpa??'·';
+  const d=SIM.gpa_delta;
+  $('#gpa-delta').innerHTML=d==null?'':`<span style="color:${d<-0.02?'var(--red)':d>0.02?'var(--green)':'var(--text-4)'}">${d>0?'▲':d<0?'▼':''} ${Math.abs(d).toFixed(2)}</span>`;
+  $('#s-courses').textContent=SIM.n_courses;$('#s-credits').textContent=SIM.total_credits;
+  $('#s-risk').textContent=(SIM.p_any_fail*100).toFixed(0)+'%';
+  $('#warn-wrap').innerHTML=SIM.warnings.map(w=>{
+    const bad=/no viable/.test(w);
+    return `<div class="warn-box ${bad?'bad':''}"><span>${bad?'⛔':'⚠'}</span><span>${w}</span></div>`;}).join('');
+  $('#plan-list').innerHTML=SIM.courses.map(c=>`<div class="plan-row">
+    <div class="nm">${title(c.name)} <span class="st">${'★'.repeat(c.stars)}</span></div>
+    <div class="rk">${c.exp_grade}<small>esperada ±${c.grade_band}</small></div></div>`).join('');
+  $('#foot-note').innerHTML=`El promedio proyectado pondera tu nota esperada por créditos. La dificultad del semestre
+    refleja la carga total de esfuerzo (las materias difíciles pesan más). El histórico de esta base muestra poco
+    efecto de la carga sobre el promedio, así que no inflamos artificialmente la caída de PGA.`;
+  renderSchedule(SIM.schedule);
+}
+
+const DAYS=['Lunes','Martes','Miércoles','Jueves','Viernes'];
+const DAYABBR={'Lunes':'LUN','Martes':'MAR','Miércoles':'MIÉ','Jueves':'JUE','Viernes':'VIE'};
+const CALPAL=['#3D5A80','#9C4B4B','#4F7A5E','#A68020','#6D4F7A','#4A6B70','#7A1F25','#52525B'];
+function renderSchedule(sc){
+  const card=$('#sched-card');
+  if(!sc||!sc.have_schedules||!sc.scheduled.length){card.style.display='none';return;}
+  card.style.display='';
+  const b=$('#sched-banner');
+  if(sc.feasible){b.className='sched-ok';b.textContent='✓ Sin choques';}
+  else{b.className='sched-bad';b.textContent='✗ No cabe';}
+  // build calendar grid 7:00-19:00
+  const H0=7,H1=19,rows=(H1-H0)*4; // 15-min rows
+  let html='<div class="cal"><div class="ch"></div>'+DAYS.map(d=>`<div class="ch">${DAYABBR[d]}</div>`).join('');
+  for(let r=0;r<rows;r++){
+    const min=H0*60+r*15;
+    html+=r%4===0?`<div class="hr">${min/60|0}</div>`:'<div class="hr"></div>';
+    for(const d of DAYS) html+=`<div class="cell" data-d="${d}" data-m="${min}"></div>`;
+  }
+  html+='</div>';
+  $('#calendar').innerHTML=html;
+  // place events from the assignment
+  if(sc.feasible){
+    const colorOf={}; sc.assignment.forEach((a,i)=>colorOf[a.code]=CALPAL[i%CALPAL.length]);
+    sc.assignment.forEach(a=>{
+      const nm=(REQUIRED.concat(ELECTIVES).find(x=>x.code===a.code)||{}).name||a.code;
+      a.section.slots.forEach(sl=>{
+        const top=((sl.inicio-H0*60)/15)*15, h=((sl.fin-sl.inicio)/15)*15;
+        const colIdx=DAYS.indexOf(sl.dia); if(colIdx<0)return;
+        const anchor=document.querySelector(`.cell[data-d="${sl.dia}"][data-m="${H0*60}"]`);
+        if(!anchor)return;
+        const ev=document.createElement('div');ev.className='ev';
+        ev.style.cssText=`top:${top}px;height:${h-1}px;background:${colorOf[a.code]}`;
+        ev.textContent=title(nm).slice(0,16);
+        anchor.appendChild(ev);
+      });
+    });
+  }
+  const notes=[];
+  if(sc.conflicts.length) notes.push('Choque irresoluble: '+sc.conflicts.map(c=>`${title((REQUIRED.concat(ELECTIVES).find(x=>x.code===c.a)||{}).name||c.a)} ↔ ${title((REQUIRED.concat(ELECTIVES).find(x=>x.code===c.b)||{}).name||c.b)}`).join(', '));
+  if(sc.unscheduled.length) notes.push(sc.unscheduled.length+' sin horario publicado');
+  if(sc.is_sample) notes.push('Horarios ilustrativos. Los reales de 2026-2S se publican en julio.');
+  $('#sched-note').innerHTML=notes.join(' · ');
+}
+
+let tT;function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(tT);tT=setTimeout(()=>t.classList.remove('show'),2600);}
+$('#reset').onclick=e=>{e.preventDefault();location.reload();};
+</script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+# derived 92 MB panel cache — regenerated from the source .xlsx by build_and_train
+cache/
+# python
+__pycache__/
+*.pyc
+# trained artifacts are large; regenerate via pipeline/run_all.py if not committed
+# (uncomment to exclude)
+# model/*.joblib

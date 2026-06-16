@@ -1,0 +1,351 @@
+\documentclass[11pt,a4paper]{article}
+
+% ============================================================
+%  Especificación de panel de datos para Oráculo
+%  Autor: Lucas Carrasquilla Parra
+% ============================================================
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-tabla,es-nodecimaldot]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[a4paper,margin=2.5cm,headheight=14pt]{geometry}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{parskip}
+\usepackage[hidelinks]{hyperref}
+
+% ---- Tipografía y color ----
+\definecolor{accent}{HTML}{7A1F25}
+\definecolor{rule}{HTML}{D6D3D1}
+\definecolor{soft}{HTML}{F4F4F3}
+
+\hypersetup{colorlinks=true, urlcolor=accent, linkcolor=accent, citecolor=accent}
+
+% ---- Títulos de sección ----
+\titleformat{\section}
+  {\normalfont\large\bfseries\color{accent}}
+  {\thesection}{0.6em}{}
+\titleformat{\subsection}
+  {\normalfont\normalsize\bfseries}
+  {\thesubsection}{0.6em}{}
+\titlespacing*{\section}{0pt}{1.6\baselineskip}{0.6\baselineskip}
+\titlespacing*{\subsection}{0pt}{1.0\baselineskip}{0.3\baselineskip}
+
+% ---- Encabezado y pie ----
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancyfoot[L]{\footnotesize\color{gray} Oráculo \textbar{} Especificación de panel de datos}
+\fancyfoot[R]{\footnotesize\color{gray} \thepage}
+
+% ---- Listas ----
+\setlist[itemize]{leftmargin=1.3em, itemsep=2pt, topsep=2pt}
+\setlist[enumerate]{leftmargin=1.5em, itemsep=2pt, topsep=2pt}
+
+% ---- Comandos auxiliares ----
+\newcommand{\var}[1]{\texttt{\small #1}}
+\newcommand{\note}[1]{{\footnotesize\itshape\color{gray} #1}}
+
+% ============================================================
+\begin{document}
+
+\begin{flushleft}
+{\Huge\bfseries Especificación de panel de datos}\\[0.4em]
+{\large\color{accent} Solicitud para la calibración del modelo predictivo de Oráculo}
+\end{flushleft}
+
+\vspace{0.6em}
+\noindent\textcolor{rule}{\rule{\linewidth}{0.6pt}}
+\vspace{0.4em}
+
+\begin{tabular}{@{}p{0.18\linewidth}p{0.78\linewidth}@{}}
+\textbf{Solicitante} & Lucas Carrasquilla Parra \\
+\textbf{DNI} & 1025060974 \\
+\textbf{Plan} & MA03 — Matemáticas Aplicadas y Ciencias de la Computación \\
+\textbf{Semestre} & IV (en curso, 2026-1) \\
+\textbf{Proyecto} & Oráculo: planeador académico personalizado con motor estadístico de riesgo \\
+\textbf{Fecha} & 4 de mayo de 2026 \\
+\textbf{Versión} & 1.0 \\
+\end{tabular}
+
+\vspace{0.4em}
+\noindent\textcolor{rule}{\rule{\linewidth}{0.6pt}}
+
+% ============================================================
+\section{Resumen ejecutivo}
+
+Este documento especifica los requerimientos de datos para calibrar el motor de riesgo de Oráculo, una plataforma de planeación académica personalizada para estudiantes de la Universidad del Rosario. La solicitud comprende dos bloques complementarios:
+
+\begin{enumerate}
+\item \textbf{Panel histórico de calificaciones:} un panel longitudinal a nivel de matrícula (estudiante $\times$ asignatura $\times$ sección $\times$ semestre) con la calificación final, atributos del estudiante en el momento de matricular y atributos de la sección y el docente.
+\item \textbf{Panel sociodemográfico:} variables de contexto del estudiante usadas exclusivamente como \emph{controles} del modelo, sin exposición a usuarios finales.
+\end{enumerate}
+
+Ambos bloques se entregan anonimizados, en un único archivo o endpoint, para uso del equipo de Oráculo bajo acuerdo de transferencia de datos con la Vicerrectoría de Investigación. Como retorno, la universidad recibe los modelos calibrados, los hallazgos agregados y el código del pipeline.
+
+% ============================================================
+\section{Propósito de uso}
+
+Los datos se usarán para tres fines:
+
+\begin{itemize}
+\item \textbf{Modelación predictiva.} Calibrar un modelo logístico (línea base) y un modelo logístico de efectos mixtos (validación) que estimen, para cada estudiante, la probabilidad de reprobar una asignatura cursada con un docente específico, condicional a su perfil académico y a controles sociodemográficos.
+\item \textbf{Recomendación de horario.} Integrar la predicción al optimizador de horarios de Oráculo para penalizar combinaciones de alto riesgo y sugerir intercambios de sección.
+\item \textbf{Investigación.} Producir al menos un manuscrito sobre el efecto del docente en el desempeño estudiantil dentro de la universidad, con identificación robusta y publicación en una revista de economía de la educación o pedagogía universitaria.
+\end{itemize}
+
+% ============================================================
+\section{Unidad de observación}
+
+\textbf{Una fila representa una matrícula:} un estudiante en una sección específica de una asignatura en un periodo académico.
+
+\begin{center}
+\fcolorbox{rule}{soft}{\parbox{0.85\linewidth}{\centering
+\texttt{(student\_id\_hash, course\_code, section\_id, semester) $\rightarrow$ outcome + covariables}
+}}
+\end{center}
+
+Si un estudiante repite la asignatura en otro semestre, se generan filas separadas. Si una sección tuvo cancelación administrativa, también se incluye, marcada en la variable \var{enrollment\_outcome}.
+
+% ============================================================
+\section{Cobertura solicitada}
+
+\begin{center}
+\begin{tabular}{@{}p{0.20\linewidth}p{0.34\linewidth}p{0.38\linewidth}@{}}
+\toprule
+\textbf{Dimensión} & \textbf{Mínimo viable} & \textbf{Cobertura ideal} \\
+\midrule
+Período & 2021-1 al último semestre cerrado & 2018-1 en adelante \\
+Programa & Plan MA03 (piloto) & Toda la Escuela de Ciencias e Ingeniería; eventualmente toda la Universidad \\
+Tipología & Asignaturas obligatorias del núcleo & Todas las tipologías (OBL, ELEC, COMP, HM, PFC) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Volumen estimado:} aproximadamente 30 a 60 mil filas para el piloto MA03 sobre cinco años; entre 250 y 500 mil filas para la cobertura completa institucional. El tamaño es manejable en una sola entrega.
+
+% ============================================================
+\section{Variables requeridas}
+
+Las variables se agrupan en seis bloques. Todas las variables identificatorias se entregan anonimizadas (Sección~\ref{sec:anonimizacion}).
+
+% ----------------------------
+\subsection{Identificadores}
+\label{sec:vars-id}
+
+\begin{longtable}{@{}>{\ttfamily}p{0.30\linewidth}p{0.16\linewidth}p{0.48\linewidth}@{}}
+\toprule
+\rmfamily\textbf{Variable} & \textbf{Tipo} & \textbf{Descripción} \\
+\midrule
+\endfirsthead
+\toprule
+\rmfamily\textbf{Variable} & \textbf{Tipo} & \textbf{Descripción} \\
+\midrule
+\endhead
+student\_id\_hash & string & Hash estable del DNI con sal mantenida por la oficina de datos. Permite seguir al estudiante en el tiempo sin exponer su identidad. \\
+course\_code     & string & Código institucional de la asignatura (ej.\ \texttt{11310003}). \\
+section\_id      & string & Identificador de la sección dentro del par (asignatura, semestre). \\
+professor\_id\_hash & string & Hash estable del docente. Permite efectos fijos de profesor cruzando años y asignaturas. \\
+semester         & string & Formato \texttt{YYYY-N} (ej.\ \texttt{2024-1}, \texttt{2024-2}, \texttt{intersemestral\_2025}). \\
+\bottomrule
+\end{longtable}
+
+% ----------------------------
+\subsection{Variables de resultado}
+
+\begin{longtable}{@{}>{\ttfamily}p{0.30\linewidth}p{0.16\linewidth}p{0.48\linewidth}@{}}
+\toprule
+\rmfamily\textbf{Variable} & \textbf{Tipo} & \textbf{Descripción} \\
+\midrule
+\endhead
+final\_grade        & numeric (0,0--5,0) & Calificación final en la escala institucional. \\
+passed              & bool & Igual a 1 si \texttt{final\_grade} $\geq 3{,}0$. Redundante pero conveniente. \\
+enrollment\_outcome & enum & \texttt{completed} / \texttt{withdrew\_voluntary} / \texttt{withdrew\_administrative} / \texttt{failed\_attendance}. \\
+withdrew\_week      & int (nullable) & Semana de la cancelación si aplica. \\
+\bottomrule
+\end{longtable}
+
+% ----------------------------
+\subsection{Atributos del estudiante en el momento de la matrícula}
+
+Estas variables son las \emph{entradas} del modelo. Deben reflejar el estado del estudiante \textbf{al inicio del semestre} de la fila, no su estado actual.
+
+\begin{longtable}{@{}>{\ttfamily}p{0.32\linewidth}p{0.18\linewidth}p{0.44\linewidth}@{}}
+\toprule
+\rmfamily\textbf{Variable} & \textbf{Tipo} & \textbf{Descripción} \\
+\midrule
+\endhead
+program\_code        & string & Plan vigente al matricular (ej.\ \texttt{MA03}). \\
+cohort\_entry\_year  & int    & Año de ingreso a la universidad. \\
+semester\_number     & int    & Número de semestres cursados antes de éste. \\
+credits\_completed   & int    & Créditos aprobados antes de este semestre. \\
+cumulative\_gpa      & numeric & PGA acumulado al cierre del semestre anterior. \\
+current\_load\_credits & int  & Total de créditos inscritos en el semestre de la fila. \\
+prerequisite\_grades & array$\langle$numeric$\rangle$ (nullable) & Notas en los prerrequisitos directos. Derivable vía self-join si no está pre-computado. \\
+\bottomrule
+\end{longtable}
+
+% ----------------------------
+\subsection{Panel sociodemográfico (controles del modelo)}
+\label{sec:vars-demograficas}
+
+Estas variables se usan \textbf{únicamente} como controles en la regresión. No se exponen al usuario final, ni a otros estudiantes, ni se publican en ningún output de la plataforma.
+
+\begin{longtable}{@{}>{\ttfamily}p{0.32\linewidth}p{0.18\linewidth}p{0.44\linewidth}@{}}
+\toprule
+\rmfamily\textbf{Variable} & \textbf{Tipo} & \textbf{Descripción} \\
+\midrule
+\endhead
+gender                  & enum   & M / F / Otro / NA. \\
+birth\_year             & int    & Año de nacimiento (no fecha exacta). \\
+municipality\_residence & string & Municipio de residencia, sin dirección. \\
+school\_origin\_type    & enum   & \texttt{público} / \texttt{privado} / \texttt{mixto} / \texttt{internacional}. \\
+school\_origin\_calendar& enum   & A / B (calendario académico de origen). \\
+saber11\_score          & int (nullable) & Puntaje global Saber 11 / ICFES. \\
+socioeconomic\_stratum  & int (1--6) & Estrato socioeconómico de la residencia. \\
+scholarship\_status     & bool   & ¿Recibe beca o apoyo financiero? \\
+scholarship\_type       & string (nullable) & Tipo (Pa'lante, Excelencia, ICETEX, etc.). \\
+financial\_aid\_pct     & numeric (0--1, nullable) & Porcentaje de matrícula cubierto. \\
+is\_first\_generation   & bool (nullable) & Si la universidad lo registra. \\
+works\_during\_studies  & bool (nullable) & Si está disponible vía encuesta de bienestar. \\
+\bottomrule
+\end{longtable}
+
+\note{Si alguna de estas variables no es trivial de extraer, puede entregarse en una segunda fase. El \textbf{bloque mínimo viable} comprende: \var{gender}, \var{birth\_year}, \var{school\_origin\_type}, \var{saber11\_score}, \var{socioeconomic\_stratum} y \var{scholarship\_status}.}
+
+% ----------------------------
+\subsection{Atributos de la sección y la asignatura}
+
+\begin{longtable}{@{}>{\ttfamily}p{0.30\linewidth}p{0.16\linewidth}p{0.48\linewidth}@{}}
+\toprule
+\rmfamily\textbf{Variable} & \textbf{Tipo} & \textbf{Descripción} \\
+\midrule
+\endhead
+course\_credits        & int   & Créditos de la asignatura. \\
+course\_typology       & enum  & \texttt{OBL} / \texttt{ELEC} / \texttt{COMP} / \texttt{HM} / \texttt{PFC}. \\
+course\_plan\_semester & int (1--8) & Semestre estándar dentro del plan. \\
+school                 & string & Escuela / Facultad. \\
+section\_capacity      & int   & Cupo máximo. \\
+section\_enrolled      & int   & Inscripción final. \\
+section\_modality      & enum  & \texttt{presencial} / \texttt{virtual} / \texttt{híbrido}. \\
+meeting\_pattern       & string & Días y horas (ej.\ \texttt{MAR 09:00--10:30; JUE 09:00--10:30}). \\
+\bottomrule
+\end{longtable}
+
+% ----------------------------
+\subsection{Atributos del profesor}
+
+\begin{longtable}{@{}>{\ttfamily}p{0.34\linewidth}p{0.18\linewidth}p{0.42\linewidth}@{}}
+\toprule
+\rmfamily\textbf{Variable} & \textbf{Tipo} & \textbf{Descripción} \\
+\midrule
+\endhead
+professor\_id\_hash               & string & (mismo hash de identificadores, repetido para join). \\
+professor\_years\_teaching\_at\_uni & int  & Años en la universidad al inicio del semestre. \\
+professor\_highest\_degree        & enum   & \texttt{pregrado} / \texttt{especialización} / \texttt{maestría} / \texttt{doctorado}. \\
+professor\_contract\_type         & enum   & \texttt{planta} / \texttt{hora\_cátedra} / \texttt{visitante} / \texttt{medio\_tiempo}. \\
+professor\_home\_department       & string & Departamento al que está adscrito. \\
+\bottomrule
+\end{longtable}
+
+% ----------------------------
+\subsection{Atributos del periodo}
+
+\begin{longtable}{@{}>{\ttfamily}p{0.30\linewidth}p{0.16\linewidth}p{0.48\linewidth}@{}}
+\toprule
+\rmfamily\textbf{Variable} & \textbf{Tipo} & \textbf{Descripción} \\
+\midrule
+\endhead
+semester\_start\_date       & date  & Fecha de inicio del semestre. \\
+semester\_end\_date         & date  & Fecha de cierre del semestre. \\
+calendar\_disruption\_flag  & bool  & 1 si el semestre tuvo paro, ajuste por COVID u otro evento que afectó las calificaciones. La universidad sabrá cuáles. \\
+\bottomrule
+\end{longtable}
+
+% ============================================================
+\section{Anonimización}
+\label{sec:anonimizacion}
+
+Los siguientes requerimientos son \textbf{no negociables} y se pactan por escrito en el acuerdo de transferencia de datos.
+
+\begin{enumerate}
+\item \textbf{Sin PII directa.} No se transfieren nombres, números de documento, correos electrónicos, fechas de nacimiento exactas, direcciones ni teléfonos.
+
+\item \textbf{Hashing estable con sal.} Los hashes de estudiante y profesor son deterministas dentro del dataset (para permitir self-joins y panel longitudinal) pero no reversibles. La sal queda en custodia de la oficina de datos y no se comparte con el solicitante.
+
+\item \textbf{Supresión de celdas pequeñas.} En cualquier celda donde el cruce (asignatura $\times$ profesor $\times$ semestre) tenga menos de \textbf{cinco estudiantes}, la fila se omite o se marca explícitamente. Esta regla previene re-identificación por combinatoria.
+
+\item \textbf{No exposición fuera del modelo.} Las variables del panel sociodemográfico (Sección~\ref{sec:vars-demograficas}) jamás se muestran al usuario final ni a otros estudiantes; se usan únicamente como controles del modelo logístico.
+
+\item \textbf{Auditoría.} La oficina mantiene un registro de quién accedió, cuándo y desde qué IP. Renovación anual del acuerdo.
+\end{enumerate}
+
+% ============================================================
+\section{Formato y entrega}
+
+\subsection*{Preferencias de entrega (en orden descendente)}
+
+\begin{enumerate}
+\item Endpoint API autenticado con refresco programado.
+\item Volcado periódico a un bucket institucional (S3 o Google Cloud Storage) con acceso restringido al solicitante.
+\item Archivo único por cohorte (CSV o Parquet) entregado vía correo institucional cifrado.
+\end{enumerate}
+
+\subsection*{Acompañamiento obligatorio}
+
+\begin{itemize}
+\item \textbf{Codebook.} Cada variable con tipo, dominio de valores, etiquetas, fuente original y fecha de extracción.
+\item \textbf{Diccionario de mapeos} de códigos institucionales (asignatura, programa, escuela) si difieren del catálogo público.
+\item \textbf{Notas de calidad.} Semestres incompletos, cambios de plan de estudios, migraciones de SIIGRA y otros eventos que afecten la interpretación.
+\end{itemize}
+
+% ============================================================
+\section{Frecuencia de actualización}
+
+\begin{itemize}
+\item \textbf{Carga inicial:} desde el periodo más antiguo acordado hasta el último semestre cerrado.
+\item \textbf{Actualización:} una vez al año, después del cierre del segundo semestre (típicamente febrero), agregando los dos semestres más recientes.
+\item \textbf{Catálogo de secciones del semestre vigente:} sincronización por API o scrape público; no requiere acuerdo institucional adicional.
+\end{itemize}
+
+% ============================================================
+\section{Marco legal y ético}
+
+\begin{itemize}
+\item \textbf{Acuerdo de transferencia de datos} firmado entre el solicitante y la Vicerrectoría de Investigación (o la dependencia que la oficina indique).
+\item \textbf{Aval del Comité de Ética en Investigación} previo a cualquier salida pública (manuscrito, conferencia, blog).
+\item Cumplimiento de la \textbf{Ley 1581 de 2012} (protección de datos personales en Colombia) y del régimen interno de la Universidad del Rosario.
+\item \textbf{Cláusula de no-reidentificación:} el solicitante se compromete por escrito a no intentar re-identificar a ningún sujeto del panel.
+\end{itemize}
+
+% ============================================================
+\section{Compromiso de devolución}
+
+\begin{itemize}
+\item Los modelos calibrados y los hallazgos agregados se comparten con la universidad antes de cualquier publicación externa.
+\item El código del pipeline (sin datos) se entrega como repositorio Git al cierre del proyecto.
+\item La universidad puede usar los modelos resultantes en sus propios sistemas si así lo decide, sin restricción.
+\end{itemize}
+
+% ============================================================
+\section{Pregunta abierta a la oficina de datos}
+
+¿Pueden indicar si los bloques de Identificadores, Resultado, Atributos del estudiante en el momento de la matrícula y Atributos de la sección ya se encuentran unidos en SIIGRA, o si requieren un cruce con otras tablas? Saber esto permite estimar el esfuerzo de extracción y proponer una primera entrega piloto solo con MA03.
+
+\vspace{1.5em}
+\noindent\textcolor{rule}{\rule{\linewidth}{0.6pt}}
+\vspace{0.4em}
+
+\begin{flushright}
+\footnotesize\itshape Documento elaborado para Oráculo \textbar{} v1.0 \textbar{} 2026
+\end{flushright}
+
+\end{document}

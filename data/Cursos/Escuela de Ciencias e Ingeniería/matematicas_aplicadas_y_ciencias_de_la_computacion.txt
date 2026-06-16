@@ -1,0 +1,454 @@
+{
+    "estatus": 200,
+    "data": [
+        {
+            "codAsignatura": 11320009,
+            "nombre": "ÁLGEBRA ABSTRACTA Y CODIFICACIÓN",
+            "nombreIngles": "ÁLGEBRA ABSTRACTA Y CODIFICACIÓN",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11310030,
+            "nombre": "ÁLGEBRA LINEAL",
+            "nombreIngles": "ÁLGEBRA LINEAL",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11310006,
+            "nombre": "ALGORITMOS Y ESTRUCTURAS DE DATOS",
+            "nombreIngles": "ALGORITMOS Y ESTRUCTURAS DE DATOS",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11310013,
+            "nombre": "ANÁLISIS ESTADÍSTICO DE DATOS",
+            "nombreIngles": "ANÁLISIS ESTADÍSTICO DE DATOS",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11310021,
+            "nombre": "ANÁLISIS NUMÉRICO Y COMPUTACIÓN CIENTÍFICA",
+            "nombreIngles": "ANÁLISIS NUMÉRICO Y COMPUTACIÓN CIENTÍFICA",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11310010,
+            "nombre": "ANÁLISIS REAL",
+            "nombreIngles": "ANÁLISIS REAL",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11320004,
+            "nombre": "ANÁLISIS Y DISEÑO DE ALGORITMOS",
+            "nombreIngles": "DISEÑO Y ANÁLISIS DE ALGORITMOS",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11320018,
+            "nombre": "APRENDIZAJE AUTOMÁTICO DE MÁQUINAS",
+            "nombreIngles": "APRENDIZAJE AUTOMÁTICO DE MÁQUINAS",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11320002,
+            "nombre": "ARQUITECTURA DEL COMPUTADOR",
+            "nombreIngles": "ARQUITECTURA DEL COMPUTADOR",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11320016,
+            "nombre": "BIG DATA",
+            "nombreIngles": "BIG DATA",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 32510010,
+            "nombre": "CADENAS DE SUMINISTRO COLABORATIVAS Y RESILIENTES",
+            "nombreIngles": "CADENAS DE SUMINISTRO COLABORATIVAS Y RESILIENTES",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11310003,
+            "nombre": "CÁLCULO 1",
+            "nombreIngles": "CÁLCULO 1",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11310004,
+            "nombre": "CÁLCULO 2",
+            "nombreIngles": "CÁLCULO 2",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11320003,
+            "nombre": "CÁLCULO 3",
+            "nombreIngles": "CÁLCULO 3",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11310029,
+            "nombre": "CAPSTONE PROJECT",
+            "nombreIngles": "CAPSTONE PROJECT",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11320035,
+            "nombre": "CAPSTONE PROJECT",
+            "nombreIngles": "CAPSTONE PROJECT",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 60110260,
+            "nombre": "CÁTEDRA ROSARISTA, HISTORIA Y ACTUALIDAD",
+            "nombreIngles": "CÁTEDRA ROSARISTA, HISTORIA Y ACTUALIDAD",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11320033,
+            "nombre": "CIBERSEGURIDAD",
+            "nombreIngles": "CIBERSEGURIDAD",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11320017,
+            "nombre": "COMPUTACIÓN EN LA NUBE",
+            "nombreIngles": "COMPUTACIÓN EN LA NUBE",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11210007,
+            "nombre": "CONSTITUCIÓN POLITICA E INSTRUCCIÓN CIVICA",
+            "nombreIngles": "CONSTITUCIÓN POLITICA E INSTRUCCIÓN CIVICA",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11310032,
+            "nombre": "CORNERSTONE PROJECT",
+            "nombreIngles": "INFORME PASANTÍA",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11320024,
+            "nombre": "DESARROLLO MÓVIL",
+            "nombreIngles": "DESARROLLO MÓVIL",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11320022,
+            "nombre": "DISEÑO Y ARQUITECTURA DE SOFTWARE",
+            "nombreIngles": "DISEÑO Y ARQUITECTURA DE SOFTWARE",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11310034,
+            "nombre": "ECUACIONES DIFERENCIALES",
+            "nombreIngles": "ANTEPROYECTO DE EMPRENDIMIENTO",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 32710002,
+            "nombre": "ELEMENTOS DE SISTEMAS ELÉCTRICOS",
+            "nombreIngles": "ELEMENTOS DE SISTEMAS ELÉCTRICOS",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 18610304,
+            "nombre": "ESCRITURA ACADÉMICA PARA INGENIERÍA, CIENCIA Y TECNOLOGÍA",
+            "nombreIngles": "ESCRITURA ACADÉMICA PARA INGENIERÍA, CIENCIA Y TECNOLOGÍA",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11320040,
+            "nombre": "ESTANCIA DE INVESTIGACIÓN INTERNACIONAL",
+            "nombreIngles": "ESTANCIA DE INVESTIGACIÓN INTERNACIONAL",
+            "creditos": 12.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 17210004,
+            "nombre": "ÉTICA",
+            "nombreIngles": "ÉTICA",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 73210064,
+            "nombre": "FÍSICA 1",
+            "nombreIngles": "FÍSICA 1",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11320010,
+            "nombre": "GEOMETRÍA",
+            "nombreIngles": "GEOMETRÍA",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11310017,
+            "nombre": "INGENIERÍA DE DATOS",
+            "nombreIngles": "MANEJO DE BASES DE DATOS",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11320030,
+            "nombre": "INTRODUCCIÓN A LA VISIÓN POR COMPUTADORA",
+            "nombreIngles": "INTRODUCCIÓN A LA VISIÓN POR COMPUTADORA",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11320031,
+            "nombre": "INTRODUCCIÓN AL PROCESAMIENTO DEL LENGUAJE NATURAL",
+            "nombreIngles": "INTRODUCCIÓN AL PROCESAMIENTO DEL LENGUAJE NATURAL",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11310041,
+            "nombre": "KEYSTONE PROJECT",
+            "nombreIngles": "KEYSTONE PROJECT",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 18610302,
+            "nombre": "LECTURA CRÍTICA PARA INGENIERÍA, CIENCIA Y TECNOLOGÍA",
+            "nombreIngles": "LECTURA CRÍTICA PARA INGENIERÍA, CIENCIA Y TECNOLOGÍA",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11320001,
+            "nombre": "LÓGICA PARA CIENCIAS DE LA COMPUTACIÓN",
+            "nombreIngles": "LÓGICA PARA CIENCIAS DE LA COMPUTACIÓN",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11310001,
+            "nombre": "LÓGICA, TEORÍA DE NÚMEROS Y CONJUNTOS",
+            "nombreIngles": "LÓGICA, TEORÍA DE NÚMEROS Y CONJUNTOS",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11320008,
+            "nombre": "MATHEMATICAL MODELLING OF SYSTEMS IN NATURAL SCIENCES",
+            "nombreIngles": "MATHEMATICAL MODELLING OF SYSTEMS IN NATURAL SCIENCES",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11320028,
+            "nombre": "MODELADO CON DINÁMICA DE SISTEMAS",
+            "nombreIngles": "MODELADO CON DINÁMICA DE SISTEMAS",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 32710013,
+            "nombre": "MODELAMIENTO DE ENERGÍA SOLAR",
+            "nombreIngles": "MODELAMIENTO DE ENERGÍA SOLAR",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11310079,
+            "nombre": "OPERATING SYSTEMS",
+            "nombreIngles": "OPERATING SYSTEMS",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11310012,
+            "nombre": "OPTIMIZACIÓN",
+            "nombreIngles": "OPTIMIZACIÓN",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11310057,
+            "nombre": "PASANTIA",
+            "nombreIngles": "PROBABILIDAD Y ESTADÍSTICA 2",
+            "creditos": 8.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11320039,
+            "nombre": "PASANTÍA LABORAL",
+            "nombreIngles": "PASANTÍA LABORAL",
+            "creditos": 12.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11310025,
+            "nombre": "PENSAMIENTO MATEMÁTICO",
+            "nombreIngles": "ANÁLISIS Y MÉTODOS NUMÉRICOS",
+            "creditos": 2.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 32710014,
+            "nombre": "POLÍTICA ENERGÉTICA Y REGULACIÓN",
+            "nombreIngles": "POLÍTICA ENERGÉTICA Y REGULACIÓN",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11310044,
+            "nombre": "PRECÁLCULO",
+            "nombreIngles": "PRECÁLCULO",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11310031,
+            "nombre": "PROBABILIDAD Y ESTADÍSTICA 1",
+            "nombreIngles": "PROBABILIDAD Y ESTADÍSTICA 1",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11320006,
+            "nombre": "PROBABILIDAD Y ESTADÍSTICA 2",
+            "nombreIngles": "PROBABILIDAD Y ESTADÍSTICA 2",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11310002,
+            "nombre": "PROGRAMACIÓN DE COMPUTADORES",
+            "nombreIngles": "PROGRAMACIÓN DE COMPUTADORES",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11320007,
+            "nombre": "REDES DE COMPUTADORES",
+            "nombreIngles": "REDES DE COMPUTADORES",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11320014,
+            "nombre": "SEGURIDAD DE REDES",
+            "nombreIngles": "SEGURIDAD DE REDES",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11320013,
+            "nombre": "SEGURIDAD EN EL CICLO DE DESARROLLO DE SOFTWARE",
+            "nombreIngles": "SEGURIDAD EN EL CICLO DE DESARROLLO DE SOFTWARE",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11310028,
+            "nombre": "SEMINARIO DE GRADO",
+            "nombreIngles": "SEMINARIO DE GRADO",
+            "creditos": 1.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11310014,
+            "nombre": "TEORÍA DE GRAFOS",
+            "nombreIngles": "TEORÍA DE GRAFOS",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11310007,
+            "nombre": "TEORÍA DE LA COMPUTACIÓN",
+            "nombreIngles": "TEORÍA DE LA COMPUTACIÓN",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11320026,
+            "nombre": "TEORÍA DE LA MEDIDA",
+            "nombreIngles": "TEORÍA DE LA MEDIDA",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11310078,
+            "nombre": "TEORIA DE NÚMEROS",
+            "nombreIngles": "TEORIA DE NÚMEROS",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11310020,
+            "nombre": "TOPOLOGÍA",
+            "nombreIngles": "TOPOLOGÍA Y GEOMETRÍA DIFERENCIAL",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11310054,
+            "nombre": "TRABAJO DE GRADO 1",
+            "nombreIngles": "ÁLGEBRA LINEAL",
+            "creditos": 4.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11320037,
+            "nombre": "TRABAJO DE GRADO 1",
+            "nombreIngles": "TRABAJO DE GRADO 1",
+            "creditos": 6.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11320038,
+            "nombre": "TRABAJO DE GRADO 2",
+            "nombreIngles": "TRABAJO DE GRADO 2",
+            "creditos": 6.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11310055,
+            "nombre": "TRABAJO DE GRADO 2",
+            "nombreIngles": "PROBABILIDAD Y ESTADÍSTICA 1",
+            "creditos": 4.0,
+            "tipoElectiva": "PLAN"
+        },
+        {
+            "codAsignatura": 11320005,
+            "nombre": "VARIABLE COMPLEJA",
+            "nombreIngles": "VARIABLE COMPLEJA",
+            "creditos": 3.0,
+            "tipoElectiva": "PLAN"
+        }
+    ],
+    "mensaje": "La información se generó correctamente."
+}
