@@ -5,12 +5,13 @@
   "use strict";
   const O = {};
   let CATALOG = {}, STATS = {}, PLAN_COURSES = {}, POOL_CODES = [], MACC_PLAN = [],
-      MACC_PREREQS = {}, PLANS = {}, SCHEDULES = {}, MODELS = null,
+      MACC_PREREQS = {}, PLANS = {}, SCHEDULES = {}, MODELS = null, MALLA_PLAN = {},
       GLOBAL_FAIL = 0.04, GMEAN = 4.0;
 
   O.setData = function (d) {
     CATALOG = d.catalog.catalog;
     PLAN_COURSES = d.catalog.plan_courses || {};
+    MALLA_PLAN = d.malla || {};
     MACC_PLAN = d.catalog.macc_plan || [];
     MACC_PREREQS = d.catalog.macc_prereqs || {};
     POOL_CODES = Object.keys(CATALOG).filter(c => CATALOG[c].pool);
@@ -190,7 +191,7 @@
         seen.add(nm); dst.push(c);
       }
     };
-    take(PLAN_COURSES[plan] || (entry.core || []).filter(hasName), core);
+    take(MALLA_PLAN[plan] || PLAN_COURSES[plan] || (entry.core || []).filter(hasName), core);
     take(POOL_CODES, elective);
     const prereqs = {};
     if (plan === "MA03") for (const k in MACC_PREREQS) prereqs[k] = MACC_PREREQS[k].slice();

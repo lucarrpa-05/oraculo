@@ -122,7 +122,11 @@ The same course has DIFFERENT 8-digit codes across plan versions (e.g. Cálculo 
 (`engine._canon`), not code. Key functions: `_passed_identity` (passed codes + their names),
 `_is_passed(code)` = code-match OR name-match → a course you took under any code is filtered
 out; plans are deduped by name (e.g. two Capstone entries → one).
-- **Disponibles** = `plan_courses[codPlan]` (deduped by name) minus passed minus prereq-locked.
+- **Disponibles** = the plan course set (deduped by name) minus passed minus prereq-locked.
+  The plan set is `malla_plan[codPlan]` when available (the scraped plan filtered to courses
+  actually drawn in the official malla PDF, via `pipeline/build_malla_plans.py` — drops
+  cross-program junk like energy/logistics electives the API cross-lists into MA03), else the
+  full `plan_courses[codPlan]` (fallback for image-only mallas: Enfermería, Negocios Int, etc.).
 - **Locked** = plan courses whose known prereqs aren't met (prereqs also name-matched).
 - **Electivas** = the official GEN/HM pools (`catalog` `pool` field, ~1000), deduped vs plan
   & passed; capped to 200 A–Z in the response (`n_electives_total` has the real count).

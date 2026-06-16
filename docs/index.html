@@ -203,10 +203,10 @@ const $=s=>document.querySelector(s);
 let STATE=null,REQUIRED=[],LOCKED=[],ELECTIVES=[],TRANSCRIPT=[],ELEC_TOTAL=0,SEARCH='',SEL=new Set(),SIM=null,READY=false;
 (async function boot(){
   try{
-    const names=['catalog.json','course_stats.json','plans.json','schedules.json','models.json'];
-    const [catalog,stats,plans,schedules,models]=await Promise.all(
+    const names=['catalog.json','course_stats.json','plans.json','schedules.json','models.json','malla_plan.json'];
+    const [catalog,stats,plans,schedules,models,malla]=await Promise.all(
       names.map(n=>fetch('data/'+n).then(r=>{if(!r.ok)throw new Error(n);return r.json();})));
-    Oraculo.setData({catalog,stats,plans,schedules,models});
+    Oraculo.setData({catalog,stats,plans,schedules,models,malla});
     pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
     READY=true; $('#model-pill').textContent='modelo · activo';
   }catch(e){console.error(e); $('#model-pill').textContent='error al cargar datos';}

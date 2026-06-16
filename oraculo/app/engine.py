@@ -28,6 +28,8 @@ _cat = json.load(open(os.path.join(MODEL_DIR, "catalog.json"), encoding="utf-8")
 CATALOG, MACC_PLAN, MACC_PREREQS = _cat["catalog"], _cat["macc_plan"], _cat["macc_prereqs"]
 PLAN_COURSES = _cat.get("plan_courses", {})   # official course membership per codPlan
 POOL_CODES = [c for c, m in CATALOG.items() if m.get("pool")]   # GEN/HM elective pools
+_mp = os.path.join(MODEL_DIR, "malla_plan.json")   # scraped plan filtered to the official malla
+MALLA_PLAN = json.load(open(_mp, encoding="utf-8")) if os.path.exists(_mp) else {}
 STATS = {r["crs"]: r for r in json.load(open(os.path.join(MODEL_DIR, "course_stats.json"), encoding="utf-8"))}
 # data-derived study plans for all programs (core/elective/typ_sem/freq)
 PLANS = json.load(open(os.path.join(MODEL_DIR, "plans.json"), encoding="utf-8"))
@@ -296,7 +298,10 @@ def _plan_context(state):
                 continue
             seen_names.add(nm); dst.append(c)
     core, elective = [], []
-    take(PLAN_COURSES.get(plan, []) or [c for c in entry.get("core", []) if _has_name(c)], core)
+    # prefer the malla-filtered plan (junk removed); fall back to the full scraped plan
+    # where the malla is an image-only PDF, then to the panel core.
+    plan_src = MALLA_PLAN.get(plan) or PLAN_COURSES.get(plan) or [c for c in entry.get("core", []) if _has_name(c)]
+    take(plan_src, core)
     take(POOL_CODES, elective)
     prereqs = {}
     if plan == "MA03":
