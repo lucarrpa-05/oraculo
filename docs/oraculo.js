@@ -259,11 +259,12 @@
   const MAX_FEASIBLE_CREDITS = 24, MAX_FEASIBLE_COURSES = 7;
   const semStars = effort => 1 + SEM_STAR_CUT.filter(c => effort >= c).length;
 
-  O.simulate = function (state, basket) {
+  O.simulate = function (state, basket, pins) {
+    state = state || {};
     basket = basket.filter(c => STATS[c] || CATALOG[c]);
     if (!basket.length) return { courses: [], n_courses: 0, total_credits: 0, sem_stars: 0,
       pred_gpa: null, gpa_delta: null, p_any_fail: 0, effort: 0, feasible: true, warnings: [], drivers: [],
-      schedule: O.schedule(basket) };
+      schedule: O.schedule(basket, state.plan, pins) };
     const ctx = planContext(state);
     const cuts = ctx.has_plan ? planStarCuts(ctx.core.concat(ctx.elective)) : null;
     const gpa = state.cumgpa || GMEAN;
@@ -293,41 +294,51 @@
       gpa_delta: predGpa != null ? round(predGpa - gpa, 2) : null, cum_gpa: gpa,
       p_any_fail: round(pAny, 4), feasible: !warnings.some(w => w.includes("no viable")),
       warnings, drivers: items.filter(i => i.stars >= 4).slice(0, 2).map(i => i.name),
-      schedule: O.schedule(basket),
+      schedule: O.schedule(basket, state.plan, pins),
     };
   };
 
   // ---------- schedule conflict solver (scheduler.py) ----------
-  const hasSched = c => { const s = SCHEDULES[c]; return !!(s && s.sections && s.sections.length); };
-  const sectionsOf = c => (SCHEDULES[c] || {}).sections || [];
+  // Schedules are plan-specific: SCHEDULES[plan][code].grupos. A student picks one GRUPO
+  // per course (bundling its weekly slots across activities); the caller may PIN a grupo.
+  const planSched = plan => (plan && SCHEDULES[plan]) || {};
+  const gruposOf = (c, plan) => (planSched(plan)[c] || {}).grupos || [];
+  const hasSched = (c, plan) => gruposOf(c, plan).length > 0;
   function slotsOverlap(a, b) { return a.dia === b.dia && a.inicio < b.fin && b.inicio < a.fin; }
-  function secConflict(sa, sb) {
-    for (const x of sa.slots) for (const y of sb.slots) if (slotsOverlap(x, y)) return true;
+  function grConflict(ga, gb) {
+    for (const x of ga.slots) for (const y of gb.slots) if (slotsOverlap(x, y)) return true;
     return false;
   }
-  O.scheduleIsSample = function () { return Object.values(SCHEDULES).some(v => v.sample); };
-  O.schedule = function (codes) {
-    const scheduled = codes.filter(hasSched), unscheduled = codes.filter(c => !hasSched(c));
-    const opts = {}; for (const c of scheduled) opts[c] = sectionsOf(c);
+  O.scheduleIsSample = function () { return false; };
+  O.schedule = function (codes, plan, pins) {
+    pins = pins || {};
+    const scheduled = codes.filter(c => hasSched(c, plan)), unscheduled = codes.filter(c => !hasSched(c, plan));
+    const opts = {};
+    for (const c of scheduled) {
+      const gs = gruposOf(c, plan);
+      const pinned = (c in pins) ? gs.filter(g => g.grupo === pins[c]) : [];
+      opts[c] = pinned.length ? pinned : gs;
+    }
     const conflicts = [];
     for (let i = 0; i < scheduled.length; i++) for (let j = i + 1; j < scheduled.length; j++) {
       const a = scheduled[i], b = scheduled[j];
-      if (opts[a].every(sa => opts[b].every(sb => secConflict(sa, sb))))
+      if (opts[a].length && opts[b].length && opts[a].every(ga => opts[b].every(gb => grConflict(ga, gb))))
         conflicts.push({ a, b, reason: "todas las secciones se cruzan en horario" });
     }
     const order = scheduled.slice().sort((a, b) => opts[a].length - opts[b].length);
     const chosen = {};
-    const compatible = (code, sec) => order.every(o => !(o in chosen) || !secConflict(sec, chosen[o]));
+    const compatible = sec => order.every(o => !(o in chosen) || !grConflict(sec, chosen[o]));
     function bt(idx) {
       if (idx === order.length) return true;
       const c = order[idx];
-      for (const sec of opts[c]) if (compatible(c, sec)) { chosen[c] = sec; if (bt(idx + 1)) return true; delete chosen[c]; }
+      for (const sec of opts[c]) if (compatible(sec)) { chosen[c] = sec; if (bt(idx + 1)) return true; delete chosen[c]; }
       return false;
     }
     const feasible = bt(0);
     const assignment = feasible ? order.map(c => ({ code: c, section: chosen[c] })) : [];
-    return { feasible, assignment, conflicts, scheduled, unscheduled,
-             is_sample: O.scheduleIsSample(), have_schedules: Object.keys(SCHEDULES).length > 0 };
+    const options = {}; for (const c of scheduled) options[c] = gruposOf(c, plan);  // all grupos, for the UI switcher
+    return { feasible, assignment, conflicts, scheduled, unscheduled, options,
+             is_sample: false, have_schedules: Object.keys(SCHEDULES).length > 0 };
   };
 
   // ---------- transcript parser (mirrors engine.parse_transcript) ----------

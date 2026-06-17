@@ -113,14 +113,23 @@
   .cal .cell{position:relative;height:15px;border-top:1px solid var(--bg-soft)}
   .cal .ev{position:absolute;left:1px;right:1px;border-radius:3px;font-size:8px;line-height:1.05;color:#fff;padding:1px 2px;overflow:hidden;z-index:1}
   #sched-secs{padding:4px 14px 2px}
-  .ssec{display:flex;gap:8px;padding:7px 0;border-bottom:1px solid var(--border)}
-  .ssec:last-child{border-bottom:none}
-  .ssec .dot{width:8px;height:8px;border-radius:2px;margin-top:3px;flex-shrink:0}
-  .ssec .body{flex:1;min-width:0}
-  .ssec .nm{font-size:12px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .ssec .meta{font-size:10px;color:var(--text-4);margin-top:1px}
-  .ssec .prof{font-size:11px;color:var(--text-2);margin-top:1px}
-  .ssec .prof.tbd{color:var(--text-4);font-style:italic}
+  .cgrp{padding:9px 0;border-bottom:1px solid var(--border)}.cgrp:last-child{border-bottom:none}
+  .cgh{display:flex;align-items:center;gap:7px}
+  .cgh .dot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+  .cgh .cgn{flex:1;min-width:0;font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .cgh .gcount{font-size:10px;color:var(--text-4);background:var(--bg-2);padding:1px 6px;border-radius:9px;flex-shrink:0}
+  .cgh .gauto{font-size:10px;color:var(--accent);text-decoration:underline;flex-shrink:0}
+  .gopts{margin-top:5px;display:flex;flex-direction:column;gap:4px}
+  .gopt{border:1px solid var(--border);border-radius:7px;padding:5px 8px;background:#fff}
+  .gopt.gclk{cursor:pointer}.gopt.gclk:hover{border-color:var(--accent);background:var(--accent-tint)}
+  .gopt.gsel{border-color:var(--accent);background:var(--accent-tint)}
+  .gopt .gh{display:flex;align-items:center;gap:6px;justify-content:space-between}
+  .gopt .gn{font-size:11px;font-weight:600;color:var(--text-2)}
+  .gopt .gtag{font-size:9px;font-weight:600;letter-spacing:.4px;text-transform:uppercase;color:#fff;background:var(--accent);padding:1px 6px;border-radius:9px}
+  .gopt .gpick{font-size:10px;color:var(--accent)}
+  .gopt .gt{font-size:11px;color:var(--text-2);margin-top:2px;line-height:1.45}
+  .gopt .gt .actlbl{font-size:9px;font-weight:600;letter-spacing:.3px;text-transform:uppercase;color:var(--text-4)}
+  .gopt .gm{font-size:10px;color:var(--text-4);margin-top:1px}
   .plan-list{padding:14px}
   .plan-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}.plan-row:last-child{border-bottom:none}
   .plan-row .nm{flex:1;font-size:12px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -211,7 +220,7 @@
 <script src="oraculo.js"></script>
 <script>
 const $=s=>document.querySelector(s);
-let STATE=null,REQUIRED=[],LOCKED=[],ELECTIVES=[],TRANSCRIPT=[],ELEC_TOTAL=0,SEARCH='',SEL=new Set(),SIM=null,READY=false;
+let STATE=null,REQUIRED=[],LOCKED=[],ELECTIVES=[],TRANSCRIPT=[],ELEC_TOTAL=0,SEARCH='',SEL=new Set(),SIM=null,READY=false,PINS={};
 (async function boot(){
   try{
     const names=['catalog.json','course_stats.json','plans.json','schedules.json','models.json','malla_plan.json'];
@@ -332,9 +341,12 @@ function renderTranscript(list){
 
 async function refreshSim(){
   const basket=[...SEL];
+  Object.keys(PINS).forEach(c=>{if(!SEL.has(c))delete PINS[c];});   // drop pins for deselected courses
   if(!basket.length){SIM=null;renderPanel();return;}
-  SIM=Oraculo.simulate(STATE,basket);renderPanel();
+  SIM=Oraculo.simulate(STATE,basket,PINS);renderPanel();
 }
+function pinGrupo(code,grupo){PINS[code]=grupo;refreshSim();}
+function unpinGrupo(code){delete PINS[code];refreshSim();}
 
 function renderPanel(){
   if(!SIM||!SIM.n_courses){
@@ -384,45 +396,71 @@ function renderSchedule(sc){
   }
   html+='</div>';
   $('#calendar').innerHTML=html;
-  // place events from the assignment
+  const fmtH=m=>`${m/60|0}:${String(m%60).padStart(2,'0')}`;
+  const ABBR={'Lunes':'Lun','Martes':'Mar','Miércoles':'Mié','Jueves':'Jue','Viernes':'Vie','Sábado':'Sáb'};
+  const nameOf=code=>(REQUIRED.concat(ELECTIVES).find(x=>x.code===code)||{}).name||code;
+  // one color per scheduled course, shared by the calendar and the section list
+  const colorOf={}; sc.scheduled.forEach((c,i)=>colorOf[c]=CALPAL[i%CALPAL.length]);
+  // place the chosen grupo's slots on the calendar
   if(sc.feasible){
-    const colorOf={}; sc.assignment.forEach((a,i)=>colorOf[a.code]=CALPAL[i%CALPAL.length]);
     sc.assignment.forEach(a=>{
-      const nm=(REQUIRED.concat(ELECTIVES).find(x=>x.code===a.code)||{}).name||a.code;
       a.section.slots.forEach(sl=>{
         const top=((sl.inicio-H0*60)/15)*15, h=((sl.fin-sl.inicio)/15)*15;
-        const colIdx=DAYS.indexOf(sl.dia); if(colIdx<0)return;
+        if(DAYS.indexOf(sl.dia)<0)return;
         const anchor=document.querySelector(`.cell[data-d="${sl.dia}"][data-m="${H0*60}"]`);
         if(!anchor)return;
         const ev=document.createElement('div');ev.className='ev';
         ev.style.cssText=`top:${top}px;height:${h-1}px;background:${colorOf[a.code]}`;
-        ev.textContent=title(nm).slice(0,16);
+        ev.textContent=title(nameOf(a.code)).slice(0,16);
         anchor.appendChild(ev);
       });
     });
   }
-  // section list: grupo, días/horas, sede, professor
-  const fmtH=m=>`${m/60|0}:${String(m%60).padStart(2,'0')}`;
-  const ABBR={'Lunes':'Lun','Martes':'Mar','Miércoles':'Mié','Jueves':'Jue','Viernes':'Vie','Sábado':'Sáb'};
-  let secs='';
-  if(sc.feasible){
-    const colorOf={}; sc.assignment.forEach((a,i)=>colorOf[a.code]=CALPAL[i%CALPAL.length]);
-    secs=sc.assignment.map(a=>{
-      const nm=(REQUIRED.concat(ELECTIVES).find(x=>x.code===a.code)||{}).name||a.code;
-      const s=a.section;
-      const times=s.slots.map(sl=>`${ABBR[sl.dia]||sl.dia} ${fmtH(sl.inicio)}-${fmtH(sl.fin)}`).join(' · ');
-      const sede=(s.slots.find(sl=>sl.sede)||{}).sede;
-      const prof=s.profesor?`<div class="prof">${title(s.profesor)}</div>`:`<div class="prof tbd">Profesor por asignar</div>`;
-      return `<div class="ssec"><div class="dot" style="background:${colorOf[a.code]}"></div><div class="body">
-        <div class="nm">${title(nm)} <span style="color:var(--text-4);font-weight:400">G${s.grupo}</span></div>
-        <div class="meta">${times}${sede?' · '+title(sede):''}</div>${prof}</div></div>`;
+  // per-course grupo list: the chosen grupo is highlighted; the others are clickable to switch
+  const ACTLBL={'TEORICA':'','PRACTICA':'Práctica','TEORICO PRACTICA':'Teórico-práctica','LABORATORIO':'Laboratorio',
+    'MONITORIA':'Monitoría','TUTORIA':'Tutoría','TALLER':'Taller','FACILITACION':'Facilitación','SIMULACIÓN':'Simulación'};
+  const grupoTimes=g=>{
+    const byAct={}; g.slots.forEach(sl=>{(byAct[sl.actividad]=byAct[sl.actividad]||[]).push(sl);});
+    return Object.entries(byAct).map(([act,sls])=>{
+      const t=sls.map(sl=>`${ABBR[sl.dia]||sl.dia} ${fmtH(sl.inicio)}-${fmtH(sl.fin)}`).join(' · ');
+      const lbl=ACTLBL[act]!==undefined?ACTLBL[act]:title(act);
+      return (lbl?`<span class="actlbl">${lbl}</span> `:'')+t;
+    }).join('<br>');
+  };
+  const grupoMeta=g=>{
+    const sede=(g.slots.find(sl=>sl.sede)||{}).sede;
+    const prof=(g.profesores||[]).map(title).join(', ');
+    return [sede?title(sede):'', prof||'Profesor por asignar'].filter(Boolean).join(' · ');
+  };
+  const secs=sc.scheduled.map(code=>{
+    const chosen=(sc.assignment.find(a=>a.code===code)||{}).section;
+    const all=sc.options[code]||[];
+    const multi=all.length>1, pinned=PINS.hasOwnProperty(code);
+    const rows=all.map((g,gi)=>{
+      const isSel=chosen&&g.grupo===chosen.grupo;
+      const tag=isSel?'<span class="gtag">elegido</span>':(multi?'<span class="gpick">elegir</span>':'');
+      return `<div class="gopt${isSel?' gsel':''}${multi&&!isSel?' gclk':''}" data-code="${code}" data-gi="${gi}">
+        <div class="gh"><span class="gn">Grupo ${g.grupo??'·'}</span>${tag}</div>
+        <div class="gt">${grupoTimes(g)}</div><div class="gm">${grupoMeta(g)}</div></div>`;
     }).join('');
-  }
+    return `<div class="cgrp"><div class="cgh"><span class="dot" style="background:${colorOf[code]}"></span>
+      <span class="cgn">${title(nameOf(code))}</span>
+      ${multi?`<span class="gcount">${all.length} grupos</span>`:''}
+      ${pinned?`<a href="#" class="gauto" data-unpin="${code}">auto</a>`:''}</div>
+      <div class="gopts">${rows}</div></div>`;
+  }).join('');
   $('#sched-secs').innerHTML=secs;
+  $('#sched-secs').onclick=e=>{
+    const un=e.target.closest('[data-unpin]'); if(un){e.preventDefault();unpinGrupo(un.dataset.unpin);return;}
+    const el=e.target.closest('.gclk'); if(!el)return;
+    const g=(SIM.schedule.options[el.dataset.code]||[])[+el.dataset.gi]; if(g)pinGrupo(el.dataset.code,g.grupo);
+  };
   const notes=[];
-  if(sc.conflicts.length) notes.push('Choque irresoluble: '+sc.conflicts.map(c=>`${title((REQUIRED.concat(ELECTIVES).find(x=>x.code===c.a)||{}).name||c.a)} ↔ ${title((REQUIRED.concat(ELECTIVES).find(x=>x.code===c.b)||{}).name||c.b)}`).join(', '));
+  if(sc.conflicts.length) notes.push('Choque irresoluble: '+sc.conflicts.map(c=>`${title(nameOf(c.a))} ↔ ${title(nameOf(c.b))}`).join(', '));
+  else if(!sc.feasible) notes.push("Con los grupos fijados no hay horario sin choques. Usa 'auto' para liberar uno.");
+  if(Object.keys(PINS).length) notes.push('Toca otro grupo para cambiarlo; "auto" deja que Oráculo elija.');
+  else if(sc.scheduled.some(c=>(sc.options[c]||[]).length>1)) notes.push('Toca un grupo para fijarlo.');
   if(sc.unscheduled.length) notes.push(sc.unscheduled.length+' sin horario publicado para 2026-2S');
-  if(sc.is_sample) notes.push('Horarios ilustrativos. Los reales de 2026-2S se publican en julio.');
   $('#sched-note').innerHTML=notes.join(' · ');
 }
 

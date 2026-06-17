@@ -61,8 +61,10 @@ class H(BaseHTTPRequestHandler):
             if self.path == "/api/simulate":
                 payload = json.loads(self._body() or "{}")
                 basket = payload.get("basket", [])
-                sim = engine.simulate(payload.get("state", {}), basket)
-                sim["schedule"] = scheduler.solve(basket)   # conflict solver
+                state = payload.get("state", {})
+                sim = engine.simulate(state, basket)
+                sim["schedule"] = scheduler.solve(basket, state.get("plan"),
+                                                  payload.get("pins"))   # conflict solver, plan-specific
                 return self._send(200, sim)
             return self._send(404, {"error": "unknown route"})
         except Exception as e:
