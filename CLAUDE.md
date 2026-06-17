@@ -42,7 +42,7 @@ oraculo/
     server.py        # stdlib JSON server: POST /api/analyze, POST /api/simulate (+schedule)
     static/index.html# difficulty-first UI (Disponibles/Electivas/Cursadas tabs, planner+calendar)
   pipeline/          # offline model build (run in this order; run_all.py does it)
-    scrape_schedules.py  # (network) per-section horarios -> model/schedules.json (--sample to demo)
+    scrape_schedules.py  # (network) real 2026-2S horarios per (plan,course) -> model/schedules.json (plan-keyed)
     scrape_catalog.py    # 0. (network, optional) scrape official course names ->
     #                          data/url_catalog.json — all 54 pregrado plans, 1288 codes
     build_and_train.py   # 1. fail classifier (HistGBM) -> model.joblib, course_stats.json
@@ -99,17 +99,29 @@ bundle. Key endpoints (Bearer token):
   (`codAsignatura, nombre, creditos`) — same shape as the legacy `data/Cursos/*.txt`.
 - `GET /asignaturas2?tipo=PSC&tipoElectiva=GEN` (and `=HM`) — university-wide elective pools.
 
-## Schedule data — API mapped, times publish ~July (`pipeline/scrape_schedules.py`)
-Per-section class times come from a 3-call chain (Bearer `tokenApiPublic`):
+## Schedule data — REAL 2026-2S, PLAN-SPECIFIC (`pipeline/scrape_schedules.py`)
+Per-section class times come from a 4-call chain (Bearer `tokenApiPublic`):
 `asignaturaDetalle?codigo=C&opcionDetalle=DetalleActividad&planEstudio=P` → actividades
-(+`codActividad`) → `&opcionDetalle=DetalleGrupo&codActividad=A` → grupos (codGrupo, grupo#,
-modalidad) → `&opcionDetalle=DetalleHorario&codActividad=A` → día/hora/profesor/sede/aula.
-**As of 2026-06 the offering rolled to 2026-2S (Jul 27–Nov 28) with `horarios: null`** — next
-term's timetables aren't loaded yet (DetalleHorario 500s; verified 0/20 courses have times).
-So `schedules.json` is currently filled with `--sample` representative slots (clearly flagged
-`is_sample`); rerun the scraper without `--sample` once the term publishes to get real times.
-`scheduler.solve(codes)` is the conflict CSP (one section per course, no slot overlap, via
-backtracking); it reports the blocking pair when infeasible. Wired into `/api/simulate`.
+(+`codActividad`) → `&opcionDetalle=DetalleFecha&codActividad=A` → offering period
+(fechaInicio/Fin, Jul 27–Nov 28) → `&opcionDetalle=DetalleGrupo&codActividad=A` → grupos
+(codGrupo, grupo#, modalidad) → `&opcionDetalle=DetalleHorario&codActividad=A&codGrupo=G&fechaIni=..&fechaFin=..`
+→ día/hora/profesor/sede/aula. **DetalleHorario 500s unless you pass `codGrupo` + the date
+range** (`fechaIni`/`fechaFin` from DetalleFecha) — that was the bug that made it look like
+times weren't published.
+- **Schedules are PLAN-SPECIFIC**: the SAME 8-digit code returns DIFFERENT horarios per
+  `planEstudio` (e.g. `11310003` has 3 sessions under MA03, 0 under ADM1). So the scraper
+  iterates every **(plan, course)** pair and `schedules.json` is keyed by plan:
+  `{plan: {code: {period, grupos:[{grupo,modalidad,idioma,capacidad,profesores,slots:[{dia,inicio,fin,sede,aula,profesor,actividad}]}]}}}`.
+  Do NOT key schedules by code alone (that showed students another program's times).
+- A student enrolls in one **grupo**, which bundles that group's weekly slots across all its
+  activities (teórica + práctica/lab/monitoría); each slot is tagged with its `actividad`.
+  Slots are grouped by grupo NUMBER. 2015 course-schedules across 52 plans, 7682 grupos, ~90%
+  with a named professor (rest = "Profesor por asignar" pre-term). Re-run to refresh as more fill in.
+`scheduler.solve(codes, plan, pins)` is the conflict CSP (one grupo per course, no slot overlap,
+via backtracking) keyed by the student's plan; `pins={code: grupo#}` honors a user-chosen grupo;
+returns `options` (all grupos per course) so the UI can switch. Reports the blocking pair when
+infeasible. Wired into `/api/simulate`. The static UI shows each course's grupos under the
+calendar with the chosen one marked and the rest tappable to switch (re-solves live).
 - (`/agrupaciones` 500s for the public token — the semester/tipology structure isn't
   reachable; we get the flat plan + pool course lists, enough for names + name-sequences.)
 The scrape yields **1545 named current codes** (54 plans + GEN + HM pools) → names render for
