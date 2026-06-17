@@ -112,6 +112,15 @@
   .cal .hr{font-size:8px;color:var(--text-4);text-align:right;padding-right:3px}
   .cal .cell{position:relative;height:15px;border-top:1px solid var(--bg-soft)}
   .cal .ev{position:absolute;left:1px;right:1px;border-radius:3px;font-size:8px;line-height:1.05;color:#fff;padding:1px 2px;overflow:hidden;z-index:1}
+  #sched-secs{padding:4px 14px 2px}
+  .ssec{display:flex;gap:8px;padding:7px 0;border-bottom:1px solid var(--border)}
+  .ssec:last-child{border-bottom:none}
+  .ssec .dot{width:8px;height:8px;border-radius:2px;margin-top:3px;flex-shrink:0}
+  .ssec .body{flex:1;min-width:0}
+  .ssec .nm{font-size:12px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ssec .meta{font-size:10px;color:var(--text-4);margin-top:1px}
+  .ssec .prof{font-size:11px;color:var(--text-2);margin-top:1px}
+  .ssec .prof.tbd{color:var(--text-4);font-style:italic}
   .plan-list{padding:14px}
   .plan-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}.plan-row:last-child{border-bottom:none}
   .plan-row .nm{flex:1;font-size:12px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -187,6 +196,7 @@
           <div class="card" id="sched-card" style="margin-top:14px;display:none">
             <div class="sched-head"><span class="section-label" style="margin:0">Horario</span><span id="sched-banner"></span></div>
             <div id="calendar"></div>
+            <div id="sched-secs"></div>
             <div class="note" id="sched-note"></div>
           </div>
           <p class="note" style="text-align:center;border:none"><a href="#" id="reset">subir otro PDF</a></p>
@@ -390,9 +400,27 @@ function renderSchedule(sc){
       });
     });
   }
+  // section list: grupo, días/horas, sede, professor
+  const fmtH=m=>`${m/60|0}:${String(m%60).padStart(2,'0')}`;
+  const ABBR={'Lunes':'Lun','Martes':'Mar','Miércoles':'Mié','Jueves':'Jue','Viernes':'Vie','Sábado':'Sáb'};
+  let secs='';
+  if(sc.feasible){
+    const colorOf={}; sc.assignment.forEach((a,i)=>colorOf[a.code]=CALPAL[i%CALPAL.length]);
+    secs=sc.assignment.map(a=>{
+      const nm=(REQUIRED.concat(ELECTIVES).find(x=>x.code===a.code)||{}).name||a.code;
+      const s=a.section;
+      const times=s.slots.map(sl=>`${ABBR[sl.dia]||sl.dia} ${fmtH(sl.inicio)}-${fmtH(sl.fin)}`).join(' · ');
+      const sede=(s.slots.find(sl=>sl.sede)||{}).sede;
+      const prof=s.profesor?`<div class="prof">${title(s.profesor)}</div>`:`<div class="prof tbd">Profesor por asignar</div>`;
+      return `<div class="ssec"><div class="dot" style="background:${colorOf[a.code]}"></div><div class="body">
+        <div class="nm">${title(nm)} <span style="color:var(--text-4);font-weight:400">G${s.grupo}</span></div>
+        <div class="meta">${times}${sede?' · '+title(sede):''}</div>${prof}</div></div>`;
+    }).join('');
+  }
+  $('#sched-secs').innerHTML=secs;
   const notes=[];
   if(sc.conflicts.length) notes.push('Choque irresoluble: '+sc.conflicts.map(c=>`${title((REQUIRED.concat(ELECTIVES).find(x=>x.code===c.a)||{}).name||c.a)} ↔ ${title((REQUIRED.concat(ELECTIVES).find(x=>x.code===c.b)||{}).name||c.b)}`).join(', '));
-  if(sc.unscheduled.length) notes.push(sc.unscheduled.length+' sin horario publicado');
+  if(sc.unscheduled.length) notes.push(sc.unscheduled.length+' sin horario publicado para 2026-2S');
   if(sc.is_sample) notes.push('Horarios ilustrativos. Los reales de 2026-2S se publican en julio.');
   $('#sched-note').innerHTML=notes.join(' · ');
 }
