@@ -19,6 +19,7 @@
     for (const r of d.stats) STATS[r.crs] = r;
     PLANS = d.plans;
     SCHEDULES = d.schedules || {};
+    NAME_STATS = null;                 // rebuild the name->stats index for the new data
     MODELS = d.models;
     GLOBAL_FAIL = MODELS.fail.global_fail;
     GMEAN = MODELS.grade.global_mean_grade;
@@ -33,8 +34,35 @@
   const canon = norm;
   const PLAN_NAMES = { MA03: "MATEMATICAS APLICADAS Y CIENCIAS DE LA COMPUTACION" };
 
+  // canonical course-name -> panel-stats code (highest n): lets a code the panel never
+  // recorded borrow a SAME-NAMED course's history (official plans list per-site/group
+  // variants like 'Bloque Clínico I - Hospital X' that the panel stored under one parent).
+  let NAME_STATS = null;
+  function nameStatsIndex() {
+    if (NAME_STATS === null) {
+      NAME_STATS = {};
+      for (const code in STATS) {
+        const s = STATS[code]; if ((s.n || 0) < 25) continue;
+        const k = norm((CATALOG[code] || {}).name);
+        if (k && (!(k in NAME_STATS) || s.n > STATS[NAME_STATS[k]].n)) NAME_STATS[k] = code;
+      }
+    }
+    return NAME_STATS;
+  }
+  function statsFor(code) {
+    if (STATS[code]) return { s: STATS[code], borrowed: false };
+    const nm = (CATALOG[code] || {}).name;
+    if (nm) {
+      const idx = nameStatsIndex(), base = nm.split(" - ")[0];
+      for (const key of [norm(nm), norm(base)]) {
+        const pc = key && idx[key];
+        if (pc) return { s: STATS[pc], borrowed: true };
+      }
+    }
+    return { s: {}, borrowed: false };
+  }
   function cs(code) {
-    const c = CATALOG[code] || {}, s = STATS[code] || {};
+    const c = CATALOG[code] || {}, { s, borrowed } = statsFor(code);
     return {
       name: c.name || null,
       credits: c.credits != null ? c.credits : 3.0,
@@ -44,6 +72,7 @@
       stars_global: s.stars != null ? s.stars : 3,
       difficulty_raw: s.difficulty_raw != null ? s.difficulty_raw : 0.0,
       n: s.n != null ? s.n : 0,
+      borrowed, has_data: Object.keys(s).length > 0,
     };
   }
   const hasName = c => !!cs(c).name;
@@ -133,6 +162,8 @@
   }
   function confidence(code) {
     const d = cs(code);
+    if (!d.has_data) return "none";       // no panel history (nor a same-named parent)
+    if (d.borrowed) return "med";         // inferred from a same-named parent course
     if (d.n < 25 || d.std_grade > 1.4) return "low";
     if (d.n < 80) return "med";
     return "high";
@@ -211,10 +242,14 @@
   }
   function scoreItems(items, state) {
     for (const it of items) {
-      it.risk = round(predFail(it.code, state), 4);
-      it.exp_grade = round(predGrade(it.code, state), 2);
-      it.stars_personal = personalStars(it.stars, state, it.exp_grade);
       it.confidence = confidence(it.code);
+      if (cs(it.code).has_data) {
+        it.risk = round(predFail(it.code, state), 4);
+        it.exp_grade = round(predGrade(it.code, state), 2);
+        it.stars_personal = personalStars(it.stars, state, it.exp_grade);
+      } else {                            // no history: don't fabricate a grade/difficulty
+        it.risk = null; it.exp_grade = null; it.stars = null; it.stars_personal = null;
+      }
     }
   }
   const round = (x, d = 0) => { const m = Math.pow(10, d); return Math.round(x * m) / m; };
@@ -237,7 +272,7 @@
     electives.sort((a, b) => norm(a.name || a.code) < norm(b.name || b.code) ? -1 : 1);
     const n_electives_total = electives.length;
     scoreItems(required.concat(locked).concat(electives), state);
-    required.sort((a, b) => (a.typ_sem || 99) - (b.typ_sem || 99) || b.stars - a.stars);
+    required.sort((a, b) => (a.typ_sem || 99) - (b.typ_sem || 99) || (b.stars || 0) - (a.stars || 0));
     locked.sort((a, b) => (a.typ_sem || 99) - (b.typ_sem || 99));
 
     const pdf_names = state.pdf_names || {}, grades = state.grades || {}, passfail = new Set(state.passfail || []);
@@ -268,24 +303,35 @@
     const ctx = planContext(state);
     const cuts = ctx.has_plan ? planStarCuts(ctx.core.concat(ctx.elective)) : null;
     const gpa = state.cumgpa || GMEAN;
-    let effort = 0, crSum = 0, wsum = 0, nHard = 0;
+    let effort = 0, crSum = 0, gpaCr = 0, gpaW = 0;
     const items = [];
     for (const code of basket) {
-      const d = cs(code), g = predGrade(code, state), intr = intrinsicStars(code, cuts);
-      const sp = personalStars(intr, state, g);
-      if (d.fail_rate >= HARD_THRESHOLD) nHard++;
-      effort += d.credits * STAR_EFFORT[sp]; crSum += d.credits; wsum += d.credits * g;
-      items.push({ code, name: d.name, credits: d.credits, stars: sp, stars_intrinsic: intr,
-        exp_grade: round(g, 2), grade_band: round(MODELS.grade.resid_std, 2),
-        gpa_delta: round(g - gpa, 2), risk: round(predFail(code, state), 4), confidence: confidence(code) });
+      const d = cs(code);
+      crSum += d.credits;
+      if (d.has_data) {
+        const g = predGrade(code, state), intr = intrinsicStars(code, cuts);
+        const sp = personalStars(intr, state, g);
+        effort += d.credits * STAR_EFFORT[sp]; gpaCr += d.credits; gpaW += d.credits * g;
+        items.push({ code, name: d.name, credits: d.credits, stars: sp, stars_intrinsic: intr,
+          exp_grade: round(g, 2), grade_band: round(MODELS.grade.resid_std, 2),
+          gpa_delta: round(g - gpa, 2), risk: round(predFail(code, state), 4), confidence: confidence(code) });
+      } else {                            // no history: count load, but no fabricated grade/GPA impact
+        effort += d.credits * STAR_EFFORT[3];
+        items.push({ code, name: d.name, credits: d.credits, stars: null, stars_intrinsic: null,
+          exp_grade: null, grade_band: round(MODELS.grade.resid_std, 2),
+          gpa_delta: null, risk: null, confidence: "none" });
+      }
     }
-    items.sort((a, b) => b.stars - a.stars || a.exp_grade - b.exp_grade);
-    const predGpa = crSum ? wsum / crSum : null;
-    const pAny = 1 - items.reduce((acc, i) => acc * (1 - i.risk), 1);
+    items.sort((a, b) => (b.stars || 0) - (a.stars || 0) || (a.exp_grade != null ? a.exp_grade : 9) - (b.exp_grade != null ? b.exp_grade : 9));
+    const predGpa = gpaCr ? gpaW / gpaCr : null;
+    const risks = items.filter(i => i.risk != null);
+    const pAny = risks.length ? 1 - risks.reduce((acc, i) => acc * (1 - i.risk), 1) : 0;
     const warnings = [];
+    const nNoData = items.filter(i => i.exp_grade == null).length;
+    if (nNoData) warnings.push(`${nNoData} asignatura(s) sin histórico en la base: se muestran sin nota ni dificultad estimadas y no afectan el promedio proyectado.`);
     if (crSum > MAX_FEASIBLE_CREDITS || items.length > MAX_FEASIBLE_COURSES)
       warnings.push(`Carga no viable: ${items.length} asignaturas / ${Math.round(crSum)} créditos exceden el máximo registrable (~${MAX_FEASIBLE_CREDITS} créditos).`);
-    const hard = items.filter(i => i.stars >= 4);
+    const hard = items.filter(i => i.stars && i.stars >= 4);
     if (hard.length >= 3) warnings.push(`${hard.length} asignaturas de alta dificultad en simultáneo, semestre muy exigente en tiempo de estudio.`);
     return {
       courses: items, n_courses: items.length, total_credits: round(crSum, 1),
@@ -293,7 +339,7 @@
       pred_gpa: predGpa != null ? round(predGpa, 2) : null,
       gpa_delta: predGpa != null ? round(predGpa - gpa, 2) : null, cum_gpa: gpa,
       p_any_fail: round(pAny, 4), feasible: !warnings.some(w => w.includes("no viable")),
-      warnings, drivers: items.filter(i => i.stars >= 4).slice(0, 2).map(i => i.name),
+      warnings, drivers: items.filter(i => i.stars && i.stars >= 4).slice(0, 2).map(i => i.name),
       schedule: O.schedule(basket, state.plan, pins),
     };
   };

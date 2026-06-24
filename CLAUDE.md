@@ -159,8 +159,16 @@ false locks), which is the safe default.
   breaks on ~1 in 5 files; needs layout-aware extraction (pdfplumber, not installed). When
   it fails, `area_gpa` falls back to overall GPA (model handles NaN).
 - **Professor signal unusable** — constant hash in the panel (`col3`).
-- **Low-n / seminar courses** give shaky grade predictions (flagged via `confidence`);
-  recommended fix = shrink predictions toward `area_gpa` for low-n courses.
+- **Courses with no panel history** (e.g. Medicina's per-hospital/per-group clinical
+  variants, many GEN/HM electives): `_cs` no longer fabricates a generic prior (the bug that
+  made every Medicina hospital practice show ~4.3). Two-step handling in `engine.py` +
+  `oraculo.js` (kept in parity): (1) **canonical-name fallback** (`_stats_for`/`statsFor`) —
+  a code missing from the panel borrows the stats of a SAME-NAMED parent course (full name,
+  then name with the `" - <site/group>"` suffix stripped), flagged `borrowed`/confidence
+  `"med"`; (2) if still no match, the course is `has_data=False` → grade/stars are `None`
+  (`confidence="none"`), shown as an empty state ("sin histórico" / "·"), excluded from the
+  projected GPA (separate `gpa_cr`/`gpa_w` denominator) but still counted toward credits/load
+  (neutral 3-star effort), with a semester warning. Low-n (n<25) still flags `confidence` low.
 
 ## Related docs
 - `Oraculo-Solicitud-Panel.tex/.pdf` — the formal data-access request to the institution.

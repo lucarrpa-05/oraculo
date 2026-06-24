@@ -64,6 +64,7 @@
   .c-sub .code{font-family:'JetBrains Mono',monospace}
   .stars{letter-spacing:1px;font-size:12px;line-height:1;white-space:nowrap}
   .stars .on{color:var(--star)}.stars .off{color:var(--border-strong)}
+  .nodata{color:var(--text-4)}.exp.nodata{font-weight:400}
   .c-right{display:flex;flex-direction:column;align-items:flex-end;flex-shrink:0;gap:3px;min-width:74px}
   .exp{font-weight:600;font-size:14px;font-variant-numeric:tabular-nums}
   .exp small{font-weight:400;color:var(--text-4);font-size:10px}
@@ -222,8 +223,10 @@ async function upload(f){
     drop.innerHTML='<div class="ico">↑</div><h3>Arrastra tu Historia Académica aquí</h3><p>o <span class="browse">selecciona el archivo</span> · PDF</p>';}
 }
 
-const stars=(n,max=5,cls='stars')=>`<span class="${cls}"><span class="on">${'★'.repeat(n)}</span><span class="off">${'★'.repeat(max-n)}</span></span>`;
-const dots=n=>`<span class="effort">${'●'.repeat(n)}${'○'.repeat(5-n)}</span>`;
+const stars=(n,max=5,cls='stars')=> n==null
+  ? `<span class="${cls} nodata" title="Sin histórico en la base">·</span>`
+  : `<span class="${cls}"><span class="on">${'★'.repeat(n)}</span><span class="off">${'★'.repeat(max-n)}</span></span>`;
+const dots=n=> n==null ? '' : `<span class="effort">${'●'.repeat(n)}${'○'.repeat(5-n)}</span>`;
 const initials=n=>!n?'·':n.split(' ').filter(Boolean).slice(0,2).map(w=>w[0]).join('').toUpperCase();
 const SMALLW=new Set(['de','del','la','las','los','el','y','e','o','u','en','a','con','para','por','sin']);
 function title(s){
@@ -264,13 +267,17 @@ function renderLists(){
 
 function courseRow(c){
   const risk=c.risk>=0.08?`<span class="riskdot">· riesgo ${(c.risk*100).toFixed(0)}%</span>`:'';
-  const conf=c.confidence!=='high'?`<span class="conf">datos ${c.confidence==='low'?'limitados':'parciales'}</span>`:'';
+  const conf=c.confidence==='none'?`<span class="conf">sin histórico</span>`
+    :(c.confidence!=='high'?`<span class="conf">datos ${c.confidence==='low'?'limitados':'parciales'}</span>`:'');
   const sem=c.typ_sem?`<span class="typsem">· sem. ${c.typ_sem} típico</span>`:'';
+  const right=c.exp_grade!=null
+    ? `<div class="exp">${c.exp_grade}<small> nota</small></div>${dots(c.stars_personal)}`
+    : `<div class="exp nodata">·<small> sin dato</small></div>`;
   return `<div class="course ${SEL.has(c.code)?'sel':''}" data-code="${c.code}">
     <div class="chk">${SEL.has(c.code)?'✓':''}</div>
     <div class="c-body"><div class="c-name">${cname(c)}</div>
       <div class="c-sub">${stars(c.stars)} <span class="code">${c.code}</span> · ${c.credits} créd ${sem} ${risk} ${conf}</div></div>
-    <div class="c-right"><div class="exp">${c.exp_grade}<small> nota</small></div>${dots(c.stars_personal)}</div>
+    <div class="c-right">${right}</div>
   </div>`;
 }
 function renderLocked(list){
@@ -334,8 +341,8 @@ function renderPanel(){
     const bad=/no viable/.test(w);
     return `<div class="warn-box ${bad?'bad':''}"><span>${bad?'⛔':'⚠'}</span><span>${w}</span></div>`;}).join('');
   $('#plan-list').innerHTML=SIM.courses.map(c=>`<div class="plan-row">
-    <div class="nm">${title(c.name)} <span class="st">${'★'.repeat(c.stars)}</span></div>
-    <div class="rk">${c.exp_grade}<small>esperada ±${c.grade_band}</small></div></div>`).join('');
+    <div class="nm">${title(c.name)} <span class="st">${c.stars?'★'.repeat(c.stars):''}</span></div>
+    <div class="rk">${c.exp_grade!=null?`${c.exp_grade}<small>esperada ±${c.grade_band}</small>`:'<span class="nodata">sin histórico</span>'}</div></div>`).join('');
   $('#foot-note').innerHTML=`El promedio proyectado pondera tu nota esperada por créditos. La dificultad del semestre
     refleja la carga total de esfuerzo (las materias difíciles pesan más). El histórico de esta base muestra poco
     efecto de la carga sobre el promedio, así que no inflamos artificialmente la caída de PGA.`;

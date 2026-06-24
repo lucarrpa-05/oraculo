@@ -145,8 +145,40 @@ def parse_transcript(pdf_bytes):
             "sem_next": (periods + 1) if periods else None}
 
 # ----------------------------------------------------------------------------
+_NAME_STATS = None
+def _name_stats_index():
+    """canonical course-name -> panel-stats code (highest n). Lets a code that the panel
+    never recorded borrow the history of a SAME-NAMED course. The official plans list many
+    per-site / per-group variants of one course (e.g. 'Bloque Clínico I - Hospital X - Grupo A')
+    that the panel only ever stored under a single parent code ('Bloque Clínico I')."""
+    global _NAME_STATS
+    if _NAME_STATS is None:
+        _NAME_STATS = {}
+        for code, s in STATS.items():
+            if s.get("n", 0) < 25:
+                continue
+            k = _canon(CATALOG.get(code, {}).get("name"))
+            if k and (k not in _NAME_STATS or s["n"] > STATS[_NAME_STATS[k]]["n"]):
+                _NAME_STATS[k] = code
+    return _NAME_STATS
+
+def _stats_for(code):
+    """Panel stats for a code; if the code itself isn't in the panel, fall back to a
+    same-named parent course (returns (stats_dict, borrowed?))."""
+    if code in STATS:
+        return STATS[code], False
+    nm = CATALOG.get(code, {}).get("name")
+    if nm:
+        idx = _name_stats_index()
+        base = nm.split(" - ")[0]                      # strip site/group suffix
+        for key in (_canon(nm), _canon(base)):
+            pc = key and idx.get(key)
+            if pc:
+                return STATS[pc], True
+    return {}, False
+
 def _cs(code):
-    s = STATS.get(code, {})
+    s, borrowed = _stats_for(code)
     c = CATALOG.get(code, {})
     return {
         "name": c.get("name"), "credits": c.get("credits", 3.0),
@@ -156,6 +188,8 @@ def _cs(code):
         "stars_global": int(s.get("stars", 3)),
         "difficulty_raw": float(s.get("difficulty_raw", 0.0)),
         "n": int(s.get("n", 0)),
+        "borrowed": borrowed,
+        "has_data": bool(s),
     }
 
 def _plan_star_cuts(plan_codes):
@@ -220,6 +254,10 @@ def _personal_stars(intrinsic, state, exp_grade):
 def _confidence(code, state):
     """How much to trust this course's grade/difficulty estimate."""
     cs = _cs(code)
+    if not cs["has_data"]:
+        return "none"                       # no panel history (nor a same-named parent)
+    if cs["borrowed"]:
+        return "med"                        # inferred from a same-named parent course
     if cs["n"] < 25 or cs["std_grade"] > 1.4:
         return "low"
     if cs["n"] < 80:
@@ -329,10 +367,17 @@ def _score_items(items, state):
     fails = _predict_fail(codes, state)
     grades = _predict_grade(codes, state)
     for it, p, g in zip(items, fails, grades):
-        it["risk"] = round(p, 4)
-        it["exp_grade"] = round(g, 2)
-        it["stars_personal"] = _personal_stars(it["stars"], state, g)
         it["confidence"] = _confidence(it["code"], state)
+        if _cs(it["code"])["has_data"]:
+            it["risk"] = round(p, 4)
+            it["exp_grade"] = round(g, 2)
+            it["stars_personal"] = _personal_stars(it["stars"], state, g)
+        else:
+            # no panel history (nor a same-named parent): don't fabricate a grade/difficulty
+            it["risk"] = None
+            it["exp_grade"] = None
+            it["stars"] = None
+            it["stars_personal"] = None
     return items
 
 def eligible(state):
@@ -355,7 +400,7 @@ def eligible(state):
     electives.sort(key=lambda x: norm(x["name"] or x["code"]))
     n_electives_total = len(electives)
     _score_items(required + locked + electives, state)
-    required.sort(key=lambda x: ((x["typ_sem"] or 99), -x["stars"]))
+    required.sort(key=lambda x: ((x["typ_sem"] or 99), -(x["stars"] or 0)))
     locked.sort(key=lambda x: (x["typ_sem"] or 99))
 
     # the student's parsed transcript: passed courses with grades (name from catalog,
@@ -386,28 +431,43 @@ def simulate(state, basket):
     cuts = _plan_star_cuts(ctx["core"] + ctx["elective"]) if ctx["has_plan"] else None
     fails = _predict_fail(basket, state)
     grades = _predict_grade(basket, state)
-    items, effort, cr_sum, wsum = [], 0.0, 0.0, 0.0
+    items, effort, cr_sum, gpa_cr, gpa_w = [], 0.0, 0.0, 0.0, 0.0
     gpa = state.get("cumgpa") or GMEAN
     for code, p, g in zip(basket, fails, grades):
-        cs = _cs(code); intr = _intrinsic_stars(code, cuts); sp = _personal_stars(intr, state, g)
-        effort += cs["credits"] * STAR_EFFORT[sp]
-        cr_sum += cs["credits"]; wsum += cs["credits"] * g
-        items.append({"code": code, "name": cs["name"], "credits": cs["credits"],
-                      "stars": sp, "stars_intrinsic": intr,
-                      "exp_grade": round(g, 2), "grade_band": round(RESID_STD, 2),
-                      "gpa_delta": round(g - gpa, 2), "risk": round(p, 4),
-                      "confidence": _confidence(code, state)})
-    items.sort(key=lambda x: (-x["stars"], x["exp_grade"]))
-    pred_gpa = wsum / cr_sum if cr_sum else None
+        cs = _cs(code)
+        cr_sum += cs["credits"]
+        if cs["has_data"]:
+            intr = _intrinsic_stars(code, cuts); sp = _personal_stars(intr, state, g)
+            effort += cs["credits"] * STAR_EFFORT[sp]
+            gpa_cr += cs["credits"]; gpa_w += cs["credits"] * g
+            items.append({"code": code, "name": cs["name"], "credits": cs["credits"],
+                          "stars": sp, "stars_intrinsic": intr,
+                          "exp_grade": round(g, 2), "grade_band": round(RESID_STD, 2),
+                          "gpa_delta": round(g - gpa, 2), "risk": round(p, 4),
+                          "confidence": _confidence(code, state)})
+        else:
+            # no panel history: count its credits/load but don't fabricate a grade or GPA impact
+            effort += cs["credits"] * STAR_EFFORT[3]   # neutral effort for an unknown course
+            items.append({"code": code, "name": cs["name"], "credits": cs["credits"],
+                          "stars": None, "stars_intrinsic": None,
+                          "exp_grade": None, "grade_band": round(RESID_STD, 2),
+                          "gpa_delta": None, "risk": None, "confidence": "none"})
+    items.sort(key=lambda x: (-(x["stars"] or 0), x["exp_grade"] if x["exp_grade"] is not None else 9))
+    pred_gpa = gpa_w / gpa_cr if gpa_cr else None
     sem_stars = _sem_stars(effort)
-    p_any = 1 - float(np.prod([1 - i["risk"] for i in items]))
+    risks = [i["risk"] for i in items if i["risk"] is not None]
+    p_any = 1 - float(np.prod([1 - r for r in risks])) if risks else 0.0
 
     warnings = []
     n = len(items)
+    n_nodata = sum(1 for i in items if i["exp_grade"] is None)
+    if n_nodata:
+        warnings.append(f"{n_nodata} asignatura(s) sin histórico en la base: se muestran sin "
+                        f"nota ni dificultad estimadas y no afectan el promedio proyectado.")
     if cr_sum > MAX_FEASIBLE_CREDITS or n > MAX_FEASIBLE_COURSES:
         warnings.append(f"Carga no viable: {n} asignaturas / {cr_sum:.0f} créditos "
                         f"exceden el máximo registrable (~{MAX_FEASIBLE_CREDITS} créditos).")
-    hard = [i for i in items if i["stars"] >= 4]
+    hard = [i for i in items if i["stars"] and i["stars"] >= 4]
     if len(hard) >= 3:
         warnings.append(f"{len(hard)} asignaturas de alta dificultad en simultáneo — "
                         f"semestre muy exigente en tiempo de estudio.")
@@ -421,5 +481,5 @@ def simulate(state, basket):
         "p_any_fail": round(p_any, 4),
         "feasible": not any("no viable" in w for w in warnings),
         "warnings": warnings,
-        "drivers": [i["name"] for i in items[:2] if i["stars"] >= 4],
+        "drivers": [i["name"] for i in items[:2] if i["stars"] and i["stars"] >= 4],
     }
