@@ -33,18 +33,27 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 URL_CATALOG = os.path.join(os.path.dirname(ROOT), "data", "url_catalog.json")
 OUT = os.path.join(ROOT, "model", "schedules.json")
 
+class _Transient(Exception):
+    pass
+
 def _get(tok, **kw):
+    """Fetch one detail call. Returns the data list (possibly []), or raises _Transient if
+    the network/server fails every attempt — so the caller can tell 'no schedule' (None/[])
+    apart from 'couldn't reach the API' and avoid dropping good data on a flaky connection."""
     q = urllib.parse.urlencode(kw)
     req = urllib.request.Request(f"{API}/asignaturaDetalle?{q}", headers={"Authorization": "Bearer " + tok})
-    for _ in range(2):                                   # one retry on transient failure
+    for attempt in range(4):                             # resilient to transient drops / rate limits
         try:
-            with urllib.request.urlopen(req, timeout=20) as r:
+            with urllib.request.urlopen(req, timeout=25) as r:
                 return json.load(r).get("data")
-        except urllib.error.HTTPError:
-            return None
+        except urllib.error.HTTPError as e:
+            if e.code in (429, 500, 502, 503, 504):      # server/rate-limit -> retry with backoff
+                time.sleep(0.8 * (attempt + 1))
+                continue
+            return None                                  # 4xx (e.g. 404) = genuinely no such detail
         except Exception:
-            time.sleep(0.5)
-    return None
+            time.sleep(0.8 * (attempt + 1))
+    raise _Transient(q)
 
 def _hhmm(s):
     try:
@@ -95,6 +104,7 @@ def scrape_course(tok, code, plan):
 
 def main():
     import concurrent.futures as cf, threading
+    merge = "--merge" in sys.argv     # build on the existing file; only update on a successful fetch
     only = [a for a in sys.argv[1:] if not a.startswith("--")]
     tok = cat.get_token()
     url = json.load(open(URL_CATALOG, encoding="utf-8"))
@@ -103,25 +113,38 @@ def main():
     # de-dup identical (code, plan) pairs (a plan can list a code twice)
     seen = set(); pairs = [x for x in pairs if not (x in seen or seen.add(x))]
     n = len(pairs)
-    out, lock, done = {}, threading.Lock(), [0]
-    print(f"scraping {n} (course,plan) pairs across {len(plans)} plans (concurrent) ...", flush=True)
+    out = json.load(open(OUT, encoding="utf-8")) if (merge and os.path.exists(OUT)) else {}
+    base = sum(len(v) for v in out.values())
+    lock, done, stat = threading.Lock(), [0], {"ok": 0, "fail": 0, "empty": 0}
+    print(f"scraping {n} (course,plan) pairs across {len(plans)} plans "
+          f"({'MERGE onto '+str(base)+' existing' if merge else 'fresh'}) ...", flush=True)
 
     def work(cp):
         code, plan = cp
-        sc = scrape_course(tok, code, plan)
+        try:
+            sc = scrape_course(tok, code, plan)
+            kind = "ok" if sc else "empty"
+        except Exception:                 # transient (network/server) -> keep any existing entry
+            sc, kind = None, "fail"
         with lock:
-            done[0] += 1
+            done[0] += 1; stat[kind] += 1
             if sc:
                 out.setdefault(plan, {})[code] = sc
+            elif kind == "empty" and not merge:
+                pass                      # fresh mode: genuinely-no-schedule courses are just omitted
             if done[0] % 200 == 0:
                 tot = sum(len(v) for v in out.values())
-                print(f"  {done[0]}/{n}  ({tot} course-schedules in {len(out)} plans)", flush=True)
+                print(f"  {done[0]}/{n}  ({tot} course-schedules, "
+                      f"ok={stat['ok']} fail={stat['fail']})", flush=True)
 
     with cf.ThreadPoolExecutor(max_workers=6) as ex:
         list(ex.map(work, pairs))
     json.dump(out, open(OUT, "w", encoding="utf-8"), ensure_ascii=False)
     tot = sum(len(v) for v in out.values())
     print(f"-> {OUT}\n   {tot} course-schedules across {len(out)} plans (2026-2S)")
+    print(f"   updated={stat['ok']}  transient-failures={stat['fail']}  no-schedule={stat['empty']}")
+    if stat["fail"]:
+        print(f"   NOTE: {stat['fail']} pairs failed transiently (kept prior data); re-run --merge to fill them.")
 
 if __name__ == "__main__":
     main()
