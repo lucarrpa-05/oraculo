@@ -34,16 +34,22 @@
   const canon = norm;
   const PLAN_NAMES = { MA03: "MATEMATICAS APLICADAS Y CIENCIAS DE LA COMPUTACION" };
 
-  // canonical course-name -> panel-stats code (highest n): lets a code the panel never
-  // recorded borrow a SAME-NAMED course's history (official plans list per-site/group
-  // variants like 'Bloque Clínico I - Hospital X' that the panel stored under one parent).
+  // match-key -> panel-stats code (highest n): lets a code the panel never recorded borrow
+  // a SAME-NAMED course's history (official plans list per-site/group variants like
+  // 'Bloque Clínico I - Hospital X' that the panel stored under one parent). Whole-token
+  // abbreviations are expanded on both sides so 'BLQ. Clínico I' == 'Bloque Clínico I'.
+  const ABBR = { BLQ: "BLOQUE" };
+  function matchKey(name) {
+    const c = norm(name); if (!c) return c;
+    return c.split(" ").map(t => { const u = t.replace(/\.+$/, ""); return ABBR[u] || u; }).join(" ");
+  }
   let NAME_STATS = null;
   function nameStatsIndex() {
     if (NAME_STATS === null) {
       NAME_STATS = {};
       for (const code in STATS) {
         const s = STATS[code]; if ((s.n || 0) < 25) continue;
-        const k = norm((CATALOG[code] || {}).name);
+        const k = matchKey((CATALOG[code] || {}).name);
         if (k && (!(k in NAME_STATS) || s.n > STATS[NAME_STATS[k]].n)) NAME_STATS[k] = code;
       }
     }
@@ -54,7 +60,7 @@
     const nm = (CATALOG[code] || {}).name;
     if (nm) {
       const idx = nameStatsIndex(), base = nm.split(" - ")[0];
-      for (const key of [norm(nm), norm(base)]) {
+      for (const key of [matchKey(nm), matchKey(base)]) {
         const pc = key && idx[key];
         if (pc) return { s: STATS[pc], borrowed: true };
       }

@@ -164,7 +164,8 @@ false locks), which is the safe default.
   made every Medicina hospital practice show ~4.3). Two-step handling in `engine.py` +
   `oraculo.js` (kept in parity): (1) **canonical-name fallback** (`_stats_for`/`statsFor`) —
   a code missing from the panel borrows the stats of a SAME-NAMED parent course (full name,
-  then name with the `" - <site/group>"` suffix stripped), flagged `borrowed`/confidence
+  then name with the `" - <site/group>"` suffix stripped; whole-token abbreviations expanded
+  on both sides via `_ABBR`/`matchKey`, e.g. `BLQ.`→`BLOQUE`), flagged `borrowed`/confidence
   `"med"`; (2) if still no match, the course is `has_data=False` → grade/stars are `None`
   (`confidence="none"`), shown as an empty state ("sin histórico" / "·"), excluded from the
   projected GPA (separate `gpa_cr`/`gpa_w` denominator) but still counted toward credits/load

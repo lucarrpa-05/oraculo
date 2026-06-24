@@ -145,19 +145,30 @@ def parse_transcript(pdf_bytes):
             "sem_next": (periods + 1) if periods else None}
 
 # ----------------------------------------------------------------------------
+# whole-token abbreviation expansions, applied to BOTH sides of the name match so an
+# abbreviated plan name lines up with its spelled-out parent (e.g. 'BLQ. CLÍNICO I' ==
+# 'BLOQUE CLÍNICO I'). Keep these unambiguous; when unsure, prefer an empty state to a guess.
+_ABBR = {"BLQ": "BLOQUE"}
+def _match_key(name):
+    """Canonical name with abbreviations expanded, for the borrow-from-parent lookup."""
+    c = _canon(name)
+    if not c:
+        return c
+    return " ".join(_ABBR.get(t.rstrip("."), t.rstrip(".")) for t in c.split())
+
 _NAME_STATS = None
 def _name_stats_index():
-    """canonical course-name -> panel-stats code (highest n). Lets a code that the panel
-    never recorded borrow the history of a SAME-NAMED course. The official plans list many
-    per-site / per-group variants of one course (e.g. 'Bloque Clínico I - Hospital X - Grupo A')
-    that the panel only ever stored under a single parent code ('Bloque Clínico I')."""
+    """match-key -> panel-stats code (highest n). Lets a code that the panel never recorded
+    borrow the history of a SAME-NAMED course. The official plans list many per-site /
+    per-group variants of one course (e.g. 'Bloque Clínico I - Hospital X - Grupo A') that
+    the panel only ever stored under a single parent code ('Bloque Clínico I')."""
     global _NAME_STATS
     if _NAME_STATS is None:
         _NAME_STATS = {}
         for code, s in STATS.items():
             if s.get("n", 0) < 25:
                 continue
-            k = _canon(CATALOG.get(code, {}).get("name"))
+            k = _match_key(CATALOG.get(code, {}).get("name"))
             if k and (k not in _NAME_STATS or s["n"] > STATS[_NAME_STATS[k]]["n"]):
                 _NAME_STATS[k] = code
     return _NAME_STATS
@@ -171,7 +182,7 @@ def _stats_for(code):
     if nm:
         idx = _name_stats_index()
         base = nm.split(" - ")[0]                      # strip site/group suffix
-        for key in (_canon(nm), _canon(base)):
+        for key in (_match_key(nm), _match_key(base)):
             pc = key and idx.get(key)
             if pc:
                 return STATS[pc], True
