@@ -140,6 +140,30 @@
   .plan-empty{padding:30px 14px;text-align:center;color:var(--text-4);font-size:12px}
   .note{font-size:11px;color:var(--text-4);padding:11px 14px;border-top:1px solid var(--border);line-height:1.5}
 
+  .hosp-intro{font-size:12px;color:var(--text-3);margin-bottom:14px;line-height:1.55}
+  .hcard{background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--shadow-1);margin-bottom:9px;overflow:hidden}
+  .hhead{display:flex;align-items:center;gap:12px;padding:13px 16px;cursor:pointer;transition:.12s}
+  .hhead:hover{background:var(--card-hover)}
+  .hhead .hn{flex:1;min-width:0}
+  .hhead .htitle{font-weight:600;font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .hhead .hmeta{font-size:11px;color:var(--text-4);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .hbadge{font-size:11px;font-weight:600;color:var(--accent);background:var(--accent-tint);border-radius:100px;padding:2px 9px;flex-shrink:0;white-space:nowrap}
+  .hbadge.empty{color:var(--text-4);background:var(--bg-soft);font-weight:500}
+  .hchev{color:var(--text-4);font-size:10px;flex-shrink:0;transition:.15s}
+  .hcard.open .hchev{transform:rotate(90deg)}
+  .hbody{display:none;padding:2px 16px 6px;border-top:1px solid var(--border)}
+  .hcard.open .hbody{display:block}
+  .hrev{padding:12px 0;border-bottom:1px solid var(--border)}.hrev:last-child{border-bottom:none}
+  .hrev .rrot{font-size:12.5px;font-weight:600;color:var(--text-2)}
+  .hrev .rmeta{font-size:10.5px;color:var(--text-4);margin:1px 0 8px}
+  .rblk{font-size:12px;line-height:1.55;padding:7px 10px;border-radius:var(--r);margin-bottom:5px}
+  .rblk .rl{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:2px}
+  .rblk.pos{background:var(--green-tint);color:#065F46}.rblk.pos .rl{color:var(--green)}
+  .rblk.mej{background:var(--amber-tint);color:#92400E}.rblk.mej .rl{color:var(--amber)}
+  .rblk.prob{background:var(--red-tint);color:#991B1B}.rblk.prob .rl{color:var(--red)}
+  .rquote{font-size:11.5px;font-style:italic;color:var(--text-3);border-left:2px solid var(--border-strong);padding:2px 0 2px 10px;margin:5px 0}
+  .hempty{padding:6px 0 12px;color:var(--text-4);font-size:12px;line-height:1.5}
+
   .hidden{display:none!important}
   .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--text);color:#fff;padding:9px 16px;border-radius:var(--r);font-size:12px;box-shadow:var(--shadow-3);opacity:0;transition:.2s;pointer-events:none}
   .toast.show{opacity:1}
@@ -176,6 +200,7 @@
             <button class="tab active" data-tab="req">Disponibles <span class="tcount" id="req-count">0</span></button>
             <button class="tab" data-tab="elec">Electivas <span class="tcount" id="elec-count">0</span></button>
             <button class="tab" data-tab="taken">Cursadas <span class="tcount" id="taken-count">0</span></button>
+            <button class="tab hidden" id="tab-hosp-btn" data-tab="hosp">Hospitales <span class="tcount" id="hosp-count">0</span></button>
           </div>
           <div class="searchbar"><span class="si">⌕</span><input id="search" type="text" placeholder="Buscar asignatura o código"><span id="search-x" class="sx hidden">✕</span></div>
           <div id="tab-req">
@@ -184,6 +209,7 @@
           </div>
           <div id="tab-elec" class="hidden"><div id="electives-list"></div></div>
           <div id="tab-taken" class="hidden"><div id="taken-list"></div></div>
+          <div id="tab-hosp" class="hidden"></div>
           <p class="note" style="border:none">★ dificultad del curso <em>dentro de tu carrera</em> · ● esfuerzo estimado <em>para ti</em> · la nota esperada usa tu desempeño por área.</p>
         </div>
         <div class="panel">
@@ -222,6 +248,7 @@
 <script>
 const $=s=>document.querySelector(s);
 let STATE=null,REQUIRED=[],LOCKED=[],ELECTIVES=[],TRANSCRIPT=[],ELEC_TOTAL=0,SEARCH='',SEL=new Set(),SIM=null,READY=false,PINS={};
+let HOSP=null,HREV=null,HLIST=[];
 (async function boot(){
   try{
     const names=['catalog.json','course_stats.json','plans.json','schedules.json','models.json','malla_plan.json'];
@@ -230,6 +257,12 @@ let STATE=null,REQUIRED=[],LOCKED=[],ELECTIVES=[],TRANSCRIPT=[],ELEC_TOTAL=0,SEA
     Oraculo.setData({catalog,stats,plans,schedules,models,malla});
     pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
     READY=true; $('#model-pill').textContent='modelo · activo';
+    // Medicina (ME03) hospital reviews are optional; never block boot if absent.
+    try{
+      const [H,R]=await Promise.all([fetch('data/hospitals.json').then(r=>r.json()),
+                                     fetch('data/hospital_reviews.json').then(r=>r.json())]);
+      HOSP=H; HREV=R;
+    }catch(e){console.warn('Datos de hospitales no disponibles',e);}
   }catch(e){console.error(e); $('#model-pill').textContent='error al cargar datos';}
 })();
 
@@ -278,8 +311,13 @@ function renderResults(){
     <div class="divider"></div><div class="stat"><div class="v tabular">${s.cumcred??'·'}</div><div class="k">Créditos</div></div>`;
   renderLists();
   refreshSim();
+  // Medicina mode: unlock the Hospitales tab only for ME03 transcripts with review data.
+  const isMed = s.plan==='ME03' && HOSP && HREV;
+  $('#tab-hosp-btn').classList.toggle('hidden',!isMed);
+  if(isMed){ buildHospIndex(); $('#hosp-count').textContent=HLIST.filter(h=>h.reviews.length).length; }
 }
 const cname=c=>c.name?title(c.name):`<span class="no-name">Asignatura ${c.code}</span>`;
+const esc=s=>(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const deburr=s=>(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
 function matchq(c){if(!SEARCH)return true;return deburr(c.name).includes(SEARCH)||(c.code||'').includes(SEARCH);}
 function renderLists(){
@@ -332,9 +370,12 @@ document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{
   $('#tab-req').classList.toggle('hidden',k!=='req');
   $('#tab-elec').classList.toggle('hidden',k!=='elec');
   $('#tab-taken').classList.toggle('hidden',k!=='taken');
+  $('#tab-hosp').classList.toggle('hidden',k!=='hosp');
+  if(k==='hosp')renderHospitales();
 });
-$('#search').addEventListener('input',e=>{SEARCH=deburr(e.target.value.trim());$('#search-x').classList.toggle('hidden',!e.target.value);if(REQUIRED.length||ELECTIVES.length||TRANSCRIPT.length)renderLists();});
-$('#search-x').onclick=()=>{const i=$('#search');i.value='';SEARCH='';$('#search-x').classList.add('hidden');renderLists();i.focus();};
+const hospVisible=()=>!$('#tab-hosp').classList.contains('hidden');
+$('#search').addEventListener('input',e=>{SEARCH=deburr(e.target.value.trim());$('#search-x').classList.toggle('hidden',!e.target.value);if(hospVisible())renderHospitales();else if(REQUIRED.length||ELECTIVES.length||TRANSCRIPT.length)renderLists();});
+$('#search-x').onclick=()=>{const i=$('#search');i.value='';SEARCH='';$('#search-x').classList.add('hidden');if(hospVisible())renderHospitales();else renderLists();i.focus();};
 function gradeColor(g){return g==null?'var(--text-4)':g<3?'var(--red)':g<3.8?'var(--amber)':'var(--green)';}
 function renderTranscript(list){
   list=list||TRANSCRIPT;
@@ -469,6 +510,68 @@ function renderSchedule(sc){
   else if(sc.scheduled.some(c=>(sc.options[c]||[]).length>1)) notes.push('Toca un grupo para fijarlo.');
   if(sc.unscheduled.length) notes.push(sc.unscheduled.length+' sin horario publicado para 2026-2S');
   $('#sched-note').innerHTML=notes.join(' · ');
+}
+
+// ---- Medicina (ME03): hospital reviews ---------------------------------------
+function hName(id){
+  const h=(HOSP.hospitals||[]).find(x=>x.id===id);
+  if(h)return h.name;
+  const r=(HREV.hospitals||{})[id]||{};
+  return r.name||(HREV.extra_names&&HREV.extra_names[id])||id;
+}
+function buildHospIndex(){
+  const planList=HOSP.hospitals||[], revMap=HREV.hospitals||{}, seen=new Set(), items=[];
+  Object.keys(revMap).forEach(id=>{
+    const revs=revMap[id].reviews||[]; if(!revs.length)return;
+    const ph=planList.find(x=>x.id===id);
+    items.push({id,name:hName(id),rotations:ph?ph.n_rotations:0,inPlan:!!ph,reviews:revs});
+    seen.add(id);
+  });
+  items.sort((a,b)=>b.reviews.length-a.reviews.length||a.name.localeCompare(b.name));
+  const noRev=planList.filter(x=>!seen.has(x.id))
+    .map(x=>({id:x.id,name:x.name,rotations:x.n_rotations,inPlan:true,reviews:[]}))
+    .sort((a,b)=>b.rotations-a.rotations||a.name.localeCompare(b.name));
+  HLIST=items.concat(noRev);
+}
+function semList(reviews){return [...new Set(reviews.map(r=>r.semester))].join(', ');}
+function reviewHTML(r){
+  const blk=(cls,lbl,txt)=>txt?`<div class="rblk ${cls}"><span class="rl">${lbl}</span>${esc(txt)}</div>`:'';
+  const quotes=(r.quotes||[]).map(q=>`<div class="rquote">“${esc(q)}”</div>`).join('');
+  return `<div class="hrev"><div class="rrot">${esc(r.rotation)}</div>
+    <div class="rmeta">Semestre ${esc(r.semester)} · ${esc(r.period)} · ${r.n} estudiantes</div>
+    ${blk('pos','Positivos',r.positivos)}
+    ${blk('mej','Por mejorar',r.por_mejorar)}
+    ${blk('prob','Problemas reportados',r.problemas)}
+    ${quotes}</div>`;
+}
+function hospCard(h){
+  const revc=h.reviews.length;
+  const badge=revc?`<span class="hbadge">${revc} reseña${revc>1?'s':''}</span>`
+                  :`<span class="hbadge empty">sin reseñas</span>`;
+  const meta=[h.rotations?`${h.rotations} rotación${h.rotations>1?'es':''} en el plan`
+                         :(h.inPlan?'':'sede externa al plan'),
+              revc?`semestres ${semList(h.reviews)}`:''].filter(Boolean).join(' · ');
+  const body=revc?h.reviews.map(reviewHTML).join('')
+    :`<div class="hempty">Aún no hay reseñas para esta sede. Cuando los estudiantes las compartan, aparecerán aquí.</div>`;
+  return `<div class="hcard" data-hid="${h.id}"><div class="hhead">
+    <div class="hn"><div class="htitle">${esc(h.name)}</div><div class="hmeta">${meta}</div></div>
+    ${badge}<span class="hchev">▶</span></div><div class="hbody">${body}</div></div>`;
+}
+function renderHospitales(){
+  if(!HOSP||!HREV){$('#tab-hosp').innerHTML='';return;}
+  const q=SEARCH;
+  const txt=r=>(r.positivos||'')+' '+(r.por_mejorar||'')+' '+(r.problemas||'')+' '+(r.quotes||[]).join(' ');
+  const match=h=>!q||deburr(h.name).includes(q)||h.reviews.some(r=>deburr(r.rotation).includes(q)||deburr(txt(r)).includes(q));
+  const list=HLIST.filter(match);
+  const reviewed=list.filter(h=>h.reviews.length), empty=list.filter(h=>!h.reviews.length);
+  const src=(HREV.source||'Representación estudiantil de Medicina');
+  const intro=`<p class="hosp-intro">Opiniones de estudiantes sobre los sitios de rotación, de solo lectura, para ayudarte a elegir hospital al inscribir tus bloques clínicos.
+    ${reviewed.length} sede${reviewed.length===1?'':'s'} con reseñas.<br><span style="color:var(--text-4)">Fuente: ${esc(src)}.</span></p>`;
+  let html=intro+reviewed.map(hospCard).join('');
+  if(empty.length)html+=`<div class="group-h"><span class="t">Otras sedes del plan, sin reseñas aún</span><span class="n">${empty.length}</span><span class="line"></span></div>`+empty.map(hospCard).join('');
+  if(!list.length)html=intro+'<p class="plan-empty">Sin coincidencias.</p>';
+  const box=$('#tab-hosp'); box.innerHTML=html;
+  box.querySelectorAll('.hhead').forEach(el=>el.onclick=()=>el.parentElement.classList.toggle('open'));
 }
 
 let tT;function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(tT);tT=setTimeout(()=>t.classList.remove('show'),2600);}

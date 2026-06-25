@@ -51,6 +51,8 @@ oraculo/
     build_plans.py       # 4. per-program core/elective/typ_sem from panel -> plans.json
     build_hospitals.py   # 5. Medicina (ME03) clinical SITES from plan name suffixes ->
     #                          model/hospitals.json (+seeds empty model/hospital_reviews.json)
+    build_reviews.py     # 6. curated Medicina rotation reviews (Conectados Rotando 2026-1) ->
+    #                          model/hospital_reviews.json (OWNS/overwrites it; 44 reviews)
     experiments/         # exp_load_effect.py, exp_subject_aptitude.py (analysis, not shipped)
   model/             # build outputs the app loads (json + joblib)
   cache/             # panel.pkl — 92 MB intermediate, gitignored, rebuilt from .xlsx
@@ -173,32 +175,52 @@ false locks), which is the safe default.
   projected GPA (separate `gpa_cr`/`gpa_w` denominator) but still counted toward credits/load
   (neutral 3-star effort), with a semester warning. Low-n (n<25) still flags `confidence` low.
 
-## Medicina (ME03) — hospital reviews + med-student mode (IN PROGRESS)
-Goal: when a **Medicina transcript (plan `ME03`)** is detected, unlock med-student-specific
-functionality and "improve the tool as much as possible for medicine students." The first
-piece is **hospital reviews**: students give the rotation hospitals a star rating + written
-reviews; the app shows them.
+## Medicina (ME03) — hospital reviews + med-student mode (LIVE)
+When a **Medicina transcript (plan `ME03`)** is detected, a **"Hospitales" tab** unlocks with
+real student reviews of the rotation sites, to help choose a hospital when inscribing the
+clinical blocks. Built and deployed (docs/ + local dev app).
 - **Hospital entities are derived, not invented.** `pipeline/build_hospitals.py` parses the
   ME03 plan course names (clinical courses encode their site as a `" - <SITE>"` suffix) and
   maps each to a CANONICAL hospital by keyword (`HOSPITALS` list; handles accents, abbrevs
   like `HUM`/`HUBU`, `CARDIO INFANTIL` vs `CARDIOINFANTIL`, `A + B` multi-site). Output
-  `model/hospitals.json` = **23 hospitals** (Cardioinfantil, HU Mayor/Méderi, San Rafael,
-  Centenario, Kennedy, Bosa, Barrios Unidos, Samaritana, …) each with `{id,name,n_rotations,
-  rotations:[specialty/block labels],codes:[course codes]}`. Only 3 non-hospital mentions
-  correctly excluded (international-exchange rotations, generic "Especialidad Clínica").
-- **DECISIONS (don't silently change):** reviews are **seeded, read-only** — curated review
-  data shipped as static JSON (`model/hospital_reviews.json`, keyed by hospital `id`,
-  currently EMPTY: `{rating:null,n:0,reviews:[]}`), so the app stays 100% client-side (no
-  backend, fits GitHub Pages + the "nothing leaves your browser" line). **Review granularity
-  (per-hospital overall vs per-rotation/specialty) is DEFERRED** until Lucas has real reviews
-  in hand — the JSON schema must stay flexible to switch later. Gate the UI on `state.plan ===
-  "ME03"`. Frame the no-reviews state as a visible empty state, never fabricate reviews.
-- **NEXT (pending input):** Lucas will drop a FOLDER of real review material. Inspect it,
-  fit it to `hospital_reviews.json` (match to hospital ids; settle granularity then), build
-  the Medicina-gated **"Hospitales" UI** (read-only cards: hospital · rotations · avg stars ·
-  reviews, empty-state when none) in `docs/index.html` (+ copy `hospitals.json`/
-  `hospital_reviews.json` into `docs/data/` and load them in the bootstrap), and look for
-  other high-value med-student improvements. Keep the Spanish/sober/Inter/no-em-dash brand.
+  `model/hospitals.json` = **23 hospitals** each `{id,name,n_rotations,rotations[],codes[]}`.
+- **Reviews are REAL now** (`pipeline/build_reviews.py` → `model/hospital_reviews.json`).
+  Source = **"Conectados Rotando" trimestrales 2026-1** (the Medicina student representation;
+  folder from the council president: 4 PDFs/xlsx for semesters VII–X). **44 curated reviews
+  across 21 sites.** Schema: `{source, extra_names, hospitals:{<id>:{name?, reviews:[{rotation,
+  semester, period, n, positivos?, por_mejorar?, problemas?, quotes?[]}]}}}`.
+- **DECISIONS (don't silently change):**
+  - **Granularity = hospital × rotation** (the deferred call, now RESOLVED by the data): the
+    hospital is the primary entity (matches the student's "pick block → pick hospital" flow);
+    within it, reviews are tagged by rotation/bloque + semester + period + n. Each review is
+    three qualitative facets (positivos / por mejorar / problemas) + optional verbatim quotes.
+  - **NO star ratings** — the source has none, so none are fabricated. Cards lead with the
+    text and a review-count badge (not stars). Schema leaves room to add `rating` per review
+    if a future survey collects numbers.
+  - **Seeded, read-only, 100% client-side.** Curated static JSON, no backend (fits Pages +
+    "nothing leaves your browser"). `build_reviews.py` OWNS the file (overwrites);
+    `build_hospitals.py` only seeds an empty one if absent.
+  - **MODERATION (Lucas's rule):** **NO real doctor names anywhere.** Every nominal mention
+    is replaced by the role ("un docente", "los especialistas", "el neonatólogo", "el
+    coordinador"). Build verifies zero `Dr./Dra.` + zero source surnames remain. **Grave
+    misconduct allegations** (e.g. the Kennedy gineco incident) are also rendered as
+    issue-focused summaries without the verbatim accusation. Public site, institutional tone.
+    Do not reintroduce names or raw accusations without Lucas's say-so.
+  - **4 sites not in the ME03 plan** (San Blas, Roosevelt, Eusalud, Virrey Solís) appear in
+    the reviews with their own `name` (via `extra_names`); the UI renders them even though
+    they are not in `hospitals.json`.
+  - **Semester X left out of the hospital view** — its rotations (medicina legal, investigación,
+    simulación, rural) are not hospital-mappable. The raw xlsx is the décimo source.
+- **UI:** ME03-gated `Hospitales` tab in `docs/index.html` (mirrored in `app/static/index.html`;
+  served locally via new `GET /api/hospitals` in `server.py`). Collapsible hospital cards →
+  reviews grouped by rotation, with green/amber/red `positivos`/`por mejorar`/`problemas`
+  blocks + quotes; sites with no reviews shown as a visible empty state. Search filters by
+  hospital name + review text. `docs/data/` carries copies of `hospitals.json` +
+  `hospital_reviews.json` (re-copy after rebuilding). Verified end-to-end (node logic test +
+  headless-Chrome render). Brand held: Spanish, white/burgundy/Inter, sober, no em dashes.
+- **NEXT / open:** the council president offered to keep uploading + filtering survey data
+  (her audio note); re-run `build_reviews.py` as more arrives. Possible future med-student
+  features beyond reviews still open ("improve as much as possible").
 
 ## Related docs
 - `Oraculo-Solicitud-Panel.tex/.pdf` — the formal data-access request to the institution.

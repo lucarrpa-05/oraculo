@@ -17,7 +17,19 @@ import scheduler  # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 STATIC = os.path.join(HERE, "static")
+MODEL = os.path.join(os.path.dirname(HERE), "model")
 PORT = 8000
+
+def _load_json(name):
+    fp = os.path.join(MODEL, name)
+    if os.path.isfile(fp):
+        with open(fp, encoding="utf-8") as f:
+            return json.load(f)
+    return None
+
+# Medicina (ME03) hospital reviews: read-only static data, loaded once.
+HOSPITALS = _load_json("hospitals.json")
+HOSPITAL_REVIEWS = _load_json("hospital_reviews.json")
 
 class H(BaseHTTPRequestHandler):
     def _send(self, code, body, ctype="application/json"):
@@ -40,6 +52,8 @@ class H(BaseHTTPRequestHandler):
 
     def do_GET(self):
         path = self.path.split("?")[0]
+        if path == "/api/hospitals":
+            return self._send(200, {"hospitals": HOSPITALS, "reviews": HOSPITAL_REVIEWS})
         if path == "/":
             path = "/index.html"
         fp = os.path.normpath(os.path.join(STATIC, path.lstrip("/")))
