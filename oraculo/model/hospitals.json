@@ -1,0 +1,530 @@
+{
+ "program": "ME03",
+ "hospitals": [
+  {
+   "id": "cardioinfantil",
+   "name": "Fundación Cardioinfantil",
+   "n_rotations": 39,
+   "rotations": [
+    "Anestesia",
+    "BLOQUE CLÍNICO I",
+    "BLOQUE CLÍNICO II",
+    "BLOQUE CLÍNICO III",
+    "BLOQUE CLÍNICO IV",
+    "Cardiologia",
+    "Cardiopediatria",
+    "Cirugia Cardiovascular",
+    "Cirugia De Mano",
+    "Cirugia De Torax",
+    "Cirugia Pediatrica",
+    "Cirugia Plastica",
+    "Cirugia Vascular Periferica",
+    "Consulta Externa Soporte Nutricional",
+    "Dermatologia",
+    "Dolor Y Cuidado Paliativo",
+    "Endocrinologia",
+    "Endocrinologia Pediatrica",
+    "ESPECIALIDAD CLÍNICA MSP II",
+    "Gastroenterologia",
+    "Gastropediatria",
+    "Genetica",
+    "Geriatria",
+    "Hemato Oncologia",
+    "Imagenes Diagnosticas",
+    "Infectologia",
+    "Infectologia Pediatrica",
+    "Medicion Fisica Y Rehabilitacion",
+    "Mspi Hepatologia",
+    "Nefrologia",
+    "Nefropediatria",
+    "Neumopediatria",
+    "Oncologia Pediatrica",
+    "Ortopedia",
+    "Ortopedia Pediatrica",
+    "Pisos Cirugia General",
+    "Unidad De Cuidado Cardiovascular",
+    "Urgencias Salas De Cirugia",
+    "Urologia"
+   ],
+   "codes": [
+    "20220135",
+    "20220733",
+    "20220734",
+    "20221133",
+    "20221233",
+    "20221636",
+    "20221736",
+    "20221834",
+    "20221934",
+    "20222034",
+    "20222134",
+    "20222137",
+    "20222234",
+    "20223039",
+    "20223239",
+    "20223839",
+    "20223939",
+    "20224039",
+    "20224137",
+    "20224337",
+    "20224439",
+    "20224539",
+    "20224637",
+    "20224639",
+    "20224837",
+    "20224939",
+    "20225037",
+    "20225139",
+    "20225237",
+    "20225437",
+    "20225737",
+    "20225937",
+    "20226037",
+    "20226337",
+    "20226437",
+    "20226637",
+    "20226639",
+    "20226737",
+    "20227339",
+    "20228137",
+    "20228139",
+    "20228439",
+    "20228537",
+    "20228739",
+    "20230237"
+   ]
+  },
+  {
+   "id": "hu-mayor",
+   "name": "Hospital Universitario Mayor (Méderi)",
+   "n_rotations": 33,
+   "rotations": [
+    "Anestesia",
+    "Anestesia Cardiovascular",
+    "BLOQUE CLÍNICO I",
+    "BLOQUE CLÍNICO II",
+    "BLOQUE CLÍNICO III",
+    "BLOQUE CLÍNICO IV",
+    "Cardiologia",
+    "Cirugia Colon Y Recto",
+    "Cirugia Plastica",
+    "Consulta De Seno",
+    "De La Herida",
+    "Dermatologia",
+    "Dolor Y Cuidado Paliativo",
+    "Endocrinologia",
+    "ESPECIALIDAD CLÍNICA MSP I",
+    "ESPECIALIDAD CLÍNICA MSP II",
+    "ESPECIALIDAD CLÍNICA MSP II- BIOÉTICA",
+    "ESPECIALIDAD CLÍNICA MSP II- GESTIÓN CLÍNICA",
+    "ESPECIALIDAD CLÍNICA MSPII",
+    "Fisiatria",
+    "Gastroenterologia",
+    "Hemato Oncologia",
+    "Hepatobiliar",
+    "Medicina Interna Pisos",
+    "Neurologia",
+    "Oncologia Ginecologica",
+    "Ortopedia",
+    "Pisos Y Salas De Cirugia",
+    "Reumatologia",
+    "Sala De Cirugias",
+    "Unidad De Cuidado Intensivo",
+    "Urgencias",
+    "Urologia"
+   ],
+   "codes": [
+    "20220233",
+    "20220333",
+    "20220334",
+    "20220336",
+    "20220434",
+    "20220436",
+    "20220633",
+    "20220634",
+    "20220835",
+    "20220836",
+    "20221139",
+    "20221634",
+    "20221734",
+    "20222135",
+    "20223837",
+    "20224237",
+    "20224437",
+    "20224739",
+    "20225337",
+    "20225537",
+    "20225637",
+    "20225837",
+    "20226137",
+    "20226237",
+    "20226739",
+    "20227137",
+    "20227337",
+    "20227439",
+    "20227739",
+    "20228037",
+    "20228193",
+    "20228339",
+    "20228637",
+    "20228639",
+    "20228839",
+    "20228937",
+    "20229037",
+    "20229437",
+    "20230137",
+    "20230239",
+    "20230339"
+   ]
+  },
+  {
+   "id": "san-rafael",
+   "name": "Hospital Universitario Clínica San Rafael",
+   "n_rotations": 20,
+   "rotations": [
+    "Anestesia",
+    "BLOQUE CLÍNICO I",
+    "BLOQUE CLÍNICO II",
+    "BLOQUE CLÍNICO IV",
+    "Cirugia De Mano",
+    "Cirugia Ginecologica",
+    "Cirugia Maternofetal",
+    "Cirugia Pediatrica",
+    "Cirugia Vascular",
+    "Consulta Externa",
+    "Ginecobstetricia",
+    "Infectologia Pediatrica",
+    "Neuropediatria",
+    "Ortopedia",
+    "Pisos Pediatria",
+    "Pisos Y Salas De Cirugia",
+    "Psiquiatria Enlace",
+    "Urgencias",
+    "Urgencias C",
+    "Urgencias Pediatricas"
+   ],
+   "codes": [
+    "20220639",
+    "20221433",
+    "20221439",
+    "20221533",
+    "20221633",
+    "20221739",
+    "20221939",
+    "20222039",
+    "20222434",
+    "20222634",
+    "20222834",
+    "20222839",
+    "20223034",
+    "20223134",
+    "20223236",
+    "20223334",
+    "20223434",
+    "20224239",
+    "20224537",
+    "20224839",
+    "20225739",
+    "20230737"
+   ]
+  },
+  {
+   "id": "centenario",
+   "name": "Clínica Centenario",
+   "n_rotations": 10,
+   "rotations": [
+    "Anestesia",
+    "BLOQUE CLÍNICO I",
+    "BLOQUE CLÍNICO II",
+    "Consulta Externa Cirugia General",
+    "Neurocirugia",
+    "Ortopedia",
+    "Sala De Cirugias",
+    "Unidad De Cuidado Intensivo",
+    "Unidad De Cuidados Intermedios",
+    "Urgencias C"
+   ],
+   "codes": [
+    "20220839",
+    "20221333",
+    "20221733",
+    "20221833",
+    "20222334",
+    "20222534",
+    "20222537",
+    "20222734",
+    "20222934",
+    "20223234",
+    "20223434",
+    "20227837"
+   ]
+  },
+  {
+   "id": "kennedy",
+   "name": "Hospital de Kennedy",
+   "n_rotations": 6,
+   "rotations": [
+    "BLOQUE CLÍNICO III",
+    "BLOQUE CLÍNICO IV",
+    "Cirugia Ortopedica De",
+    "Cirugia Plastica De",
+    "Cirugia Vascular Occidente De",
+    "Neurocirugia De"
+   ],
+   "codes": [
+    "20220739",
+    "20222335",
+    "20222435",
+    "20222736",
+    "20222837",
+    "20229439",
+    "20230437"
+   ]
+  },
+  {
+   "id": "bosa",
+   "name": "Hospital de Bosa",
+   "n_rotations": 5,
+   "rotations": [
+    "BLOQUE CLÍNICO III",
+    "Bloque. CLÍNICO I",
+    "Bloque. CLÍNICO II",
+    "Cirugia Ortopedica De",
+    "Consulta Externa Cirugia General De"
+   ],
+   "codes": [
+    "20220833",
+    "20220933",
+    "20221033",
+    "20221034",
+    "20221134",
+    "20221234",
+    "20221334",
+    "20221434",
+    "20221534",
+    "20222735",
+    "20225039"
+   ]
+  },
+  {
+   "id": "barrios-unidos",
+   "name": "Hospital Universitario Barrios Unidos",
+   "n_rotations": 5,
+   "rotations": [
+    "Cirugia De Mano",
+    "Consulta Externa",
+    "De La Herida",
+    "ESPECIALIDAD CLÍNICA MSP I",
+    "Infectologia"
+   ],
+   "codes": [
+    "20220934",
+    "20222937",
+    "20226537",
+    "20229537",
+    "20229639"
+   ]
+  },
+  {
+   "id": "samaritana",
+   "name": "Hospital Universitario de La Samaritana",
+   "n_rotations": 4,
+   "rotations": [
+    "BLOQUE CLÍNICO III",
+    "BLOQUE CLÍNICO IV",
+    "Unidad De Cuidado Intensivo De La",
+    "Urologia De La"
+   ],
+   "codes": [
+    "20221235",
+    "20221836",
+    "20227937",
+    "20229539"
+   ]
+  },
+  {
+   "id": "paz",
+   "name": "Clínica de Nuestra Señora de la Paz",
+   "n_rotations": 2,
+   "rotations": [
+    "BLOQUE CLÍNICO IV",
+    "Psiquiatria Nuestra Senora"
+   ],
+   "codes": [
+    "20222136",
+    "20222236",
+    "20222336",
+    "20227539"
+   ]
+  },
+  {
+   "id": "clinica-colombia",
+   "name": "Clínica Colombia",
+   "n_rotations": 2,
+   "rotations": [
+    "BLOQUE CLÍNICO IV",
+    "ESPECIALIDAD CLÍNICA MSP II"
+   ],
+   "codes": [
+    "20222439",
+    "20223036",
+    "20228939",
+    "20230639"
+   ]
+  },
+  {
+   "id": "meissen",
+   "name": "Hospital de Meissen",
+   "n_rotations": 2,
+   "rotations": [
+    "BLOQUE CLÍNICO III",
+    "BLOQUE CLÍNICO IV"
+   ],
+   "codes": [
+    "20222035",
+    "20222635",
+    "20222836"
+   ]
+  },
+  {
+   "id": "colsanitas",
+   "name": "Clínica Pediátrica Colsanitas",
+   "n_rotations": 2,
+   "rotations": [
+    "BLOQUE CLÍNICO III",
+    "ESPECIALIDAD CLÍNICA MSP II"
+   ],
+   "codes": [
+    "20220539",
+    "20221835"
+   ]
+  },
+  {
+   "id": "tintal",
+   "name": "Hospital El Tintal",
+   "n_rotations": 2,
+   "rotations": [
+    "BLOQUE CLÍNICO III",
+    "Ortopedia Pediatrica El"
+   ],
+   "codes": [
+    "20222235",
+    "20229039"
+   ]
+  },
+  {
+   "id": "cisne",
+   "name": "Clínicas CISNE (Campo Nuevo / Campo Victoria)",
+   "n_rotations": 2,
+   "rotations": [
+    "BLOQUE CLÍNICO IV",
+    "Psiquiatria"
+   ],
+   "codes": [
+    "20221936",
+    "20222036",
+    "20222739"
+   ]
+  },
+  {
+   "id": "tunal",
+   "name": "Hospital El Tunal",
+   "n_rotations": 1,
+   "rotations": [
+    "Dermatologia El"
+   ],
+   "codes": [
+    "20221737"
+   ]
+  },
+  {
+   "id": "simon-bolivar",
+   "name": "Hospital Simón Bolívar",
+   "n_rotations": 1,
+   "rotations": [
+    "ESPECIALIDAD CLÍNICA"
+   ],
+   "codes": [
+    "20222139"
+   ]
+  },
+  {
+   "id": "santa-maria-lago",
+   "name": "Clínica Santa María del Lago",
+   "n_rotations": 1,
+   "rotations": [
+    "ESPECIALIDAD CLÍNICA MSP II"
+   ],
+   "codes": [
+    "20221339",
+    "20230439"
+   ]
+  },
+  {
+   "id": "inmaculada",
+   "name": "Clínica La Inmaculada",
+   "n_rotations": 1,
+   "rotations": [
+    "BLOQUE CLÍNICO IV"
+   ],
+   "codes": [
+    "20222436"
+   ]
+  },
+  {
+   "id": "cardiovascular-nino",
+   "name": "Hospital Cardiovascular del Niño de Cundinamarca",
+   "n_rotations": 1,
+   "rotations": [
+    "BLOQUE CLÍNICO III"
+   ],
+   "codes": [
+    "20220235"
+   ]
+  },
+  {
+   "id": "infantil-colsubsidio",
+   "name": "Clínica Infantil Colsubsidio",
+   "n_rotations": 1,
+   "rotations": [
+    "BLOQUE CLÍNICO III"
+   ],
+   "codes": [
+    "20220335"
+   ]
+  },
+  {
+   "id": "clinica-colsubsidio",
+   "name": "Clínica Colsubsidio",
+   "n_rotations": 1,
+   "rotations": [
+    "BLOQUE CLÍNICO IV"
+   ],
+   "codes": [
+    "20221136"
+   ]
+  },
+  {
+   "id": "oftalmologica",
+   "name": "Fundación Oftalmológica Nacional",
+   "n_rotations": 1,
+   "rotations": [
+    "BLOQUE CLÍNICO IV"
+   ],
+   "codes": [
+    "20220936"
+   ]
+  },
+  {
+   "id": "country",
+   "name": "Centro Audiológico y Quirúrgico del Country",
+   "n_rotations": 1,
+   "rotations": [
+    "BLOQUE CLÍNICO IV"
+   ],
+   "codes": [
+    "20222536"
+   ]
+  }
+ ]
+}
