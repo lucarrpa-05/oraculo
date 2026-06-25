@@ -49,6 +49,8 @@ oraculo/
     build_difficulty.py  # 2. grade regressor + difficulty stars -> grade_model.joblib
     build_catalog.py     # 3. names/credits/prereqs (url_catalog + data/Cursos) -> catalog.json
     build_plans.py       # 4. per-program core/elective/typ_sem from panel -> plans.json
+    build_hospitals.py   # 5. Medicina (ME03) clinical SITES from plan name suffixes ->
+    #                          model/hospitals.json (+seeds empty model/hospital_reviews.json)
     experiments/         # exp_load_effect.py, exp_subject_aptitude.py (analysis, not shipped)
   model/             # build outputs the app loads (json + joblib)
   cache/             # panel.pkl — 92 MB intermediate, gitignored, rebuilt from .xlsx
@@ -170,6 +172,33 @@ false locks), which is the safe default.
   (`confidence="none"`), shown as an empty state ("sin histórico" / "·"), excluded from the
   projected GPA (separate `gpa_cr`/`gpa_w` denominator) but still counted toward credits/load
   (neutral 3-star effort), with a semester warning. Low-n (n<25) still flags `confidence` low.
+
+## Medicina (ME03) — hospital reviews + med-student mode (IN PROGRESS)
+Goal: when a **Medicina transcript (plan `ME03`)** is detected, unlock med-student-specific
+functionality and "improve the tool as much as possible for medicine students." The first
+piece is **hospital reviews**: students give the rotation hospitals a star rating + written
+reviews; the app shows them.
+- **Hospital entities are derived, not invented.** `pipeline/build_hospitals.py` parses the
+  ME03 plan course names (clinical courses encode their site as a `" - <SITE>"` suffix) and
+  maps each to a CANONICAL hospital by keyword (`HOSPITALS` list; handles accents, abbrevs
+  like `HUM`/`HUBU`, `CARDIO INFANTIL` vs `CARDIOINFANTIL`, `A + B` multi-site). Output
+  `model/hospitals.json` = **23 hospitals** (Cardioinfantil, HU Mayor/Méderi, San Rafael,
+  Centenario, Kennedy, Bosa, Barrios Unidos, Samaritana, …) each with `{id,name,n_rotations,
+  rotations:[specialty/block labels],codes:[course codes]}`. Only 3 non-hospital mentions
+  correctly excluded (international-exchange rotations, generic "Especialidad Clínica").
+- **DECISIONS (don't silently change):** reviews are **seeded, read-only** — curated review
+  data shipped as static JSON (`model/hospital_reviews.json`, keyed by hospital `id`,
+  currently EMPTY: `{rating:null,n:0,reviews:[]}`), so the app stays 100% client-side (no
+  backend, fits GitHub Pages + the "nothing leaves your browser" line). **Review granularity
+  (per-hospital overall vs per-rotation/specialty) is DEFERRED** until Lucas has real reviews
+  in hand — the JSON schema must stay flexible to switch later. Gate the UI on `state.plan ===
+  "ME03"`. Frame the no-reviews state as a visible empty state, never fabricate reviews.
+- **NEXT (pending input):** Lucas will drop a FOLDER of real review material. Inspect it,
+  fit it to `hospital_reviews.json` (match to hospital ids; settle granularity then), build
+  the Medicina-gated **"Hospitales" UI** (read-only cards: hospital · rotations · avg stars ·
+  reviews, empty-state when none) in `docs/index.html` (+ copy `hospitals.json`/
+  `hospital_reviews.json` into `docs/data/` and load them in the bootstrap), and look for
+  other high-value med-student improvements. Keep the Spanish/sober/Inter/no-em-dash brand.
 
 ## Related docs
 - `Oraculo-Solicitud-Panel.tex/.pdf` — the formal data-access request to the institution.
