@@ -35,6 +35,24 @@ STATS = {r["crs"]: r for r in json.load(open(os.path.join(MODEL_DIR, "course_sta
 PLANS = json.load(open(os.path.join(MODEL_DIR, "plans.json"), encoding="utf-8"))
 PLAN_NAMES = {"MA03": "MATEMATICAS APLICADAS Y CIENCIAS DE LA COMPUTACION"}
 
+# official tipologia per (plan, course) scraped from the guia (build_tipologias.py). This is
+# what distinguishes OBLIGATORIA from COMPLEMENTARIA / PROYECTO / ELECTIVA -- a classification
+# the malla PDF (hence malla_plan.json) lacks, which is why complementarias were missing.
+_tp = os.path.join(MODEL_DIR, "tipologias.json")
+TIPOLOGIAS = json.load(open(_tp, encoding="utf-8")) if os.path.exists(_tp) else {}
+_TIP_LABEL = {"T": "OBLIGATORIA", "C": "COMPLEMENTARIA", "P": "PROYECTO", "L": "ELECTIVA", "?": "OTRA"}
+# the malla-only catalog names only obligatorias; let _cs name every tipologia course too,
+# borrowing nombre/creditos from the scrape when the catalog is missing the code.
+for _pl, _codes in TIPOLOGIAS.items():
+    for _code, _info in _codes.items():
+        if _code not in CATALOG and _info.get("nombre"):
+            CATALOG[_code] = {"name": _info["nombre"], "credits": _info.get("creditos") or 3.0}
+
+def _tipologia(plan, code):
+    """Label OBLIGATORIA/COMPLEMENTARIA/PROYECTO/ELECTIVA for a (plan, course), or None."""
+    info = TIPOLOGIAS.get(plan, {}).get(code)
+    return _TIP_LABEL.get(info.get("t"), "OTRA") if info else None
+
 # workload model (explicit, not learned): harder courses cost superlinearly more effort
 STAR_EFFORT = {1: 1.0, 2: 1.3, 3: 1.65, 4: 2.05, 5: 2.5}
 SEM_STAR_CUT = [16, 24, 33, 43]          # effort thresholds -> 1..5 semester stars
@@ -210,7 +228,9 @@ def _plan_star_cuts(plan_codes):
             if c in STATS and STATS[c].get("n", 0) >= 25 and "difficulty_raw" in STATS[c]]
     if len(raws) < 10:
         return None
-    return list(np.quantile(raws, [0.2, 0.4, 0.6, 0.8]))
+    # round to 6 dp so the JS port's quantile interpolation (identical formula, but ULP-level
+    # float noise) lands stars identically on exact percentile boundaries.
+    return [round(float(x), 6) for x in np.quantile(raws, [0.2, 0.4, 0.6, 0.8])]
 
 def _intrinsic_stars(code, cuts):
     cs = _cs(code)
@@ -346,20 +366,26 @@ def _plan_context(state):
             if nm in seen_names:
                 continue
             seen_names.add(nm); dst.append(c)
-    core, elective = [], []
+    core, comp, elective = [], [], []
     # prefer the malla-filtered plan (junk removed); fall back to the full scraped plan
     # where the malla is an image-only PDF, then to the panel core.
     plan_src = MALLA_PLAN.get(plan) or PLAN_COURSES.get(plan) or [c for c in entry.get("core", []) if _has_name(c)]
     take(plan_src, core)
+    # complementarias / proyecto fin de carrera / electivas de plan: the malla diagram omits
+    # these, so malla_plan drops them. Recover them from the official tipologia scrape. (take()
+    # dedupes by name, so a course already counted as obligatoria won't be double-listed.)
+    for c, info in TIPOLOGIAS.get(plan, {}).items():
+        if info.get("t") in ("C", "P", "L"):
+            take([c], comp)
     take(POOL_CODES, elective)
     prereqs = {}
     if plan == "MA03":
         prereqs.update(MACC_PREREQS)                       # official malla
-    for b, ps in _name_seq_prereqs(core + elective).items():  # numbered sequences
+    for b, ps in _name_seq_prereqs(core + comp + elective).items():  # numbered sequences
         prereqs.setdefault(b, [])
         prereqs[b] = list(dict.fromkeys(prereqs[b] + ps))
-    return {"plan": plan, "core": core, "elective": elective,
-            "typ_sem": typ_sem, "prereqs": prereqs, "has_plan": bool(core or elective)}
+    return {"plan": plan, "core": core, "comp": comp, "elective": elective,
+            "typ_sem": typ_sem, "prereqs": prereqs, "has_plan": bool(core or comp or elective)}
 
 def _build_item(code, ctx, state, cuts, pc, pn):
     cs = _cs(code)
@@ -393,18 +419,24 @@ def _score_items(items, state):
 
 def eligible(state):
     ctx = _plan_context(state)
+    plan = state.get("plan")
     pc, pn = _passed_identity(state)
-    cuts = _plan_star_cuts(ctx["core"] + ctx["elective"]) if ctx["has_plan"] else None
+    cuts = _plan_star_cuts(ctx["core"] + ctx["comp"] + ctx["elective"]) if ctx["has_plan"] else None
 
+    core_set = set(ctx["core"])
     required, locked, electives = [], [], []
-    for code in ctx["core"]:
+    # Disponibles = obligatorias (core) + complementarias/proyecto/electivas de plan (comp),
+    # each tagged with its tipologia so the UI can sub-filter (Obligatoria/Complementaria/...).
+    for code in ctx["core"] + ctx["comp"]:
         if _is_passed(code, pc, pn): continue        # already taken (by code OR name)
         it = _build_item(code, ctx, state, cuts, pc, pn)
+        it["tipologia"] = _tipologia(plan, code) or ("OBLIGATORIA" if code in core_set else "COMPLEMENTARIA")
         (required if it["prereqs_met"] else locked).append(it)
     for code in ctx["elective"]:
         if _is_passed(code, pc, pn): continue
         it = _build_item(code, ctx, state, cuts, pc, pn)
         if it["prereqs_met"]:
+            it["tipologia"] = "ELECTIVA HM"
             electives.append(it)
     # the GEN/HM pool is ~1000 courses (university-wide); return all (sorted A-Z) so the
     # client search covers the whole pool. The UI caps how many it renders at once.
@@ -418,7 +450,7 @@ def eligible(state):
     # else the name read off the PDF, else the code)
     pdf_names = state.get("pdf_names", {}); grades = state.get("grades", {})
     passfail = set(state.get("passfail", []))
-    plan_names = {_canon(_cs(c)["name"]) for c in ctx["core"] + ctx["elective"]}
+    plan_names = {_canon(_cs(c)["name"]) for c in ctx["core"] + ctx["comp"] + ctx["elective"]}
     transcript = sorted(
         ({"code": c, "name": _cs(c)["name"] or pdf_names.get(c), "grade": grades.get(c),
           "passfail": c in passfail, "credits": _cs(c)["credits"],
@@ -439,7 +471,7 @@ def simulate(state, basket):
                 "sem_stars": 0, "pred_gpa": None, "gpa_delta": None,
                 "p_any_fail": 0.0, "effort": 0, "feasible": True, "warnings": [], "drivers": []}
     ctx = _plan_context(state)
-    cuts = _plan_star_cuts(ctx["core"] + ctx["elective"]) if ctx["has_plan"] else None
+    cuts = _plan_star_cuts(ctx["core"] + ctx["comp"] + ctx["elective"]) if ctx["has_plan"] else None
     fails = _predict_fail(basket, state)
     grades = _predict_grade(basket, state)
     items, effort, cr_sum, gpa_cr, gpa_w = [], 0.0, 0.0, 0.0, 0.0

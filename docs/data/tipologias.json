@@ -1,0 +1,2130 @@
+{
+ "ADM1": {
+  "11310030": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "ÁLGEBRA LINEAL",
+   "creditos": 3.0
+  },
+  "11310006": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "ALGORITMOS Y ESTRUCTURAS DE DATOS",
+   "creditos": 3.0
+  },
+  "11320015": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "ANÁLISIS AVANZADO DE DATOS",
+   "creditos": 3.0
+  },
+  "10910046": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "ANÁLISIS CUALITATIVO",
+   "creditos": 3.0
+  },
+  "65520016": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "ANÁLISIS DE REPORTES FINANCIEROS",
+   "creditos": 3.0
+  },
+  "11320018": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "APRENDIZAJE AUTOMÁTICO DE MÁQUINAS",
+   "creditos": 3.0
+  },
+  "11320002": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "ARQUITECTURA DEL COMPUTADOR",
+   "creditos": 3.0
+  },
+  "73210058": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "CÁLCULO 1",
+   "creditos": 3.0
+  },
+  "73210059": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "CÁLCULO 2",
+   "creditos": 3.0
+  },
+  "60110260": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "CÁTEDRA ROSARISTA, HISTORIA Y ACTUALIDAD",
+   "creditos": 2.0
+  },
+  "15210033": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "COMPORTAMIENTO DE COMPRA DEL CLIENTE Y CONSUMIDOR",
+   "creditos": 2.0
+  },
+  "11320017": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "COMPUTACIÓN EN LA NUBE",
+   "creditos": 3.0
+  },
+  "36010002": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "COMUNICANDO ECONOMÍA",
+   "creditos": 3.0
+  },
+  "11210007": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "CONSTITUCIÓN POLITICA E INSTRUCCIÓN CIVICA",
+   "creditos": 2.0
+  },
+  "10810002": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "CONTABILIDAD PARA LA TOMA DE DECISIONES",
+   "creditos": 3.0
+  },
+  "13210119": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "CURSO BÁSICO STATA",
+   "creditos": 2.0
+  },
+  "15210182": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "CUSTOMER EXPERIENCE MANAGEMENT",
+   "creditos": 2.0
+  },
+  "16920051": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "DISEÑO DIGITAL",
+   "creditos": 2.0
+  },
+  "13210149": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "DOCTRINAS ECONÓMICAS",
+   "creditos": 3.0
+  },
+  "13210017": {
+   "t": "L",
+   "label": "ELECTIVA",
+   "nombre": "ECONOMETRIA BÁSICA",
+   "creditos": 4.0
+  },
+  "13210076": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "ECONOMETRÍA BÁSICA",
+   "creditos": 3.0
+  },
+  "13210078": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "ECONOMETRÍA INTERMEDIA",
+   "creditos": 3.0
+  },
+  "13210077": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "ECONOMÍA EXPERIMENTAL",
+   "creditos": 3.0
+  },
+  "65510132": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "ECONOMÍA FINANCIERA",
+   "creditos": 3.0
+  },
+  "13210074": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "ECONOMÍA MATEMÁTICA",
+   "creditos": 3.0
+  },
+  "18610435": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "ESCRITURA ACADÉMICA PARA ECONOMÍA Y FINANZAS",
+   "creditos": 2.0
+  },
+  "73210074": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "ESTADÍSTICA",
+   "creditos": 3.0
+  },
+  "17210004": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "ÉTICA",
+   "creditos": 2.0
+  },
+  "13220004": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "EVALUACIÓN DE IMPACTO",
+   "creditos": 3.0
+  },
+  "16920052": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "EXPERIENCE MARKETING CAMPAIGNS",
+   "creditos": 2.0
+  },
+  "65520004": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "FINANZAS CORPORATIVAS",
+   "creditos": 3.0
+  },
+  "65510139": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "FINTECH",
+   "creditos": 3.0
+  },
+  "36010006": {
+   "t": "P",
+   "label": "PROYECTO FIN DE CARRERA (Postgrados y másteres)",
+   "nombre": "FORMACIÓN PARA EL DESEMPEÑO LABORAL",
+   "creditos": 2.0
+  },
+  "36010001": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "HACIENDO ECONOMÍA",
+   "creditos": 3.0
+  },
+  "13210180": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "HISTORIA ECONÓMICA COLOMBIANA",
+   "creditos": 3.0
+  },
+  "11310017": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "INGENIERÍA DE DATOS",
+   "creditos": 3.0
+  },
+  "16920049": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "INSIGHTS DEL CONSUMIDOR Y ANALÍTICA DE DATOS",
+   "creditos": 2.0
+  },
+  "13210150": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "INTRODUCCIÓN A LA CIENCIA ECONÓMICA",
+   "creditos": 3.0
+  },
+  "18610434": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "LECTURA CRÍTICA PARA ECONOMÍA Y FINANZAS",
+   "creditos": 2.0
+  },
+  "11310001": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "LÓGICA, TEORÍA DE NÚMEROS Y CONJUNTOS",
+   "creditos": 3.0
+  },
+  "13220005": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "MACHINE LEARNING Y DATOS SATELITALES PARA ECONOMÍA AMBIENTAL",
+   "creditos": 3.0
+  },
+  "13210073": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "MACROECONOMÍA I",
+   "creditos": 3.0
+  },
+  "13210075": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "MACROECONOMÍA II",
+   "creditos": 3.0
+  },
+  "13210181": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "MACROECONOMÍA III",
+   "creditos": 3.0
+  },
+  "10810010": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "MARKET RESEARCH",
+   "creditos": 2.0
+  },
+  "10810003": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "MARKETING",
+   "creditos": 3.0
+  },
+  "65520001": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "MATEMÁTICAS FINANCIERAS",
+   "creditos": 3.0
+  },
+  "13210070": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "MEDICIÓN ECONÓMICA",
+   "creditos": 3.0
+  },
+  "13210071": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "MICROECONOMÍA I",
+   "creditos": 3.0
+  },
+  "13210072": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "MICROECONOMÍA II",
+   "creditos": 3.0
+  },
+  "13210179": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "MICROECONOMÍA III",
+   "creditos": 3.0
+  },
+  "16910076": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "NEUROMARKETING",
+   "creditos": 2.0
+  },
+  "65520005": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "OPTIMIZACIÓN PARA FINANZAS",
+   "creditos": 3.0
+  },
+  "13220003": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "ORGANIZACIÓN INDUSTRIAL",
+   "creditos": 3.0
+  },
+  "65520002": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "PLANEACIÓN FINANCIERA",
+   "creditos": 3.0
+  },
+  "36010007": {
+   "t": "P",
+   "label": "PROYECTO FIN DE CARRERA (Postgrados y másteres)",
+   "nombre": "PRÁCTICA PROFESIONALIZANTE ANALÍTICA DE DATOS Y MERCADOS",
+   "creditos": 10.0
+  },
+  "11310044": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "PRECÁLCULO",
+   "creditos": 3.0
+  },
+  "73210073": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "PROBABILIDAD",
+   "creditos": 3.0
+  },
+  "11310002": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "PROGRAMACIÓN DE COMPUTADORES",
+   "creditos": 3.0
+  },
+  "36010003": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "PROYECTO PRÁCTICO",
+   "creditos": 3.0
+  },
+  "16920053": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "PUBLICIDAD DIGITAL",
+   "creditos": 2.0
+  },
+  "11320007": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "REDES DE COMPUTADORES",
+   "creditos": 3.0
+  },
+  "65520003": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "RENTA FIJA",
+   "creditos": 3.0
+  },
+  "65520006": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "RENTA VARIABLE",
+   "creditos": 3.0
+  },
+  "65510070": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "SOFTWARE FINANCIERO",
+   "creditos": 2.0
+  },
+  "65510026": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "TALLER DE BLOOMBERG",
+   "creditos": 3.0
+  },
+  "11310014": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "TEORÍA DE GRAFOS",
+   "creditos": 3.0
+  },
+  "65520018": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "TEORÍA Y POLÍTICA DEL COMERCIO INTERNACIONAL",
+   "creditos": 3.0
+  },
+  "13210178": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "TEORÍA Y POLÍTICA MONETARIA Y CAMBIARIA",
+   "creditos": 3.0
+  },
+  "36010004": {
+   "t": "P",
+   "label": "PROYECTO FIN DE CARRERA (Postgrados y másteres)",
+   "nombre": "TRABAJO DE GRADO ANALÍTICA DE DATOS Y MERCADOS",
+   "creditos": 12.0
+  }
+ },
+ "EC03": {
+  "73210003": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "ALGEBRA LINEAL",
+   "creditos": 4.0
+  },
+  "11310006": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "ALGORITMOS Y ESTRUCTURAS DE DATOS",
+   "creditos": 3.0
+  },
+  "10910046": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "ANÁLISIS CUALITATIVO",
+   "creditos": 3.0
+  },
+  "65520016": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "ANÁLISIS DE REPORTES FINANCIEROS",
+   "creditos": 3.0
+  },
+  "11310013": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "ANÁLISIS ESTADÍSTICO DE DATOS",
+   "creditos": 3.0
+  },
+  "80020001": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "ANÁLISIS GEOGRÁFICO 1",
+   "creditos": 3.0
+  },
+  "11310063": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "APRENDIZAJE AUTOMÁTICO DE MÁQUINA I",
+   "creditos": 2.0
+  },
+  "11320018": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "APRENDIZAJE AUTOMÁTICO DE MÁQUINAS",
+   "creditos": 3.0
+  },
+  "11220008": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "BIENES",
+   "creditos": 3.0
+  },
+  "73210056": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "BLOCKCHAIN, CONTRATOS DIGITALES Y FINTECH",
+   "creditos": 2.0
+  },
+  "16910066": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "BUSINESS INTELLIGENCE WITH BIG DATA",
+   "creditos": 2.0
+  },
+  "73210042": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "CÁLCULO I",
+   "creditos": 4.0
+  },
+  "73210043": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "CÁLCULO II",
+   "creditos": 4.0
+  },
+  "60110260": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "CÁTEDRA ROSARISTA, HISTORIA Y ACTUALIDAD",
+   "creditos": 2.0
+  },
+  "36010002": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "COMUNICANDO ECONOMÍA",
+   "creditos": 3.0
+  },
+  "11210007": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "CONSTITUCIÓN POLITICA E INSTRUCCIÓN CIVICA",
+   "creditos": 2.0
+  },
+  "10810002": {
+   "t": "L",
+   "label": "ELECTIVA",
+   "nombre": "CONTABILIDAD PARA LA TOMA DE DECISIONES",
+   "creditos": 3.0
+  },
+  "11210045": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "CONTRATOS BANCARIOS",
+   "creditos": 2.0
+  },
+  "13210119": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "CURSO BÁSICO STATA",
+   "creditos": 2.0
+  },
+  "11210104": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "DERECHO DE LA COMPETENCIA",
+   "creditos": 2.0
+  },
+  "11220021": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "DERECHO TRIBUTARIO",
+   "creditos": 2.0
+  },
+  "65510126": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "DERIVADOS",
+   "creditos": 4.0
+  },
+  "13210017": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "ECONOMETRIA BÁSICA",
+   "creditos": 4.0
+  },
+  "13210018": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "ECONOMETRÍA INTERMEDIA",
+   "creditos": 4.0
+  },
+  "14700037": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "ECONOMÍA EXPERIMENTAL",
+   "creditos": 4.0
+  },
+  "65510132": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "ECONOMÍA FINANCIERA",
+   "creditos": 3.0
+  },
+  "13210024": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "ECONOMÍA MATEMÁTICA",
+   "creditos": 4.0
+  },
+  "10720004": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "ECONOMÍA POLÍTICA INTERNACIONAL",
+   "creditos": 3.0
+  },
+  "18610435": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "ESCRITURA ACADÉMICA PARA ECONOMÍA Y FINANZAS",
+   "creditos": 2.0
+  },
+  "73210011": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "ESTADÍSTICA",
+   "creditos": 4.0
+  },
+  "11220270": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "ESTRUCTURA DEL ESTADO, DE LOS TERRITORIOS, PRINCIPIOS Y SUS FINANZAS",
+   "creditos": 2.0
+  },
+  "17210004": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "ÉTICA",
+   "creditos": 2.0
+  },
+  "65510127": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "FINANZAS CORPORATIVAS",
+   "creditos": 4.0
+  },
+  "65510149": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "FINANZAS PERSONALES",
+   "creditos": 3.0
+  },
+  "65510139": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "FINTECH",
+   "creditos": 3.0
+  },
+  "10810009": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "GERENCIA FINANCIERA",
+   "creditos": 2.0
+  },
+  "11220017": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "HACIENDA PÚBLICA",
+   "creditos": 3.0
+  },
+  "36010001": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "HACIENDO ECONOMÍA",
+   "creditos": 3.0
+  },
+  "13210135": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "HISTORIA ECONÓMICA COLOMBIANA",
+   "creditos": 4.0
+  },
+  "13210134": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "HISTORIA ECONÓMICA GENERAL",
+   "creditos": 2.0
+  },
+  "14700042": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "IMPACT EVALUATION",
+   "creditos": 4.0
+  },
+  "11220029": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "INSTITUCIONES MERCANTILES Y FINANCIERAS",
+   "creditos": 2.0
+  },
+  "65510125": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "INVERSIONES",
+   "creditos": 4.0
+  },
+  "18610434": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "LECTURA CRÍTICA PARA ECONOMÍA Y FINANZAS",
+   "creditos": 2.0
+  },
+  "73210039": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "LÓGICA Y MATEMÁTICAS DISCRETAS",
+   "creditos": 4.0
+  },
+  "14710037": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "MACHINE LEARNING Y DATOS SATELITALES PARA ECONOMÍA AMBIENTAL",
+   "creditos": 4.0
+  },
+  "13210007": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "MACROECONOMIA I",
+   "creditos": 4.0
+  },
+  "13210008": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "MACROECONOMÍA II",
+   "creditos": 4.0
+  },
+  "13210025": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "MACROECONOMÍA III",
+   "creditos": 4.0
+  },
+  "15210015": {
+   "t": "L",
+   "label": "ELECTIVA",
+   "nombre": "MATEMÁTICAS FINANCIERAS",
+   "creditos": 3.0
+  },
+  "65510133": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "MATEMÁTICAS Y PLANEACIÓN FINANCIERA",
+   "creditos": 4.0
+  },
+  "14610034": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "MERCADOS BURSÁTILES Y ANÁLISIS DE INVERSIONES",
+   "creditos": 4.0
+  },
+  "18910157": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "METODOLOGÍA DE LA INVESTIGACIÓN CUANTITATIVA",
+   "creditos": 2.0
+  },
+  "65510128": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "MÉTODOS CUANTITATIVOS EN FINANZAS",
+   "creditos": 4.0
+  },
+  "13210006": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "MICROECONOMÍA II",
+   "creditos": 4.0
+  },
+  "13210010": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "MICROECONOMÍA III",
+   "creditos": 4.0
+  },
+  "14610035": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "OPCIONES FINANCIERAS Y REPLICACIÓN DINÁMICA",
+   "creditos": 4.0
+  },
+  "73210012": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "PROBABILIDAD",
+   "creditos": 4.0
+  },
+  "11310002": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "PROGRAMACIÓN DE COMPUTADORES",
+   "creditos": 3.0
+  },
+  "73210050": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "PROGRAMACIÓN PARA NO PROGRAMADORES",
+   "creditos": 2.0
+  },
+  "11210122": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "SEMINARIO DE DERECHO ECONOMICO",
+   "creditos": 3.0
+  },
+  "13210033": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "SEMINARIO DE ORGANIZACIÓN INDUSTRIAL",
+   "creditos": 4.0
+  },
+  "65510070": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "SOFTWARE FINANCIERO",
+   "creditos": 2.0
+  },
+  "65510026": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "TALLER DE BLOOMBERG",
+   "creditos": 3.0
+  },
+  "65510123": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "TEORÍA Y POLÍTICA DEL COMERCIO INTERNACIONAL",
+   "creditos": 4.0
+  },
+  "13210015": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "TEORÍA Y POLÍTICA MONETARIA Y CAMBIARÍA",
+   "creditos": 4.0
+  },
+  "13210146": {
+   "t": "P",
+   "label": "PROYECTO FIN DE CARRERA (Postgrados y másteres)",
+   "nombre": "TRABAJO DE GRADO (EC03)",
+   "creditos": 8.0
+  }
+ },
+ "EC04": {
+  "11310030": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "ÁLGEBRA LINEAL",
+   "creditos": 3.0
+  },
+  "11310006": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "ALGORITMOS Y ESTRUCTURAS DE DATOS",
+   "creditos": 3.0
+  },
+  "11320015": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "ANÁLISIS AVANZADO DE DATOS",
+   "creditos": 3.0
+  },
+  "10910046": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "ANÁLISIS CUALITATIVO",
+   "creditos": 3.0
+  },
+  "65520016": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "ANÁLISIS DE REPORTES FINANCIEROS",
+   "creditos": 3.0
+  },
+  "11320018": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "APRENDIZAJE AUTOMÁTICO DE MÁQUINAS",
+   "creditos": 3.0
+  },
+  "11320002": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "ARQUITECTURA DEL COMPUTADOR",
+   "creditos": 3.0
+  },
+  "73210058": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "CÁLCULO 1",
+   "creditos": 3.0
+  },
+  "73210059": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "CÁLCULO 2",
+   "creditos": 3.0
+  },
+  "60110260": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "CÁTEDRA ROSARISTA, HISTORIA Y ACTUALIDAD",
+   "creditos": 2.0
+  },
+  "15210033": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "COMPORTAMIENTO DE COMPRA DEL CLIENTE Y CONSUMIDOR",
+   "creditos": 2.0
+  },
+  "36010002": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "COMUNICANDO ECONOMÍA",
+   "creditos": 3.0
+  },
+  "11210007": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "CONSTITUCIÓN POLITICA E INSTRUCCIÓN CIVICA",
+   "creditos": 2.0
+  },
+  "10810002": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "CONTABILIDAD PARA LA TOMA DE DECISIONES",
+   "creditos": 3.0
+  },
+  "13210119": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "CURSO BÁSICO STATA",
+   "creditos": 2.0
+  },
+  "15210182": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "CUSTOMER EXPERIENCE MANAGEMENT",
+   "creditos": 2.0
+  },
+  "16920051": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "DISEÑO DIGITAL",
+   "creditos": 2.0
+  },
+  "13210149": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "DOCTRINAS ECONÓMICAS",
+   "creditos": 3.0
+  },
+  "13210017": {
+   "t": "L",
+   "label": "ELECTIVA",
+   "nombre": "ECONOMETRIA BÁSICA",
+   "creditos": 4.0
+  },
+  "13210076": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "ECONOMETRÍA BÁSICA",
+   "creditos": 3.0
+  },
+  "13210078": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "ECONOMETRÍA INTERMEDIA",
+   "creditos": 3.0
+  },
+  "65510132": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "ECONOMÍA FINANCIERA",
+   "creditos": 3.0
+  },
+  "13210074": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "ECONOMÍA MATEMÁTICA",
+   "creditos": 3.0
+  },
+  "18610435": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "ESCRITURA ACADÉMICA PARA ECONOMÍA Y FINANZAS",
+   "creditos": 2.0
+  },
+  "73210074": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "ESTADÍSTICA",
+   "creditos": 3.0
+  },
+  "17210004": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "ÉTICA",
+   "creditos": 2.0
+  },
+  "13220004": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "EVALUACIÓN DE IMPACTO",
+   "creditos": 3.0
+  },
+  "16920052": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "EXPERIENCE MARKETING CAMPAIGNS",
+   "creditos": 2.0
+  },
+  "65520004": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "FINANZAS CORPORATIVAS",
+   "creditos": 3.0
+  },
+  "65510139": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "FINTECH",
+   "creditos": 3.0
+  },
+  "36010006": {
+   "t": "P",
+   "label": "PROYECTO FIN DE CARRERA (Postgrados y másteres)",
+   "nombre": "FORMACIÓN PARA EL DESEMPEÑO LABORAL",
+   "creditos": 2.0
+  },
+  "13210180": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "HISTORIA ECONÓMICA COLOMBIANA",
+   "creditos": 3.0
+  },
+  "13210134": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "HISTORIA ECONÓMICA GENERAL",
+   "creditos": 2.0
+  },
+  "11310017": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "INGENIERÍA DE DATOS",
+   "creditos": 3.0
+  },
+  "16920049": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "INSIGHTS DEL CONSUMIDOR Y ANALÍTICA DE DATOS",
+   "creditos": 2.0
+  },
+  "13210150": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "INTRODUCCIÓN A LA CIENCIA ECONÓMICA",
+   "creditos": 3.0
+  },
+  "18610434": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "LECTURA CRÍTICA PARA ECONOMÍA Y FINANZAS",
+   "creditos": 2.0
+  },
+  "11310001": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "LÓGICA, TEORÍA DE NÚMEROS Y CONJUNTOS",
+   "creditos": 3.0
+  },
+  "13220005": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "MACHINE LEARNING Y DATOS SATELITALES PARA ECONOMÍA AMBIENTAL",
+   "creditos": 3.0
+  },
+  "13210073": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "MACROECONOMÍA I",
+   "creditos": 3.0
+  },
+  "13210075": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "MACROECONOMÍA II",
+   "creditos": 3.0
+  },
+  "13210181": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "MACROECONOMÍA III",
+   "creditos": 3.0
+  },
+  "10810010": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "MARKET RESEARCH",
+   "creditos": 2.0
+  },
+  "10810003": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "MARKETING",
+   "creditos": 3.0
+  },
+  "65520001": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "MATEMÁTICAS FINANCIERAS",
+   "creditos": 3.0
+  },
+  "13210070": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "MEDICIÓN ECONÓMICA",
+   "creditos": 3.0
+  },
+  "13210071": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "MICROECONOMÍA I",
+   "creditos": 3.0
+  },
+  "13210072": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "MICROECONOMÍA II",
+   "creditos": 3.0
+  },
+  "13210179": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "MICROECONOMÍA III",
+   "creditos": 3.0
+  },
+  "16910076": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "NEUROMARKETING",
+   "creditos": 2.0
+  },
+  "65520005": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "OPTIMIZACIÓN PARA FINANZAS",
+   "creditos": 3.0
+  },
+  "13220003": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "ORGANIZACIÓN INDUSTRIAL",
+   "creditos": 3.0
+  },
+  "65520002": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "PLANEACIÓN FINANCIERA",
+   "creditos": 3.0
+  },
+  "13210182": {
+   "t": "P",
+   "label": "PROYECTO FIN DE CARRERA (Postgrados y másteres)",
+   "nombre": "PRÁCTICA PROFESIONALIZANTE ECONOMÍA",
+   "creditos": 10.0
+  },
+  "11310044": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "PRECÁLCULO",
+   "creditos": 3.0
+  },
+  "73210073": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "PROBABILIDAD",
+   "creditos": 3.0
+  },
+  "11310002": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "PROGRAMACIÓN DE COMPUTADORES",
+   "creditos": 3.0
+  },
+  "16920053": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "PUBLICIDAD DIGITAL",
+   "creditos": 2.0
+  },
+  "65520003": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "RENTA FIJA",
+   "creditos": 3.0
+  },
+  "65520006": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "RENTA VARIABLE",
+   "creditos": 3.0
+  },
+  "65510070": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "SOFTWARE FINANCIERO",
+   "creditos": 2.0
+  },
+  "65510026": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "TALLER DE BLOOMBERG",
+   "creditos": 3.0
+  },
+  "65520018": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "TEORÍA Y POLÍTICA DEL COMERCIO INTERNACIONAL",
+   "creditos": 3.0
+  },
+  "13210178": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "TEORÍA Y POLÍTICA MONETARIA Y CAMBIARIA",
+   "creditos": 3.0
+  },
+  "13210183": {
+   "t": "P",
+   "label": "PROYECTO FIN DE CARRERA (Postgrados y másteres)",
+   "nombre": "TRABAJO DE GRADO ECONOMÍA",
+   "creditos": 12.0
+  }
+ },
+ "FI01": {
+  "11310030": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "ÁLGEBRA LINEAL",
+   "creditos": 3.0
+  },
+  "11310006": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "ALGORITMOS Y ESTRUCTURAS DE DATOS",
+   "creditos": 3.0
+  },
+  "11320015": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "ANÁLISIS AVANZADO DE DATOS",
+   "creditos": 3.0
+  },
+  "10910046": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "ANÁLISIS CUALITATIVO",
+   "creditos": 3.0
+  },
+  "65520016": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "ANÁLISIS DE REPORTES FINANCIEROS",
+   "creditos": 3.0
+  },
+  "11320018": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "APRENDIZAJE AUTOMÁTICO DE MÁQUINAS",
+   "creditos": 3.0
+  },
+  "11320002": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "ARQUITECTURA DEL COMPUTADOR",
+   "creditos": 3.0
+  },
+  "73210058": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "CÁLCULO 1",
+   "creditos": 3.0
+  },
+  "73210059": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "CÁLCULO 2",
+   "creditos": 3.0
+  },
+  "60110260": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "CÁTEDRA ROSARISTA, HISTORIA Y ACTUALIDAD",
+   "creditos": 2.0
+  },
+  "15210033": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "COMPORTAMIENTO DE COMPRA DEL CLIENTE Y CONSUMIDOR",
+   "creditos": 2.0
+  },
+  "11210007": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "CONSTITUCIÓN POLITICA E INSTRUCCIÓN CIVICA",
+   "creditos": 2.0
+  },
+  "10810002": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "CONTABILIDAD PARA LA TOMA DE DECISIONES",
+   "creditos": 3.0
+  },
+  "13210119": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "CURSO BÁSICO STATA",
+   "creditos": 2.0
+  },
+  "15210182": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "CUSTOMER EXPERIENCE MANAGEMENT",
+   "creditos": 2.0
+  },
+  "65520007": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "DERIVADOS",
+   "creditos": 3.0
+  },
+  "16920051": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "DISEÑO DIGITAL",
+   "creditos": 2.0
+  },
+  "13210149": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "DOCTRINAS ECONÓMICAS",
+   "creditos": 3.0
+  },
+  "13210017": {
+   "t": "L",
+   "label": "ELECTIVA",
+   "nombre": "ECONOMETRIA BÁSICA",
+   "creditos": 4.0
+  },
+  "13210076": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "ECONOMETRÍA BÁSICA",
+   "creditos": 3.0
+  },
+  "65510132": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "ECONOMÍA FINANCIERA",
+   "creditos": 3.0
+  },
+  "13210074": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "ECONOMÍA MATEMÁTICA",
+   "creditos": 3.0
+  },
+  "18610435": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "ESCRITURA ACADÉMICA PARA ECONOMÍA Y FINANZAS",
+   "creditos": 2.0
+  },
+  "73210074": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "ESTADÍSTICA",
+   "creditos": 3.0
+  },
+  "17210004": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "ÉTICA",
+   "creditos": 2.0
+  },
+  "13220004": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "EVALUACIÓN DE IMPACTO",
+   "creditos": 3.0
+  },
+  "16920052": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "EXPERIENCE MARKETING CAMPAIGNS",
+   "creditos": 2.0
+  },
+  "65520004": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "FINANZAS CORPORATIVAS",
+   "creditos": 3.0
+  },
+  "65510149": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "FINANZAS PERSONALES",
+   "creditos": 3.0
+  },
+  "65510139": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "FINTECH",
+   "creditos": 3.0
+  },
+  "36010006": {
+   "t": "P",
+   "label": "PROYECTO FIN DE CARRERA (Postgrados y másteres)",
+   "nombre": "FORMACIÓN PARA EL DESEMPEÑO LABORAL",
+   "creditos": 2.0
+  },
+  "13210180": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "HISTORIA ECONÓMICA COLOMBIANA",
+   "creditos": 3.0
+  },
+  "11310017": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "INGENIERÍA DE DATOS",
+   "creditos": 3.0
+  },
+  "16920049": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "INSIGHTS DEL CONSUMIDOR Y ANALÍTICA DE DATOS",
+   "creditos": 2.0
+  },
+  "13210150": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "INTRODUCCIÓN A LA CIENCIA ECONÓMICA",
+   "creditos": 3.0
+  },
+  "65520011": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "INVERSIONES ALTERNATIVAS",
+   "creditos": 3.0
+  },
+  "65520021": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "INVERSIONES FONDOS DE CAPITAL PRIVADO",
+   "creditos": 3.0
+  },
+  "18610434": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "LECTURA CRÍTICA PARA ECONOMÍA Y FINANZAS",
+   "creditos": 2.0
+  },
+  "11310001": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "LÓGICA, TEORÍA DE NÚMEROS Y CONJUNTOS",
+   "creditos": 3.0
+  },
+  "13220005": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "MACHINE LEARNING Y DATOS SATELITALES PARA ECONOMÍA AMBIENTAL",
+   "creditos": 3.0
+  },
+  "13210073": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "MACROECONOMÍA I",
+   "creditos": 3.0
+  },
+  "13210075": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "MACROECONOMÍA II",
+   "creditos": 3.0
+  },
+  "13210181": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "MACROECONOMÍA III",
+   "creditos": 3.0
+  },
+  "10810010": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "MARKET RESEARCH",
+   "creditos": 2.0
+  },
+  "10810003": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "MARKETING",
+   "creditos": 3.0
+  },
+  "65520001": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "MATEMÁTICAS FINANCIERAS",
+   "creditos": 3.0
+  },
+  "13210070": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "MEDICIÓN ECONÓMICA",
+   "creditos": 3.0
+  },
+  "13210071": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "MICROECONOMÍA I",
+   "creditos": 3.0
+  },
+  "13210072": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "MICROECONOMÍA II",
+   "creditos": 3.0
+  },
+  "13210179": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "MICROECONOMÍA III",
+   "creditos": 3.0
+  },
+  "16910076": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "NEUROMARKETING",
+   "creditos": 2.0
+  },
+  "65520005": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "OPTIMIZACIÓN PARA FINANZAS",
+   "creditos": 3.0
+  },
+  "13220003": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "ORGANIZACIÓN INDUSTRIAL",
+   "creditos": 3.0
+  },
+  "65520002": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "PLANEACIÓN FINANCIERA",
+   "creditos": 3.0
+  },
+  "65520012": {
+   "t": "P",
+   "label": "PROYECTO FIN DE CARRERA (Postgrados y másteres)",
+   "nombre": "PRÁCTICA PROFESIONALIZANTE FINANZAS",
+   "creditos": 10.0
+  },
+  "11310044": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "PRECÁLCULO",
+   "creditos": 3.0
+  },
+  "73210073": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "PROBABILIDAD",
+   "creditos": 3.0
+  },
+  "11310002": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "PROGRAMACIÓN DE COMPUTADORES",
+   "creditos": 3.0
+  },
+  "16920053": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "PUBLICIDAD DIGITAL",
+   "creditos": 2.0
+  },
+  "65520003": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "RENTA FIJA",
+   "creditos": 3.0
+  },
+  "65520006": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "RENTA VARIABLE",
+   "creditos": 3.0
+  },
+  "65520009": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "RIESGOS FINANCIEROS",
+   "creditos": 3.0
+  },
+  "65520010": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "SIMULACIÓN FINANCIERA",
+   "creditos": 3.0
+  },
+  "65510070": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "SOFTWARE FINANCIERO",
+   "creditos": 2.0
+  },
+  "65510026": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "TALLER DE BLOOMBERG",
+   "creditos": 3.0
+  },
+  "65520018": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "TEORÍA Y POLÍTICA DEL COMERCIO INTERNACIONAL",
+   "creditos": 3.0
+  },
+  "13210178": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "TEORÍA Y POLÍTICA MONETARIA Y CAMBIARIA",
+   "creditos": 3.0
+  },
+  "65520013": {
+   "t": "P",
+   "label": "PROYECTO FIN DE CARRERA (Postgrados y másteres)",
+   "nombre": "TRABAJO DE GRADO FINANZAS",
+   "creditos": 12.0
+  },
+  "65520008": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "VALORACIÓN DE EMPRESAS Y PROYECTOS",
+   "creditos": 3.0
+  }
+ },
+ "FC03": {
+  "18610141": {
+   "t": "L",
+   "label": "ELECTIVA",
+   "nombre": "ALEMAN NIVEL I",
+   "creditos": 3.0
+  },
+  "18610082": {
+   "t": "L",
+   "label": "ELECTIVA",
+   "nombre": "ALEMAN NIVEL II",
+   "creditos": 3.0
+  },
+  "18610150": {
+   "t": "L",
+   "label": "ELECTIVA",
+   "nombre": "ALEMAN NIVEL III",
+   "creditos": 2.0
+  },
+  "73210003": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "ALGEBRA LINEAL",
+   "creditos": 4.0
+  },
+  "11310006": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "ALGORITMOS Y ESTRUCTURAS DE DATOS",
+   "creditos": 3.0
+  },
+  "10910046": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "ANÁLISIS CUALITATIVO",
+   "creditos": 3.0
+  },
+  "65520016": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "ANÁLISIS DE REPORTES FINANCIEROS",
+   "creditos": 3.0
+  },
+  "11310013": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "ANÁLISIS ESTADÍSTICO DE DATOS",
+   "creditos": 3.0
+  },
+  "80020001": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "ANÁLISIS GEOGRÁFICO 1",
+   "creditos": 3.0
+  },
+  "11310063": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "APRENDIZAJE AUTOMÁTICO DE MÁQUINA I",
+   "creditos": 2.0
+  },
+  "11320018": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "APRENDIZAJE AUTOMÁTICO DE MÁQUINAS",
+   "creditos": 3.0
+  },
+  "11220008": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "BIENES",
+   "creditos": 3.0
+  },
+  "73210056": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "BLOCKCHAIN, CONTRATOS DIGITALES Y FINTECH",
+   "creditos": 2.0
+  },
+  "16910066": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "BUSINESS INTELLIGENCE WITH BIG DATA",
+   "creditos": 2.0
+  },
+  "73210042": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "CÁLCULO I",
+   "creditos": 4.0
+  },
+  "73210043": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "CÁLCULO II",
+   "creditos": 4.0
+  },
+  "60110260": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "CÁTEDRA ROSARISTA, HISTORIA Y ACTUALIDAD",
+   "creditos": 2.0
+  },
+  "18610140": {
+   "t": "L",
+   "label": "ELECTIVA",
+   "nombre": "CHINO MANDARIN NIVEL I",
+   "creditos": 3.0
+  },
+  "18610447": {
+   "t": "L",
+   "label": "ELECTIVA",
+   "nombre": "CHINO MANDARÍN NIVEL II",
+   "creditos": 3.0
+  },
+  "36010002": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "COMUNICANDO ECONOMÍA",
+   "creditos": 3.0
+  },
+  "11210007": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "CONSTITUCIÓN POLITICA E INSTRUCCIÓN CIVICA",
+   "creditos": 2.0
+  },
+  "10810002": {
+   "t": "L",
+   "label": "ELECTIVA",
+   "nombre": "CONTABILIDAD PARA LA TOMA DE DECISIONES",
+   "creditos": 3.0
+  },
+  "11210045": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "CONTRATOS BANCARIOS",
+   "creditos": 2.0
+  },
+  "13210119": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "CURSO BÁSICO STATA",
+   "creditos": 2.0
+  },
+  "11210104": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "DERECHO DE LA COMPETENCIA",
+   "creditos": 2.0
+  },
+  "11220021": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "DERECHO TRIBUTARIO",
+   "creditos": 2.0
+  },
+  "65510126": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "DERIVADOS",
+   "creditos": 4.0
+  },
+  "13210017": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "ECONOMETRIA BÁSICA",
+   "creditos": 4.0
+  },
+  "13210018": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "ECONOMETRÍA INTERMEDIA",
+   "creditos": 4.0
+  },
+  "14700037": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "ECONOMÍA EXPERIMENTAL",
+   "creditos": 4.0
+  },
+  "65510132": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "ECONOMÍA FINANCIERA",
+   "creditos": 3.0
+  },
+  "13210024": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "ECONOMÍA MATEMÁTICA",
+   "creditos": 4.0
+  },
+  "10720004": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "ECONOMÍA POLÍTICA INTERNACIONAL",
+   "creditos": 3.0
+  },
+  "18610435": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "ESCRITURA ACADÉMICA PARA ECONOMÍA Y FINANZAS",
+   "creditos": 2.0
+  },
+  "73210011": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "ESTADÍSTICA",
+   "creditos": 4.0
+  },
+  "11220270": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "ESTRUCTURA DEL ESTADO, DE LOS TERRITORIOS, PRINCIPIOS Y SUS FINANZAS",
+   "creditos": 2.0
+  },
+  "17210004": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "ÉTICA",
+   "creditos": 2.0
+  },
+  "65510127": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "FINANZAS CORPORATIVAS",
+   "creditos": 4.0
+  },
+  "65510149": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "FINANZAS PERSONALES",
+   "creditos": 3.0
+  },
+  "65510139": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "FINTECH",
+   "creditos": 3.0
+  },
+  "18610117": {
+   "t": "L",
+   "label": "ELECTIVA",
+   "nombre": "FRANCÉS I",
+   "creditos": 3.0
+  },
+  "18610118": {
+   "t": "L",
+   "label": "ELECTIVA",
+   "nombre": "FRANCÉS II",
+   "creditos": 3.0
+  },
+  "18610119": {
+   "t": "L",
+   "label": "ELECTIVA",
+   "nombre": "FRANCÉS III",
+   "creditos": 2.0
+  },
+  "10810009": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "GERENCIA FINANCIERA",
+   "creditos": 2.0
+  },
+  "11220017": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "HACIENDA PÚBLICA",
+   "creditos": 3.0
+  },
+  "36010001": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "HACIENDO ECONOMÍA",
+   "creditos": 3.0
+  },
+  "13210135": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "HISTORIA ECONÓMICA COLOMBIANA",
+   "creditos": 4.0
+  },
+  "13210134": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "HISTORIA ECONÓMICA GENERAL",
+   "creditos": 2.0
+  },
+  "14700042": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "IMPACT EVALUATION",
+   "creditos": 4.0
+  },
+  "11220029": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "INSTITUCIONES MERCANTILES Y FINANCIERAS",
+   "creditos": 2.0
+  },
+  "65510125": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "INVERSIONES",
+   "creditos": 4.0
+  },
+  "18610147": {
+   "t": "L",
+   "label": "ELECTIVA",
+   "nombre": "ITALIANO NIVEL I",
+   "creditos": 3.0
+  },
+  "18610092": {
+   "t": "L",
+   "label": "ELECTIVA",
+   "nombre": "ITALIANO NIVEL II",
+   "creditos": 3.0
+  },
+  "18610093": {
+   "t": "L",
+   "label": "ELECTIVA",
+   "nombre": "ITALIANO NIVEL III",
+   "creditos": 2.0
+  },
+  "18610434": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "LECTURA CRÍTICA PARA ECONOMÍA Y FINANZAS",
+   "creditos": 2.0
+  },
+  "73210039": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "LÓGICA Y MATEMÁTICAS DISCRETAS",
+   "creditos": 4.0
+  },
+  "14710037": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "MACHINE LEARNING Y DATOS SATELITALES PARA ECONOMÍA AMBIENTAL",
+   "creditos": 4.0
+  },
+  "13210007": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "MACROECONOMIA I",
+   "creditos": 4.0
+  },
+  "13210008": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "MACROECONOMÍA II",
+   "creditos": 4.0
+  },
+  "13210025": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "MACROECONOMÍA III",
+   "creditos": 4.0
+  },
+  "15210015": {
+   "t": "L",
+   "label": "ELECTIVA",
+   "nombre": "MATEMÁTICAS FINANCIERAS",
+   "creditos": 3.0
+  },
+  "65510133": {
+   "t": "L",
+   "label": "ELECTIVA",
+   "nombre": "MATEMÁTICAS Y PLANEACIÓN FINANCIERA",
+   "creditos": 4.0
+  },
+  "14610034": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "MERCADOS BURSÁTILES Y ANÁLISIS DE INVERSIONES",
+   "creditos": 4.0
+  },
+  "18910157": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "METODOLOGÍA DE LA INVESTIGACIÓN CUANTITATIVA",
+   "creditos": 2.0
+  },
+  "65510128": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "MÉTODOS CUANTITATIVOS EN FINANZAS",
+   "creditos": 4.0
+  },
+  "13210006": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "MICROECONOMÍA II",
+   "creditos": 4.0
+  },
+  "13210010": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "MICROECONOMÍA III",
+   "creditos": 4.0
+  },
+  "14610035": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "OPCIONES FINANCIERAS Y REPLICACIÓN DINÁMICA",
+   "creditos": 4.0
+  },
+  "13210157": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "POBREZA Y DESIGUALDAD",
+   "creditos": 3.0
+  },
+  "18610142": {
+   "t": "L",
+   "label": "ELECTIVA",
+   "nombre": "PORTUGUES NIVEL I",
+   "creditos": 3.0
+  },
+  "18610298": {
+   "t": "L",
+   "label": "ELECTIVA",
+   "nombre": "PORTUGUÉS NIVEL II",
+   "creditos": 3.0
+  },
+  "18610265": {
+   "t": "L",
+   "label": "ELECTIVA",
+   "nombre": "PORTUGUÉS NIVEL III",
+   "creditos": 2.0
+  },
+  "73210012": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "PROBABILIDAD",
+   "creditos": 4.0
+  },
+  "11310002": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "PROGRAMACIÓN DE COMPUTADORES",
+   "creditos": 3.0
+  },
+  "73210050": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "PROGRAMACIÓN PARA NO PROGRAMADORES",
+   "creditos": 2.0
+  },
+  "11210122": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "SEMINARIO DE DERECHO ECONOMICO",
+   "creditos": 3.0
+  },
+  "13210033": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "SEMINARIO DE ORGANIZACIÓN INDUSTRIAL",
+   "creditos": 4.0
+  },
+  "65510070": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "SOFTWARE FINANCIERO",
+   "creditos": 2.0
+  },
+  "65510026": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "TALLER DE BLOOMBERG",
+   "creditos": 3.0
+  },
+  "65510123": {
+   "t": "C",
+   "label": "COMPLEMENTARIA",
+   "nombre": "TEORÍA Y POLÍTICA DEL COMERCIO INTERNACIONAL",
+   "creditos": 4.0
+  },
+  "13210015": {
+   "t": "T",
+   "label": "OBLIGATORIA",
+   "nombre": "TEORÍA Y POLÍTICA MONETARIA Y CAMBIARÍA",
+   "creditos": 4.0
+  },
+  "65510138": {
+   "t": "P",
+   "label": "PROYECTO FIN DE CARRERA (Postgrados y másteres)",
+   "nombre": "TRABAJO DE GRADO (FC03)",
+   "creditos": 8.0
+  }
+ }
+}

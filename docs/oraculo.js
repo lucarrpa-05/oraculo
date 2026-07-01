@@ -6,7 +6,13 @@
   const O = {};
   let CATALOG = {}, STATS = {}, PLAN_COURSES = {}, POOL_CODES = [], MACC_PLAN = [],
       MACC_PREREQS = {}, PLANS = {}, SCHEDULES = {}, MODELS = null, MALLA_PLAN = {},
-      GLOBAL_FAIL = 0.04, GMEAN = 4.0;
+      TIPOLOGIAS = {}, GLOBAL_FAIL = 0.04, GMEAN = 4.0;
+
+  const TIP_LABEL = { T: "OBLIGATORIA", C: "COMPLEMENTARIA", P: "PROYECTO", L: "ELECTIVA", "?": "OTRA" };
+  function tipologia(plan, code) {          // mirror of engine._tipologia
+    const info = (TIPOLOGIAS[plan] || {})[code];
+    return info ? (TIP_LABEL[info.t] || "OTRA") : null;
+  }
 
   O.setData = function (d) {
     CATALOG = d.catalog.catalog;
@@ -19,6 +25,15 @@
     for (const r of d.stats) STATS[r.crs] = r;
     PLANS = d.plans;
     SCHEDULES = d.schedules || {};
+    TIPOLOGIAS = d.tipologias || {};
+    // the malla-only catalog names only obligatorias; let cs() name every tipologia course
+    // too, borrowing nombre/creditos from the scrape when the catalog is missing the code.
+    for (const pl in TIPOLOGIAS) {
+      for (const code in TIPOLOGIAS[pl]) {
+        const info = TIPOLOGIAS[pl][code];
+        if (!CATALOG[code] && info.nombre) CATALOG[code] = { name: info.nombre, credits: info.creditos || 3.0 };
+      }
+    }
     NAME_STATS = null;                 // rebuild the name->stats index for the new data
     MODELS = d.models;
     GLOBAL_FAIL = MODELS.fail.global_fail;
@@ -145,7 +160,7 @@
     const raws = planCodes.filter(c => STATS[c] && (STATS[c].n || 0) >= 25 && STATS[c].difficulty_raw != null)
                           .map(c => STATS[c].difficulty_raw).sort((a, b) => a - b);
     if (raws.length < 10) return null;
-    return [0.2, 0.4, 0.6, 0.8].map(q => quantile(raws, q));
+    return [0.2, 0.4, 0.6, 0.8].map(q => Math.round(quantile(raws, q) * 1e6) / 1e6);   // match engine._plan_star_cuts rounding
   }
   function intrinsicStars(code, cuts) {
     const d = cs(code);
@@ -219,7 +234,7 @@
     const plan = state.plan, entry = PLANS[plan] || {};
     const typ_sem = entry.typ_sem || {};
     const seen = new Set();
-    const core = [], elective = [];
+    const core = [], comp = [], elective = [];
     const take = (codes, dst) => {
       for (const c of codes) {
         if (!hasName(c)) continue;
@@ -229,12 +244,16 @@
       }
     };
     take(MALLA_PLAN[plan] || PLAN_COURSES[plan] || (entry.core || []).filter(hasName), core);
+    // complementarias / proyecto / electivas de plan: the malla diagram omits these, so
+    // malla_plan drops them. Recover them from the official tipologia scrape.
+    const tp = TIPOLOGIAS[plan] || {};
+    for (const c in tp) if (["C", "P", "L"].includes(tp[c].t)) take([c], comp);
     take(POOL_CODES, elective);
     const prereqs = {};
     if (plan === "MA03") for (const k in MACC_PREREQS) prereqs[k] = MACC_PREREQS[k].slice();
-    const seq = nameSeqPrereqs(core.concat(elective));
+    const seq = nameSeqPrereqs(core.concat(comp).concat(elective));
     for (const b in seq) { prereqs[b] = Array.from(new Set((prereqs[b] || []).concat(seq[b]))); }
-    return { plan, core, elective, typ_sem, prereqs, has_plan: !!(core.length || elective.length) };
+    return { plan, core, comp, elective, typ_sem, prereqs, has_plan: !!(core.length || comp.length || elective.length) };
   }
   function buildItem(code, ctx, state, cuts, pc, pn) {
     const c = cs(code);
@@ -262,18 +281,23 @@
 
   O.eligible = function (state) {
     const ctx = planContext(state);
+    const plan = state.plan;
     const [pc, pn] = passedIdentity(state);
-    const cuts = ctx.has_plan ? planStarCuts(ctx.core.concat(ctx.elective)) : null;
+    const cuts = ctx.has_plan ? planStarCuts(ctx.core.concat(ctx.comp).concat(ctx.elective)) : null;
+    const coreSet = new Set(ctx.core);
     const required = [], locked = [], electives = [];
-    for (const code of ctx.core) {
+    // Disponibles = obligatorias (core) + complementarias/proyecto/electivas de plan (comp),
+    // each tagged with its tipologia so the UI can sub-filter.
+    for (const code of ctx.core.concat(ctx.comp)) {
       if (isPassed(code, pc, pn)) continue;
       const it = buildItem(code, ctx, state, cuts, pc, pn);
+      it.tipologia = tipologia(plan, code) || (coreSet.has(code) ? "OBLIGATORIA" : "COMPLEMENTARIA");
       (it.prereqs_met ? required : locked).push(it);
     }
     for (const code of ctx.elective) {
       if (isPassed(code, pc, pn)) continue;
       const it = buildItem(code, ctx, state, cuts, pc, pn);
-      if (it.prereqs_met) electives.push(it);
+      if (it.prereqs_met) { it.tipologia = "ELECTIVA HM"; electives.push(it); }
     }
     electives.sort((a, b) => norm(a.name || a.code) < norm(b.name || b.code) ? -1 : 1);
     const n_electives_total = electives.length;
@@ -282,7 +306,7 @@
     locked.sort((a, b) => (a.typ_sem || 99) - (b.typ_sem || 99));
 
     const pdf_names = state.pdf_names || {}, grades = state.grades || {}, passfail = new Set(state.passfail || []);
-    const planNames = new Set(ctx.core.concat(ctx.elective).map(c => canon(cs(c).name)));
+    const planNames = new Set(ctx.core.concat(ctx.comp).concat(ctx.elective).map(c => canon(cs(c).name)));
     const transcript = [...pc].map(c => ({
       code: c, name: cs(c).name || pdf_names[c] || null,
       grade: grades[c] != null ? grades[c] : null, passfail: passfail.has(c),
@@ -307,7 +331,7 @@
       pred_gpa: null, gpa_delta: null, p_any_fail: 0, effort: 0, feasible: true, warnings: [], drivers: [],
       schedule: O.schedule(basket, state.plan, pins) };
     const ctx = planContext(state);
-    const cuts = ctx.has_plan ? planStarCuts(ctx.core.concat(ctx.elective)) : null;
+    const cuts = ctx.has_plan ? planStarCuts(ctx.core.concat(ctx.comp).concat(ctx.elective)) : null;
     const gpa = state.cumgpa || GMEAN;
     let effort = 0, crSum = 0, gpaCr = 0, gpaW = 0;
     const items = [];

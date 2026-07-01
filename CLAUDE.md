@@ -28,8 +28,11 @@ The whole app also runs **client-side**: `docs/oraculo.js` is a verified JS port
 `pipeline/export_web_models.py` + a JS tree-evaluator; PDF parsed in-browser with pdf.js
 from CDN). `docs/index.html` loads `data/*.json` and calls `Oraculo.parseTranscript/eligible/
 simulate` instead of the Python API. Rebuild data: re-run `export_web_models.py` and copy
-`model/{catalog,course_stats,plans,schedules}.json` into `docs/data/`. Verified equal to the
-Python engine (counts/grades/GPA/scheduler exact; risk within 2e-4) and the pdf.js parser
+`model/{catalog,course_stats,plans,schedules,tipologias}.json` (+ `hospitals.json`,
+`hospital_reviews.json` for Medicina) into `docs/data/`. Verified equal to the
+Python engine (counts/grades/GPA/scheduler/tipología exact; grades & difficulty-stars within
+port tolerance: JS reorders numeric-string object keys so a few duplicate-named electives keep
+a different representative code, nudging star-cut boundaries; risk within 2e-4) and the pdf.js parser
 matches Python on all 5 test transcripts (Node + headless-Chrome tested). Asset paths are
 relative so it works under a `/repo/` Pages subpath. Pages source = branch `main`, `/docs`.
 
@@ -53,6 +56,8 @@ oraculo/
     #                          model/hospitals.json (+seeds empty model/hospital_reviews.json)
     build_reviews.py     # 6. curated Medicina rotation reviews (Conectados Rotando 2026-1) ->
     #                          model/hospital_reviews.json (OWNS/overwrites it; 44 reviews)
+    build_tipologias.py  # 7. (network) official tipologia per (plan,course) from the guia ->
+    #                          model/tipologias.json (Obligatoria/Complementaria/Proyecto/Electiva)
     experiments/         # exp_load_effect.py, exp_subject_aptitude.py (analysis, not shipped)
   model/             # build outputs the app loads (json + joblib)
   cache/             # panel.pkl — 92 MB intermediate, gitignored, rebuilt from .xlsx
@@ -138,11 +143,27 @@ The same course has DIFFERENT 8-digit codes across plan versions (e.g. Cálculo 
 (`engine._canon`), not code. Key functions: `_passed_identity` (passed codes + their names),
 `_is_passed(code)` = code-match OR name-match → a course you took under any code is filtered
 out; plans are deduped by name (e.g. two Capstone entries → one).
-- **Disponibles** = the plan course set (deduped by name) minus passed minus prereq-locked.
-  The plan set is `malla_plan[codPlan]` when available (the scraped plan filtered to courses
-  actually drawn in the official malla PDF, via `pipeline/build_malla_plans.py` — drops
-  cross-program junk like energy/logistics electives the API cross-lists into MA03), else the
-  full `plan_courses[codPlan]` (fallback for image-only mallas: Enfermería, Negocios Int, etc.).
+- **Disponibles** = obligatorias (`core`) + complementarias/proyecto/electivas-de-plan
+  (`comp`), deduped by name, minus passed minus prereq-locked, each tagged with its
+  **`tipologia`** so the UI sub-filters (Todas · Obligatoria · Complementaria · Proyecto de
+  grado · Electiva de plan). The obligatoria set is `malla_plan[codPlan]` when available (the
+  scraped plan filtered to courses actually drawn in the official malla PDF, via
+  `pipeline/build_malla_plans.py` — drops cross-program junk the API cross-lists into MA03),
+  else full `plan_courses[codPlan]`.
+- **Complementarias** (the missing-courses fix, requested by the Economía council): the malla
+  diagram omits complementarias/proyecto, so `malla_plan` dropped them (e.g. Evaluación de
+  Impacto, Machine Learning were invisible for Economía). They are recovered from
+  **`model/tipologias.json`** (`pipeline/build_tipologias.py`), which scrapes the OFFICIAL
+  tipología per **(plan, course)** from `asignaturaDetalle?...&opcionDetalle=DetalleAsignatura`
+  → `tipologias:[{codTipologia,descripcion}]`. Codes: **T** OBLIGATORIA · **C** COMPLEMENTARIA
+  · **L** ELECTIVA · **P** PROYECTO FIN DE CARRERA. Tipología is PLAN-SPECIFIC (same code is
+  obligatoria in one plan, complementaria in another), so it is keyed by plan like schedules.
+  `engine.eligible` adds comp (t in C/P/L) to Disponibles and tags every item; `tipologias.json`
+  also carries `nombre`/`creditos` so `_cs` can name complementarias the stale catalog misses.
+  Currently scraped: the 5 Economics-area plans (ADM1/EC03/EC04/FI01/FC03); re-run without
+  args to cover all 54 plans (plans absent from the file fall back to obligatoria-only, no
+  regression). Mirrored in `oraculo.js` (docs loads `data/tipologias.json`; local dev serves it
+  through `/api/analyze` since the server uses `engine`).
 - **Locked** = plan courses whose known prereqs aren't met (prereqs also name-matched).
 - **Electivas** = the official GEN/HM pools (`catalog` `pool` field, ~1000), deduped vs plan
   & passed; capped to 200 A–Z in the response (`n_electives_total` has the real count).

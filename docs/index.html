@@ -79,6 +79,13 @@
   .tab.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
   .tcount{font-size:11px;color:var(--text-4);background:var(--bg-soft);border-radius:100px;padding:1px 7px;margin-left:4px}
   .tab.active .tcount{background:var(--accent-tint);color:var(--accent)}
+  .tipbar{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+  .tipchip{font-size:11.5px;font-weight:500;color:var(--text-3);background:var(--card);border:1px solid var(--border);border-radius:100px;padding:4px 11px;cursor:pointer;transition:.12s}
+  .tipchip:hover{border-color:var(--border-strong);color:var(--text)}
+  .tipchip.on{background:var(--accent-tint);border-color:var(--accent);color:var(--accent);font-weight:600}
+  .tipchip .n{opacity:.55;margin-left:4px;font-variant-numeric:tabular-nums}
+  .tiptag{font-size:9px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-3);border:1px solid var(--border);border-radius:100px;padding:1px 6px}
+  .tiptag.comp{color:var(--accent);border-color:var(--accent-tint);background:var(--accent-tint)}
   .searchbar{display:flex;align-items:center;gap:8px;border:1px solid var(--border);border-radius:var(--r);background:var(--card);padding:0 11px;margin-bottom:12px;transition:.12s}
   .searchbar:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-tint)}
   .searchbar .si{color:var(--text-4);font-size:15px}
@@ -204,6 +211,7 @@
           </div>
           <div class="searchbar"><span class="si">⌕</span><input id="search" type="text" placeholder="Buscar asignatura o código"><span id="search-x" class="sx hidden">✕</span></div>
           <div id="tab-req">
+            <div id="tip-filter" class="tipbar hidden"></div>
             <div id="required-list"></div>
             <div id="locked-wrap"></div>
           </div>
@@ -249,12 +257,15 @@
 const $=s=>document.querySelector(s);
 let STATE=null,REQUIRED=[],LOCKED=[],ELECTIVES=[],TRANSCRIPT=[],ELEC_TOTAL=0,SEARCH='',SEL=new Set(),SIM=null,READY=false,PINS={};
 let HOSP=null,HREV=null,HLIST=[];
+let TIPF='ALL';
+const TIP_ORDER=['OBLIGATORIA','COMPLEMENTARIA','ELECTIVA','PROYECTO','OTRA'];
+const TIP_ES={OBLIGATORIA:'Obligatorias',COMPLEMENTARIA:'Complementarias',ELECTIVA:'Electivas de plan',PROYECTO:'Proyecto de grado',OTRA:'Otras'};
 (async function boot(){
   try{
-    const names=['catalog.json','course_stats.json','plans.json','schedules.json','models.json','malla_plan.json'];
-    const [catalog,stats,plans,schedules,models,malla]=await Promise.all(
+    const names=['catalog.json','course_stats.json','plans.json','schedules.json','models.json','malla_plan.json','tipologias.json'];
+    const [catalog,stats,plans,schedules,models,malla,tipologias]=await Promise.all(
       names.map(n=>fetch('data/'+n).then(r=>{if(!r.ok)throw new Error(n);return r.json();})));
-    Oraculo.setData({catalog,stats,plans,schedules,models,malla});
+    Oraculo.setData({catalog,stats,plans,schedules,models,malla,tipologias});
     pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
     READY=true; $('#model-pill').textContent='modelo · activo';
     // Medicina (ME03) hospital reviews are optional; never block boot if absent.
@@ -320,8 +331,23 @@ const cname=c=>c.name?title(c.name):`<span class="no-name">Asignatura ${c.code}<
 const esc=s=>(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const deburr=s=>(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
 function matchq(c){if(!SEARCH)return true;return deburr(c.name).includes(SEARCH)||(c.code||'').includes(SEARCH);}
+const tipOf=c=>c.tipologia||'OBLIGATORIA';
+const tipMatch=c=>TIPF==='ALL'||tipOf(c)===TIPF;
+function renderTipFilter(){
+  const items=REQUIRED.concat(LOCKED), counts={};
+  items.forEach(c=>{const t=tipOf(c);counts[t]=(counts[t]||0)+1;});
+  const present=TIP_ORDER.filter(t=>counts[t]);
+  const bar=$('#tip-filter');
+  if(present.length<=1){bar.classList.add('hidden');bar.innerHTML='';TIPF='ALL';return;}
+  if(TIPF!=='ALL'&&!counts[TIPF])TIPF='ALL';
+  bar.classList.remove('hidden');
+  const chip=(key,label,n)=>`<button class="tipchip ${TIPF===key?'on':''}" data-tf="${key}">${label}<span class="n">${n}</span></button>`;
+  bar.innerHTML=chip('ALL','Todas',items.length)+present.map(t=>chip(t,TIP_ES[t]||title(t),counts[t])).join('');
+  bar.querySelectorAll('.tipchip').forEach(el=>el.onclick=()=>{TIPF=el.dataset.tf;renderLists();});
+}
 function renderLists(){
-  const reqF=REQUIRED.filter(matchq),lockF=LOCKED.filter(matchq),elecF=ELECTIVES.filter(matchq),takF=TRANSCRIPT.filter(matchq);
+  renderTipFilter();
+  const reqF=REQUIRED.filter(c=>matchq(c)&&tipMatch(c)),lockF=LOCKED.filter(c=>matchq(c)&&tipMatch(c)),elecF=ELECTIVES.filter(matchq),takF=TRANSCRIPT.filter(matchq);
   $('#req-count').textContent=SEARCH?(reqF.length+lockF.length):(REQUIRED.length+LOCKED.length);
   $('#elec-count').textContent=SEARCH?elecF.length:ELEC_TOTAL;
   $('#taken-count').textContent=SEARCH?takF.length:TRANSCRIPT.length;
@@ -335,18 +361,20 @@ function renderLists(){
   bindCourses();
 }
 
+const TIP_TAG={COMPLEMENTARIA:'Complementaria',ELECTIVA:'Electiva de plan',PROYECTO:'Proyecto de grado',OTRA:'Otra','ELECTIVA HM':'Electiva HM'};
 function courseRow(c){
   const risk=c.risk>=0.08?`<span class="riskdot">· riesgo ${(c.risk*100).toFixed(0)}%</span>`:'';
   const conf=c.confidence==='none'?`<span class="conf">sin histórico</span>`
     :(c.confidence!=='high'?`<span class="conf">datos ${c.confidence==='low'?'limitados':'parciales'}</span>`:'');
   const sem=c.typ_sem?`<span class="typsem">· sem. ${c.typ_sem} típico</span>`:'';
+  const t=c.tipologia&&c.tipologia!=='OBLIGATORIA'?`<span class="tiptag${c.tipologia==='COMPLEMENTARIA'?' comp':''}">${TIP_TAG[c.tipologia]||title(c.tipologia)}</span>`:'';
   const right=c.exp_grade!=null
     ? `<div class="exp">${c.exp_grade}<small> nota</small></div>${dots(c.stars_personal)}`
     : `<div class="exp nodata">·<small> sin dato</small></div>`;
   return `<div class="course ${SEL.has(c.code)?'sel':''}" data-code="${c.code}">
     <div class="chk">${SEL.has(c.code)?'✓':''}</div>
     <div class="c-body"><div class="c-name">${cname(c)}</div>
-      <div class="c-sub">${stars(c.stars)} <span class="code">${c.code}</span> · ${c.credits} créd ${sem} ${risk} ${conf}</div></div>
+      <div class="c-sub">${stars(c.stars)} <span class="code">${c.code}</span> · ${c.credits} créd ${sem} ${t} ${risk} ${conf}</div></div>
     <div class="c-right">${right}</div>
   </div>`;
 }
