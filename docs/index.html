@@ -262,16 +262,17 @@ const TIP_ORDER=['OBLIGATORIA','COMPLEMENTARIA','ELECTIVA','PROYECTO','OTRA'];
 const TIP_ES={OBLIGATORIA:'Obligatorias',COMPLEMENTARIA:'Complementarias',ELECTIVA:'Electivas de plan',PROYECTO:'Proyecto de grado',OTRA:'Otras'};
 (async function boot(){
   try{
+    // revalidate data on every load (ETag) so a redeploy is never masked by a stale cached
+    // copy (schedules.json changes as the university updates 2026-2S times).
+    const getData=n=>fetch('data/'+n,{cache:'no-cache'}).then(r=>{if(!r.ok)throw new Error(n);return r.json();});
     const names=['catalog.json','course_stats.json','plans.json','schedules.json','models.json','malla_plan.json','tipologias.json'];
-    const [catalog,stats,plans,schedules,models,malla,tipologias]=await Promise.all(
-      names.map(n=>fetch('data/'+n).then(r=>{if(!r.ok)throw new Error(n);return r.json();})));
+    const [catalog,stats,plans,schedules,models,malla,tipologias]=await Promise.all(names.map(getData));
     Oraculo.setData({catalog,stats,plans,schedules,models,malla,tipologias});
     pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
     READY=true; $('#model-pill').textContent='modelo · activo';
     // Medicina (ME03) hospital reviews are optional; never block boot if absent.
     try{
-      const [H,R]=await Promise.all([fetch('data/hospitals.json').then(r=>r.json()),
-                                     fetch('data/hospital_reviews.json').then(r=>r.json())]);
+      const [H,R]=await Promise.all([getData('hospitals.json'), getData('hospital_reviews.json')]);
       HOSP=H; HREV=R;
     }catch(e){console.warn('Datos de hospitales no disponibles',e);}
   }catch(e){console.error(e); $('#model-pill').textContent='error al cargar datos';}
