@@ -156,14 +156,16 @@ out; plans are deduped by name (e.g. two Capstone entries → one).
   **`model/tipologias.json`** (`pipeline/build_tipologias.py`), which scrapes the OFFICIAL
   tipología per **(plan, course)** from `asignaturaDetalle?...&opcionDetalle=DetalleAsignatura`
   → `tipologias:[{codTipologia,descripcion}]`. Codes: **T** OBLIGATORIA · **C** COMPLEMENTARIA
-  · **L** ELECTIVA · **P** PROYECTO FIN DE CARRERA. Tipología is PLAN-SPECIFIC (same code is
-  obligatoria in one plan, complementaria in another), so it is keyed by plan like schedules.
-  `engine.eligible` adds comp (t in C/P/L) to Disponibles and tags every item; `tipologias.json`
-  also carries `nombre`/`creditos` so `_cs` can name complementarias the stale catalog misses.
-  Currently scraped: the 5 Economics-area plans (ADM1/EC03/EC04/FI01/FC03); re-run without
-  args to cover all 54 plans (plans absent from the file fall back to obligatoria-only, no
-  regression). Mirrored in `oraculo.js` (docs loads `data/tipologias.json`; local dev serves it
-  through `/api/analyze` since the server uses `engine`).
+  · **L** ELECTIVA · **P** PROYECTO FIN DE CARRERA · **B** INDISPENSABLE · **E** PRACTICAS.
+  `_TIP_LABEL` folds **B→OBLIGATORIA** (indispensable = required core, no elective choice) and
+  **E→OTRA**. Tipología is PLAN-SPECIFIC (same code is obligatoria in one plan, complementaria
+  in another), so it is keyed by plan like schedules. `engine.eligible` adds comp (t in
+  C/P/L/B) to Disponibles and tags every item; `tipologias.json` also carries `nombre`/`creditos`
+  so `_cs` can name complementarias the stale catalog misses. Scraped: **all 53 pregrado plans**
+  (1916 T · 463 C · 260 L · 173 P · 22 B · 2 E). Re-run `build_tipologias.py` to refresh (plans
+  absent from the file fall back to obligatoria-only, no regression). JS↔Python membership +
+  tipología verified EXACT across Economics/Psicología/Sociología/MACC. Mirrored in `oraculo.js`
+  (docs loads `data/tipologias.json`; local dev serves it through `/api/analyze`).
 - **Locked** = plan courses whose known prereqs aren't met (prereqs also name-matched).
 - **Electivas** = the official GEN/HM pools (`catalog` `pool` field, ~1000), deduped vs plan
   & passed; capped to 200 A–Z in the response (`n_electives_total` has the real count).

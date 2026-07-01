@@ -8,7 +8,8 @@
       MACC_PREREQS = {}, PLANS = {}, SCHEDULES = {}, MODELS = null, MALLA_PLAN = {},
       TIPOLOGIAS = {}, GLOBAL_FAIL = 0.04, GMEAN = 4.0;
 
-  const TIP_LABEL = { T: "OBLIGATORIA", C: "COMPLEMENTARIA", P: "PROYECTO", L: "ELECTIVA", "?": "OTRA" };
+  // B "INDISPENSABLE" -> OBLIGATORIA (required core); E "PRACTICAS" -> OTRA. Mirror of engine._TIP_LABEL.
+  const TIP_LABEL = { T: "OBLIGATORIA", B: "OBLIGATORIA", C: "COMPLEMENTARIA", P: "PROYECTO", L: "ELECTIVA", E: "OTRA", "?": "OTRA" };
   function tipologia(plan, code) {          // mirror of engine._tipologia
     const info = (TIPOLOGIAS[plan] || {})[code];
     return info ? (TIP_LABEL[info.t] || "OTRA") : null;
@@ -247,7 +248,7 @@
     // complementarias / proyecto / electivas de plan: the malla diagram omits these, so
     // malla_plan drops them. Recover them from the official tipologia scrape.
     const tp = TIPOLOGIAS[plan] || {};
-    for (const c in tp) if (["C", "P", "L"].includes(tp[c].t)) take([c], comp);
+    for (const c in tp) if (["C", "P", "L", "B"].includes(tp[c].t)) take([c], comp);
     take(POOL_CODES, elective);
     const prereqs = {};
     if (plan === "MA03") for (const k in MACC_PREREQS) prereqs[k] = MACC_PREREQS[k].slice();

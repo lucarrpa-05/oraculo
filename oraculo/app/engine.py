@@ -40,7 +40,10 @@ PLAN_NAMES = {"MA03": "MATEMATICAS APLICADAS Y CIENCIAS DE LA COMPUTACION"}
 # the malla PDF (hence malla_plan.json) lacks, which is why complementarias were missing.
 _tp = os.path.join(MODEL_DIR, "tipologias.json")
 TIPOLOGIAS = json.load(open(_tp, encoding="utf-8")) if os.path.exists(_tp) else {}
-_TIP_LABEL = {"T": "OBLIGATORIA", "C": "COMPLEMENTARIA", "P": "PROYECTO", "L": "ELECTIVA", "?": "OTRA"}
+# codTipologia -> UI bucket. B "INDISPENSABLE" is a required core course (no elective choice),
+# so it folds into OBLIGATORIA; E "PRACTICAS" (postgrado, 2 pregrado rows) -> OTRA.
+_TIP_LABEL = {"T": "OBLIGATORIA", "B": "OBLIGATORIA", "C": "COMPLEMENTARIA",
+              "P": "PROYECTO", "L": "ELECTIVA", "E": "OTRA", "?": "OTRA"}
 # the malla-only catalog names only obligatorias; let _cs name every tipologia course too,
 # borrowing nombre/creditos from the scrape when the catalog is missing the code.
 for _pl, _codes in TIPOLOGIAS.items():
@@ -375,7 +378,7 @@ def _plan_context(state):
     # these, so malla_plan drops them. Recover them from the official tipologia scrape. (take()
     # dedupes by name, so a course already counted as obligatoria won't be double-listed.)
     for c, info in TIPOLOGIAS.get(plan, {}).items():
-        if info.get("t") in ("C", "P", "L"):
+        if info.get("t") in ("C", "P", "L", "B"):   # non-obligatoria-by-malla, incl. indispensables
             take([c], comp)
     take(POOL_CODES, elective)
     prereqs = {}
