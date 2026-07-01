@@ -105,15 +105,26 @@ def scrape_course(tok, code, plan):
 def main():
     import concurrent.futures as cf, threading
     merge = "--merge" in sys.argv     # build on the existing file; only update on a successful fetch
+    missing = "--missing" in sys.argv # (implies merge) fetch ONLY (plan,code) not already scraped
     only = [a for a in sys.argv[1:] if not a.startswith("--")]
     tok = cat.get_token()
     url = json.load(open(URL_CATALOG, encoding="utf-8"))
     plans = only or [p for p in url if not p.startswith("__POOL_")]
     pairs = [(str(c["codAsignatura"]), p) for p in plans for c in url.get(p, {}).get("courses", [])]
+    # ALSO source the current per-(plan,course) codes from the tipología scrape: url_catalog is
+    # stale and misses newer complementaria codes (e.g. Evaluación de Impacto 13220004), so their
+    # schedules were never fetched. tipologias.json carries the codes eligibility actually shows.
+    TIP = os.path.join(ROOT, "model", "tipologias.json")
+    if os.path.exists(TIP):
+        tp = json.load(open(TIP, encoding="utf-8"))
+        pairs += [(code, p) for p in (only or tp) for code in tp.get(p, {})]
     # de-dup identical (code, plan) pairs (a plan can list a code twice)
     seen = set(); pairs = [x for x in pairs if not (x in seen or seen.add(x))]
+    out = json.load(open(OUT, encoding="utf-8")) if ((merge or missing) and os.path.exists(OUT)) else {}
+    if missing:                        # keep only pairs we don't already have a schedule for
+        merge = True
+        pairs = [(code, p) for code, p in pairs if code not in out.get(p, {})]
     n = len(pairs)
-    out = json.load(open(OUT, encoding="utf-8")) if (merge and os.path.exists(OUT)) else {}
     base = sum(len(v) for v in out.values())
     lock, done, stat = threading.Lock(), [0], {"ok": 0, "fail": 0, "empty": 0}
     print(f"scraping {n} (course,plan) pairs across {len(plans)} plans "
