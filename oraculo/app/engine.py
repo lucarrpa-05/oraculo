@@ -44,6 +44,9 @@ TIPOLOGIAS = json.load(open(_tp, encoding="utf-8")) if os.path.exists(_tp) else 
 # so it folds into OBLIGATORIA; E "PRACTICAS" (postgrado, 2 pregrado rows) -> OTRA.
 _TIP_LABEL = {"T": "OBLIGATORIA", "B": "OBLIGATORIA", "C": "COMPLEMENTARIA",
               "P": "PROYECTO", "L": "ELECTIVA", "E": "OTRA", "?": "OTRA"}
+# name-collision priority: when the same course name appears under several codes in a plan
+# (old vs current version, e.g. Econometría Básica listed as both T and L), keep the most-core.
+_TIP_PRIO = {"T": 0, "B": 0, "C": 2, "L": 3, "P": 4, "E": 5, "?": 5}
 # the malla-only catalog names only obligatorias; let _cs name every tipologia course too,
 # borrowing nombre/creditos from the scrape when the catalog is missing the code.
 for _pl, _codes in TIPOLOGIAS.items():
@@ -356,31 +359,41 @@ def _is_passed(code, pc, pn):
 def _plan_context(state):
     plan = state.get("plan")
     entry = PLANS.get(plan, {})
-    typ_sem = entry.get("typ_sem", {})
-    # Universe = the OFFICIAL scraped plan ONLY (no panel codes, which carry old plan-
-    # version duplicates). Dedupe by canonical name so a course listed twice (e.g. two
-    # Capstone entries) shows once. Electives = the official GEN/HM pools, never panel.
-    seen_names = set()
-    def take(codes, dst):
-        for c in codes:
-            if not _has_name(c):
-                continue
-            nm = _canon(_cs(c)["name"])
-            if nm in seen_names:
-                continue
-            seen_names.add(nm); dst.append(c)
-    core, comp, elective = [], [], []
-    # prefer the malla-filtered plan (junk removed); fall back to the full scraped plan
-    # where the malla is an image-only PDF, then to the panel core.
-    plan_src = MALLA_PLAN.get(plan) or PLAN_COURSES.get(plan) or [c for c in entry.get("core", []) if _has_name(c)]
-    take(plan_src, core)
-    # complementarias / proyecto fin de carrera / electivas de plan: the malla diagram omits
-    # these, so malla_plan drops them. Recover them from the official tipologia scrape. (take()
-    # dedupes by name, so a course already counted as obligatoria won't be double-listed.)
-    for c, info in TIPOLOGIAS.get(plan, {}).items():
-        if info.get("t") in ("C", "P", "L", "B"):   # non-obligatoria-by-malla, incl. indispensables
-            take([c], comp)
-    take(POOL_CODES, elective)
+    typ_sem = dict(entry.get("typ_sem", {}))
+    # also key typ_sem by canonical name, so ordering survives plan-version code changes
+    for _c, _s in list(typ_sem.items()):
+        if _has_name(_c):
+            typ_sem.setdefault(_canon(_cs(_c)["name"]), _s)
+    tp = TIPOLOGIAS.get(plan, {})
+    # Plan universe = the malla-filtered plan (junk removed) UNIONED with the official current
+    # tipologia scrape (which adds complementarias/proyecto the malla diagram omits, and the
+    # current obligatoria code versions). Dedupe by canonical NAME; when a name appears under
+    # several codes (e.g. Econometría Básica is listed as BOTH tipología T and L), keep the
+    # code with the most-core tipología so the obligatoria wins. Nothing in the malla is
+    # dropped (malla-only courses keep their obligatoria status).
+    malla_src = MALLA_PLAN.get(plan) or PLAN_COURSES.get(plan) or [c for c in entry.get("core", []) if _has_name(c)]
+    plan_codes = list(dict.fromkeys([c for c in malla_src if _has_name(c)] +
+                                    [c for c in tp if _has_name(c)]))
+    def _prio(code):                          # lower = more core; malla-only ranks as obligatoria
+        info = tp.get(code)
+        return _TIP_PRIO.get(info["t"], 5) if info else 1
+    best = {}                                 # canonical name -> chosen code
+    for c in plan_codes:
+        nm = _canon(_cs(c)["name"])
+        if nm not in best or _prio(c) < _prio(best[nm]):
+            best[nm] = c
+    seen_names, core, comp, elective = set(), [], [], []
+    for nm, c in best.items():
+        seen_names.add(nm)
+        info = tp.get(c)
+        (comp if info and info["t"] in ("C", "L", "P") else core).append(c)   # T/B/malla-only -> obligatoria
+    for c in POOL_CODES:                       # GEN/HM university-wide pool, deduped vs the plan
+        if not _has_name(c):
+            continue
+        nm = _canon(_cs(c)["name"])
+        if nm in seen_names:
+            continue
+        seen_names.add(nm); elective.append(c)
     prereqs = {}
     if plan == "MA03":
         prereqs.update(MACC_PREREQS)                       # official malla
@@ -397,7 +410,7 @@ def _build_item(code, ctx, state, cuts, pc, pn):
         "code": code, "name": cs["name"], "credits": cs["credits"],
         "stars": _intrinsic_stars(code, cuts),
         "fail_rate_hist": cs["fail_rate"], "n_hist": cs["n"],
-        "typ_sem": ctx["typ_sem"].get(code),
+        "typ_sem": ctx["typ_sem"].get(code) or (ctx["typ_sem"].get(_canon(cs["name"])) if cs["name"] else None),
         "prereqs_met": not missing,
         "missing": [{"code": p, "name": _cs(p)["name"]} for p in missing],
     }

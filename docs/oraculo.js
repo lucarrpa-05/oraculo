@@ -10,6 +10,8 @@
 
   // B "INDISPENSABLE" -> OBLIGATORIA (required core); E "PRACTICAS" -> OTRA. Mirror of engine._TIP_LABEL.
   const TIP_LABEL = { T: "OBLIGATORIA", B: "OBLIGATORIA", C: "COMPLEMENTARIA", P: "PROYECTO", L: "ELECTIVA", E: "OTRA", "?": "OTRA" };
+  // name-collision priority (lower = more core); mirror of engine._TIP_PRIO
+  const TIP_PRIO = { T: 0, B: 0, C: 2, L: 3, P: 4, E: 5, "?": 5 };
   function tipologia(plan, code) {          // mirror of engine._tipologia
     const info = (TIPOLOGIAS[plan] || {})[code];
     return info ? (TIP_LABEL[info.t] || "OTRA") : null;
@@ -233,23 +235,23 @@
   }
   function planContext(state) {
     const plan = state.plan, entry = PLANS[plan] || {};
-    const typ_sem = entry.typ_sem || {};
-    const seen = new Set();
-    const core = [], comp = [], elective = [];
-    const take = (codes, dst) => {
-      for (const c of codes) {
-        if (!hasName(c)) continue;
-        const nm = canon(cs(c).name);
-        if (seen.has(nm)) continue;
-        seen.add(nm); dst.push(c);
-      }
-    };
-    take(MALLA_PLAN[plan] || PLAN_COURSES[plan] || (entry.core || []).filter(hasName), core);
-    // complementarias / proyecto / electivas de plan: the malla diagram omits these, so
-    // malla_plan drops them. Recover them from the official tipologia scrape.
+    const typ_sem = Object.assign({}, entry.typ_sem || {});
+    // also key typ_sem by canonical name, so ordering survives plan-version code changes
+    for (const c of Object.keys(typ_sem)) if (hasName(c)) { const n = canon(cs(c).name); if (typ_sem[n] == null) typ_sem[n] = typ_sem[c]; }
     const tp = TIPOLOGIAS[plan] || {};
-    for (const c in tp) if (["C", "P", "L", "B"].includes(tp[c].t)) take([c], comp);
-    take(POOL_CODES, elective);
+    // Plan universe = malla-filtered plan UNIONED with the official current tipología scrape.
+    // Dedupe by canonical NAME; when a name appears under several codes (e.g. Econometría
+    // Básica listed as both T and L), keep the most-core tipología so the obligatoria wins.
+    // Nothing in the malla is dropped (malla-only courses keep obligatoria status).
+    const mallaSrc = MALLA_PLAN[plan] || PLAN_COURSES[plan] || (entry.core || []).filter(hasName);
+    const planCodes = [...new Set(mallaSrc.filter(hasName).concat(Object.keys(tp).filter(hasName)))];
+    const prio = code => { const info = tp[code]; return info ? (TIP_PRIO[info.t] != null ? TIP_PRIO[info.t] : 5) : 1; };
+    const best = {};                          // canonical name -> chosen code
+    for (const c of planCodes) { const nm = canon(cs(c).name); if (!(nm in best) || prio(c) < prio(best[nm])) best[nm] = c; }
+    const seen = new Set(), core = [], comp = [], elective = [];
+    for (const nm in best) { const c = best[nm]; seen.add(nm); const info = tp[c];
+      (info && ["C", "L", "P"].includes(info.t) ? comp : core).push(c); }   // T/B/malla-only -> obligatoria
+    for (const c of POOL_CODES) { if (!hasName(c)) continue; const nm = canon(cs(c).name); if (seen.has(nm)) continue; seen.add(nm); elective.push(c); }
     const prereqs = {};
     if (plan === "MA03") for (const k in MACC_PREREQS) prereqs[k] = MACC_PREREQS[k].slice();
     const seq = nameSeqPrereqs(core.concat(comp).concat(elective));
@@ -259,9 +261,10 @@
   function buildItem(code, ctx, state, cuts, pc, pn) {
     const c = cs(code);
     const missing = (ctx.prereqs[code] || []).filter(p => !isPassed(p, pc, pn));
+    let ts = ctx.typ_sem[code]; if (ts == null && c.name) ts = ctx.typ_sem[canon(c.name)];
     return {
       code, name: c.name, credits: c.credits, stars: intrinsicStars(code, cuts),
-      fail_rate_hist: c.fail_rate, n_hist: c.n, typ_sem: ctx.typ_sem[code] != null ? ctx.typ_sem[code] : null,
+      fail_rate_hist: c.fail_rate, n_hist: c.n, typ_sem: ts != null ? ts : null,
       prereqs_met: missing.length === 0,
       missing: missing.map(p => ({ code: p, name: cs(p).name })),
     };

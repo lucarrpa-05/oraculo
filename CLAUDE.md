@@ -143,13 +143,18 @@ The same course has DIFFERENT 8-digit codes across plan versions (e.g. Cálculo 
 (`engine._canon`), not code. Key functions: `_passed_identity` (passed codes + their names),
 `_is_passed(code)` = code-match OR name-match → a course you took under any code is filtered
 out; plans are deduped by name (e.g. two Capstone entries → one).
-- **Disponibles** = obligatorias (`core`) + complementarias/proyecto/electivas-de-plan
-  (`comp`), deduped by name, minus passed minus prereq-locked, each tagged with its
-  **`tipologia`** so the UI sub-filters (Todas · Obligatoria · Complementaria · Proyecto de
-  grado · Electiva de plan). The obligatoria set is `malla_plan[codPlan]` when available (the
-  scraped plan filtered to courses actually drawn in the official malla PDF, via
-  `pipeline/build_malla_plans.py` — drops cross-program junk the API cross-lists into MA03),
-  else full `plan_courses[codPlan]`.
+- **Disponibles** = the plan universe = `malla_plan[codPlan]` (junk-removed, else
+  `plan_courses`) **UNIONED** with the official current tipología scrape, deduped by canonical
+  NAME, minus passed minus prereq-locked, each tagged with its **`tipologia`** so the UI
+  sub-filters (Todas · Obligatoria · Complementaria · Proyecto de grado · Electiva de plan).
+  Split: winner's tipología T/B (or malla-only, no tipología) → obligatoria `core`; C/L/P →
+  `comp`. **Name-collision rule (`_TIP_PRIO`):** the same course can be listed under several
+  codes in one plan (e.g. Econometría Básica appears as BOTH tipología T `13210076` and L
+  `13210017`); keep the code with the most-core tipología so the obligatoria wins (this fixed
+  Econometría Básica showing as an electiva). Malla-only courses are never dropped (so MACC
+  keeps Big Data/Ciberseguridad etc.), which means a stale malla course the current plan
+  replaced can still show as obligatoria (e.g. Curso Básico R, replaced by Curso Básico STATA).
+  `typ_sem` is keyed by code AND canonical name so ordering survives version code changes.
 - **Complementarias** (the missing-courses fix, requested by the Economía council): the malla
   diagram omits complementarias/proyecto, so `malla_plan` dropped them (e.g. Evaluación de
   Impacto, Machine Learning were invisible for Economía). They are recovered from
